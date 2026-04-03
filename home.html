@@ -163,7 +163,7 @@
               <span class="menu-arrow">›</span>
             </div>
 
-            <div class="menu-row">
+            <div class="menu-row" onclick="showPanel('panel_swap')">
               <div class="menu-icon" style="background:#F7F8FC;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
               </div>
@@ -174,7 +174,7 @@
               <span class="menu-arrow">›</span>
             </div>
 
-            <div class="menu-row">
+            <div class="menu-row" onclick="showPanel('panel_market')">
               <div class="menu-icon" style="background:#F7F8FC;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
               </div>
@@ -498,6 +498,237 @@
       </div>
       <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">세금 전문가 상담</div>
       <span style="font-size:12px;color:#0066FF;font-weight:700;">고수상담 ›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 패널: 갈아타기 시뮬레이션 ═══ -->
+<div id="panel_swap" class="panel">
+  <div style="height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:600;color:#191F28;"><span>9:41</span><span>5G 🔋</span></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 16px;">
+    <span onclick="hidePanel('panel_swap')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">갈아타기 시뮬레이션</span>
+  </div>
+
+  <!-- 현재 매물 요약 -->
+  <div style="margin:0 16px 14px;padding:16px;background:linear-gradient(135deg,#0F1724,#182540);border-radius:16px;color:#fff;">
+    <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px;">현재 매물 매도 시</div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.6);">마포 래미안 34평</div>
+        <div style="font-size:24px;font-weight:900;margin-top:4px;">12.2억</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:11px;color:rgba(255,255,255,0.35);">세후 실수령</div>
+        <div style="font-size:20px;font-weight:900;color:#4ADE80;">+2.8억</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 갈아탈 수 있는 곳 -->
+  <div style="padding:0 16px 8px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:15px;font-weight:800;color:#191F28;">실수령으로 갈 수 있는 곳</span>
+    <span style="font-size:11px;color:#8B95A1;">실수령 2.8억 기준</span>
+  </div>
+
+  <!-- 매물 1: 추가 자금 필요 -->
+  <div style="margin:0 16px 10px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:48px;height:48px;border-radius:14px;background:#F7F8FC;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:800;color:#191F28;">송파 헬리오시티 24평</div>
+        <div style="font-size:12px;color:#8B95A1;">송파구 가락동 · 22층 남동향</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;">
+      <div style="flex:1;padding:10px 6px;background:#F7F8FC;border-radius:10px;text-align:center;">
+        <div style="font-size:10px;color:#8B95A1;margin-bottom:3px;">매매가</div>
+        <div style="font-size:16px;font-weight:900;color:#191F28;">15.1억</div>
+      </div>
+      <div style="flex:1;padding:10px 6px;background:#FFF5F5;border-radius:10px;text-align:center;">
+        <div style="font-size:10px;color:#8B95A1;margin-bottom:3px;">추가 필요</div>
+        <div style="font-size:16px;font-weight:900;color:#E53E3E;">+2.1억</div>
+      </div>
+      <div style="flex:1;padding:10px 6px;background:#F7F8FC;border-radius:10px;text-align:center;">
+        <div style="font-size:10px;color:#8B95A1;margin-bottom:3px;">전월 대비</div>
+        <div style="font-size:16px;font-weight:900;color:#4ADE80;">+0.3%</div>
+      </div>
+    </div>
+    <button style="width:100%;padding:12px;border:none;border-radius:10px;font-size:13px;font-weight:800;color:#0066FF;background:#EDF3FF;cursor:pointer;font-family:inherit;">상세 보기</button>
+  </div>
+
+  <!-- 매물 2: 여유 자금 -->
+  <div style="margin:0 16px 10px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:48px;height:48px;border-radius:14px;background:#F7F8FC;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:15px;font-weight:800;color:#191F28;">강동 고덕 래미안 34평</div>
+        <div style="font-size:12px;color:#8B95A1;">강동구 고덕동 · 18층 남향</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;">
+      <div style="flex:1;padding:10px 6px;background:#F7F8FC;border-radius:10px;text-align:center;">
+        <div style="font-size:10px;color:#8B95A1;margin-bottom:3px;">매매가</div>
+        <div style="font-size:16px;font-weight:900;color:#191F28;">11.2억</div>
+      </div>
+      <div style="flex:1;padding:10px 6px;background:#F0FFF4;border-radius:10px;text-align:center;">
+        <div style="font-size:10px;color:#8B95A1;margin-bottom:3px;">여유 자금</div>
+        <div style="font-size:16px;font-weight:900;color:#0066FF;">+1.1억</div>
+      </div>
+      <div style="flex:1;padding:10px 6px;background:#F7F8FC;border-radius:10px;text-align:center;">
+        <div style="font-size:10px;color:#8B95A1;margin-bottom:3px;">전월 대비</div>
+        <div style="font-size:16px;font-weight:900;color:#4ADE80;">+0.8%</div>
+      </div>
+    </div>
+    <button style="width:100%;padding:12px;border:none;border-radius:10px;font-size:13px;font-weight:800;color:#0066FF;background:#EDF3FF;cursor:pointer;font-family:inherit;">상세 보기</button>
+  </div>
+
+  <!-- 고수상담 연결 -->
+  <div style="margin:0 16px 20px;padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#F7F8FC;display:flex;align-items:center;justify-content:center;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+    </div>
+    <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">갈아타기 전문가 상담</div>
+    <span style="font-size:12px;color:#0066FF;font-weight:700;">고수상담 ›</span>
+  </div>
+</div>
+
+<!-- ═══ 패널: 시세 분석 ═══ -->
+<div id="panel_market" class="panel">
+  <div style="height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:600;color:#191F28;"><span>9:41</span><span>5G 🔋</span></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 16px;">
+    <span onclick="hidePanel('panel_market')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">시세 분석</span>
+  </div>
+
+  <!-- 현재 시세 -->
+  <div style="margin:0 16px 14px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:13px;color:#8B95A1;margin-bottom:4px;">마포 래미안 34평</div>
+    <div style="display:flex;align-items:baseline;gap:8px;">
+      <span style="font-size:28px;font-weight:900;color:#191F28;">12.3억</span>
+      <span style="font-size:14px;font-weight:700;color:#4ADE80;">↑ +1,500만</span>
+    </div>
+  </div>
+
+  <!-- 시세 차트 -->
+  <div style="margin:0 16px 14px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:12px;">시세 추이 (6개월)</div>
+    <div style="display:flex;align-items:flex-end;gap:4px;height:80px;margin-bottom:8px;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:100%;background:#E2E8F0;border-radius:4px 4px 0 0;height:55%;"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:100%;background:#E2E8F0;border-radius:4px 4px 0 0;height:50%;"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:100%;background:#CCE0FF;border-radius:4px 4px 0 0;height:60%;"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:100%;background:#CCE0FF;border-radius:4px 4px 0 0;height:68%;"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:100%;background:#99C2FF;border-radius:4px 4px 0 0;height:75%;"></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;">
+        <div style="position:absolute;top:-16px;font-size:9px;font-weight:800;color:#0066FF;">12.3억</div>
+        <div style="width:100%;background:#0066FF;border-radius:4px 4px 0 0;height:82%;"></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:#8B95A1;padding:0 2px;">
+      <span>10월</span><span>11월</span><span>12월</span><span>1월</span><span>2월</span><span>3월</span>
+    </div>
+    <div style="margin-top:8px;font-size:12px;font-weight:700;color:#4ADE80;">6개월간 +4.2% 상승 추세</div>
+  </div>
+
+  <!-- 최근 실거래 -->
+  <div style="margin:0 16px 14px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:14px;font-weight:800;color:#191F28;">최근 실거래</span>
+      <span style="font-size:10px;color:#8B95A1;">국토부 공식</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#F7F8FC;border-radius:10px;">
+        <span style="font-size:12px;font-weight:600;color:#191F28;">15층 · 남향</span>
+        <div><span style="font-size:14px;font-weight:900;color:#0066FF;">12.1억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">3월</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#F7F8FC;border-radius:10px;">
+        <span style="font-size:12px;font-weight:600;color:#191F28;">12층 · 남동</span>
+        <div><span style="font-size:14px;font-weight:900;color:#0066FF;">11.9억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">2월</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#F7F8FC;border-radius:10px;">
+        <span style="font-size:12px;font-weight:600;color:#191F28;">18층 · 남향</span>
+        <div><span style="font-size:14px;font-weight:900;color:#0066FF;">12.3억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">1월</span></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <div style="flex:1;padding:10px 6px;background:#EDF3FF;border-radius:10px;text-align:center;">
+        <div style="font-size:16px;font-weight:900;color:#0066FF;">7건</div>
+        <div style="font-size:9px;color:#8B95A1;">6개월 거래</div>
+      </div>
+      <div style="flex:1;padding:10px 6px;background:#F7F8FC;border-radius:10px;text-align:center;">
+        <div style="font-size:16px;font-weight:900;color:#191F28;">12일</div>
+        <div style="font-size:9px;color:#8B95A1;">평균 거래기간</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 경쟁 매물 -->
+  <div style="margin:0 16px 14px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:12px;">같은 단지 경쟁 매물</div>
+    <!-- 가격 바 -->
+    <div style="position:relative;padding:0 0 16px;margin-bottom:12px;">
+      <div style="height:8px;background:#E2E8F0;border-radius:4px;">
+        <div style="position:absolute;left:15%;right:20%;top:0;height:8px;background:#CCE0FF;border-radius:4px;"></div>
+        <div style="position:absolute;left:55%;top:-4px;width:16px;height:16px;background:#191F28;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,0.15);"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:10px;color:#8B95A1;">
+        <span>11.8억</span><span style="font-weight:700;color:#191F28;">내 매물</span><span>12.5억</span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#F7F8FC;border-radius:10px;align-items:center;">
+        <span style="font-size:12px;font-weight:600;color:#191F28;">8층 · 남동향</span>
+        <span style="font-size:14px;font-weight:900;color:#191F28;">11.8억</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#EDF3FF;border:1px solid #CCE0FF;border-radius:10px;align-items:center;">
+        <span style="font-size:12px;font-weight:700;color:#0066FF;">15층 · 남향 (내 매물)</span>
+        <span style="font-size:14px;font-weight:900;color:#0066FF;">12.2억</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:10px 12px;background:#F7F8FC;border-radius:10px;align-items:center;">
+        <span style="font-size:12px;font-weight:600;color:#191F28;">20층 · 남향</span>
+        <span style="font-size:14px;font-weight:900;color:#191F28;">12.5억</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI 의견 -->
+  <div style="margin:0 16px 14px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span style="font-size:14px;font-weight:800;color:#191F28;">AI 매도 판단</span>
+      <div style="display:flex;align-items:center;gap:2px;"><span style="font-size:14px;color:#0066FF;">★★★</span><span style="font-size:14px;color:#E2E8F0;">★★</span></div>
+    </div>
+    <div style="font-size:13px;color:#8B95A1;line-height:1.6;">현재 마포구 상승 추세. <span style="background:#EDF3FF;padding:1px 6px;border-radius:4px;color:#0066FF;font-weight:700;">6개월 보유 시 약 1,200만 절감</span> 가능</div>
+  </div>
+
+  <!-- 연결 -->
+  <div style="margin:0 16px 20px;display:flex;flex-direction:column;gap:6px;">
+    <div style="padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;">
+      <div style="width:32px;height:32px;border-radius:8px;background:#F7F8FC;display:flex;align-items:center;justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">비슷한 상황 보유자 의견</div>
+      <span style="font-size:12px;color:#0066FF;font-weight:700;">커뮤니티 ›</span>
+    </div>
+    <div style="padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;">
+      <div style="width:32px;height:32px;border-radius:8px;background:#F7F8FC;display:flex;align-items:center;justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">마포구 급지 분석</div>
+      <span style="font-size:12px;color:#0066FF;font-weight:700;">급지지도 ›</span>
     </div>
   </div>
 </div>
