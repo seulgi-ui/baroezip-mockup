@@ -24,7 +24,7 @@
   .back{font-size:20px;color:#191F28;cursor:pointer;padding:14px 18px 8px;display:inline-block;}
   @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
   @keyframes progressGrow{from{width:0%}to{width:82%}}
-  .tabbar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);display:flex;padding:8px 0;padding-bottom:max(env(safe-area-inset-bottom),16px);z-index:40;}
+  .tabbar{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,0.98);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.06);display:flex;padding:10px 0;padding-bottom:max(env(safe-area-inset-bottom),18px);z-index:40;}
   .tab-i{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;}
   .tab-i span:first-child{font-size:20px;opacity:0.3;}
   .tab-i span:last-child{font-size:9px;color:#A0AEC0;font-weight:500;}
@@ -281,7 +281,7 @@
     <div class="htab" onclick="sTab(3)">내 수익</div>
   </div>
   <!-- 탭1 현황 -->
-  <div id="sp1" style="margin:0 14px;padding-bottom:100px;">
+  <div id="sp1" style="margin:0 14px;padding-bottom:120px;">
     <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
       <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:10px;">실시간 업데이트</div>
       <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:#FFF4EE;border-radius:10px;margin-bottom:6px;"><div style="width:6px;height:6px;border-radius:50%;background:#FF6B35;flex-shrink:0;margin-top:5px;"></div><div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">네고 요청이 들어왔어요</div><div style="font-size:10px;color:#8B95A1;">12.0억 제안 · 실거주 30대</div></div><span style="font-size:10px;color:#A0AEC0;">5분 전</span></div>
@@ -310,7 +310,7 @@
     <div class="link-row"><span style="font-size:16px;">💬</span><div style="flex:1;font-size:12px;font-weight:700;color:#191F28;">네고 수락할지 고민이라면?</div><span style="font-size:11px;font-weight:800;color:#0066FF;">고수상담 ›</span></div>
   </div>
   <!-- 탭2 시세분석 -->
-  <div id="sp2" style="margin:0 14px;display:none;padding-bottom:100px;">
+  <div id="sp2" style="margin:0 14px;display:none;padding-bottom:120px;">
     <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><span style="font-size:13px;font-weight:800;">최근 실거래</span><span style="padding:3px 8px;background:#F7F8FC;border-radius:6px;font-size:10px;font-weight:700;color:#8B95A1;">국토부 공식</span></div>
       <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
@@ -328,7 +328,7 @@
     <div class="link-row"><span style="font-size:16px;">📊</span><div style="flex:1;font-size:12px;font-weight:700;color:#191F28;">마포구 급지 분석</div><span style="font-size:11px;font-weight:800;color:#0066FF;">급지지도 ›</span></div>
   </div>
   <!-- 탭3 내 수익 -->
-  <div id="sp3" style="margin:0 14px;display:none;padding-bottom:100px;">
+  <div id="sp3" style="margin:0 14px;display:none;padding-bottom:120px;">
     <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><span style="font-size:13px;font-weight:800;">마포 래미안 세후 실수령</span><span style="padding:3px 8px;background:#FF6B35;border-radius:6px;font-size:9px;font-weight:700;color:#fff;">판매중</span></div>
       <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;"><span style="color:#8B95A1;">매도 예상가</span><span style="font-weight:700;">12.2억</span></div>
@@ -567,7 +567,7 @@
   </div>
 
   <!-- 퀵 메뉴 -->
-  <div style="margin:4px 14px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-bottom:100px;">
+  <div style="margin:4px 14px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-bottom:120px;">
     <div style="background:#fff;border-radius:14px;padding:16px 8px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.03);cursor:pointer;">
       <div style="width:40px;height:40px;border-radius:12px;background:#EDF3FF;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:18px;">💳</div>
       <div style="font-size:11px;font-weight:600;color:#4A5568;">크레딧 충전</div>
