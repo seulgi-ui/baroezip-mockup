@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>매도자 홈 — 확장 카드</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;}
+  body{
+    background:#E2E8F0;
+    font-family:'Pretendard',-apple-system,sans-serif;
+    display:flex;justify-content:center;align-items:center;
+  }
+  .phone{width:100%;max-width:430px;height:100%;max-height:932px;background:#F7F8FC;position:relative;overflow:hidden;}
+  @media(min-width:500px){.phone{border-radius:40px;height:90vh;box-shadow:0 20px 60px rgba(0,0,0,0.2);}}
+  .screen{width:100%;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+  .scroll{flex:1;overflow-y:auto;scrollbar-width:none;position:relative;z-index:1;}
+  .panel{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#F7F8FC;z-index:30;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .scroll::-webkit-scrollbar{display:none;}
+  .tabbar{flex-shrink:0;background:#fff;border-top:1px solid rgba(0,0,0,0.06);display:flex;padding:10px 0;padding-bottom:max(env(safe-area-inset-bottom),16px);}
+  .tab-i{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+  .tab-i svg{color:#CBD5E0;width:20px;height:20px;}
+  .tab-i.on svg{color:#0066FF;}
+  .tab-i span{font-size:9px;color:#A0AEC0;font-weight:500;}
+  .tab-i.on span{color:#0066FF;font-weight:700;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+
+  /* 확장 카드 */
+  .expand-area{max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1);}
+  .expand-area.open{max-height:500px;}
+  .menu-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid #F0F1F5;cursor:pointer;transition:opacity 0.2s;}
+  .menu-row:last-child{border-bottom:none;}
+  .menu-row:active{opacity:0.6;}
+  .menu-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .menu-icon svg{width:18px;height:18px;}
+  .menu-label{flex:1;}
+  .menu-title{font-size:14px;font-weight:700;color:#191F28;}
+  .menu-sub{font-size:11px;color:#A0AEC0;margin-top:1px;}
+  .menu-arrow{font-size:14px;color:#CBD5E0;}
+  .menu-badge{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:800;}
+</style>
+</head>
+<body>
+
+<div class="phone"><div class="screen">
+  <div class="scroll">
+
+    <!-- ═══ 다크 자산 영역 (접기/펼치기) ═══ -->
+    <div style="background:linear-gradient(180deg,#0F1724,#182540);padding:52px 22px 20px;border-radius:0 0 28px 28px;" onclick="toggleAsset()">
+
+      <!-- 메인 행: 자산 + 뱃지 아이콘 -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+        <div style="flex:1;">
+          <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:6px;">내 부동산 포트폴리오</div>
+          <div style="font-size:40px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1;">27.3<span style="font-size:18px;font-weight:600;color:rgba(255,255,255,0.4);"> 억</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:6px;">
+            <span style="font-size:13px;font-weight:700;color:#4ADE80;">↑ +7.3억 (+36.5%)</span>
+          </div>
+        </div>
+
+        <!-- 등급 뱃지 (프로필 이미지 대용) -->
+        <div style="width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,rgba(96,165,250,0.2),rgba(59,130,246,0.1));border:1.5px solid rgba(96,165,250,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;">
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+            <!-- 다이아몬드 -->
+            <path d="M20 4L8 16L20 36L32 16L20 4Z" fill="url(#diamond_grad)" stroke="rgba(96,165,250,0.6)" stroke-width="1"/>
+            <path d="M8 16H32" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+            <path d="M20 4L15 16L20 36" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+            <path d="M20 4L25 16L20 36" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+            <defs>
+              <linearGradient id="diamond_grad" x1="20" y1="4" x2="20" y2="36">
+                <stop offset="0%" stop-color="#93C5FD"/>
+                <stop offset="50%" stop-color="#60A5FA"/>
+                <stop offset="100%" stop-color="#3B82F6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <!-- 등급 텍스트 -->
+          <div style="position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);padding:2px 8px;background:linear-gradient(135deg,#3B82F6,#2563EB);border-radius:6px;font-size:8px;font-weight:800;color:#fff;white-space:nowrap;border:1px solid rgba(255,255,255,0.2);">TOP 5%</div>
+        </div>
+      </div>
+
+      <!-- 펼치기 영역 (3열 요약) -->
+      <div id="assetExpand" style="max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.4,0,0.2,1);">
+        <div style="display:flex;gap:6px;margin-top:18px;">
+          <div style="flex:1;padding:14px 8px;background:rgba(255,255,255,0.05);border-radius:14px;text-align:center;">
+            <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px;">총 현재가</div>
+            <div style="font-size:18px;font-weight:900;color:#fff;">27.3억</div>
+          </div>
+          <div style="flex:1;padding:14px 8px;background:rgba(255,255,255,0.05);border-radius:14px;text-align:center;">
+            <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px;">총 취득가</div>
+            <div style="font-size:18px;font-weight:900;color:rgba(255,255,255,0.7);">20.0억</div>
+          </div>
+          <div style="flex:1;padding:14px 8px;background:rgba(255,255,255,0.05);border-radius:14px;text-align:center;">
+            <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:5px;">세후 실수령</div>
+            <div style="font-size:18px;font-weight:900;color:#4ADE80;">+5.1억</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 접기/펼치기 힌트 -->
+      <div style="text-align:center;margin-top:12px;">
+        <span id="assetArrow" style="font-size:11px;color:rgba(255,255,255,0.25);font-weight:600;">상세보기 ▾</span>
+      </div>
+    </div>
+
+    <!-- ═══ 라이트 영역 ═══ -->
+    <div style="padding:16px 16px 20px;">
+
+      <!-- 알림 배너 -->
+      <div style="padding:12px 14px;background:#fff;border-radius:12px;margin-bottom:14px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(0,0,0,0.04);cursor:pointer;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#FF6B35;flex-shrink:0;animation:pulse 1.5s infinite;"></div>
+        <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">네고 요청 <span style="color:#0066FF;">12.0억</span> · 실거주 30대</div>
+        <span style="font-size:12px;color:#0066FF;font-weight:700;">확인 ›</span>
+      </div>
+
+      <!-- ═══ 매물 카드 1: 판매중 (확장 가능) ═══ -->
+      <div style="background:#fff;border-radius:18px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.04);overflow:hidden;">
+        <!-- 접힌 상태 (항상 보임) -->
+        <div style="padding:18px;" onclick="toggleCard('card1')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-size:16px;font-weight:800;color:#191F28;">마포 래미안 34평</span>
+            <span style="padding:4px 10px;background:#0066FF;border-radius:6px;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;gap:3px;"><div style="width:4px;height:4px;border-radius:50%;background:#fff;animation:pulse 1.5s infinite;"></div>판매중</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:14px;">
+            <span style="font-size:24px;font-weight:900;color:#191F28;">12.2억</span>
+            <span style="font-size:13px;font-weight:700;color:#4ADE80;">+43.5%</span>
+          </div>
+          <div style="display:flex;gap:0;">
+            <div style="flex:1;text-align:center;padding:10px 0;border-right:1px solid #F0F1F5;"><div style="font-size:18px;font-weight:900;color:#191F28;">14</div><div style="font-size:10px;color:#A0AEC0;margin-top:2px;">열람</div></div>
+            <div style="flex:1;text-align:center;padding:10px 0;border-right:1px solid #F0F1F5;"><div style="font-size:18px;font-weight:900;color:#191F28;">3</div><div style="font-size:10px;color:#A0AEC0;margin-top:2px;">관심</div></div>
+            <div style="flex:1;text-align:center;padding:10px 0;border-right:1px solid #F0F1F5;"><div style="font-size:18px;font-weight:900;color:#191F28;">1</div><div style="font-size:10px;color:#A0AEC0;margin-top:2px;">네고</div></div>
+            <div style="flex:1;text-align:center;padding:10px 0;"><div style="font-size:18px;font-weight:900;color:#191F28;">2</div><div style="font-size:10px;color:#A0AEC0;margin-top:2px;">중개사</div></div>
+          </div>
+          <!-- 펼치기 힌트 -->
+          <div style="text-align:center;margin-top:10px;">
+            <span id="card1arrow" style="font-size:11px;color:#A0AEC0;font-weight:600;">상세보기 ▾</span>
+          </div>
+        </div>
+
+        <!-- 펼친 상태 (숨겨짐) -->
+        <div id="card1" class="expand-area">
+          <div style="padding:0 18px 18px;border-top:1px solid #F0F1F5;">
+
+            <!-- 중개사 입찰 -->
+            <div class="menu-row" onclick="showPanel('panel_agent')">
+              <div class="menu-icon" style="background:#EDF3FF;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">중개사 입찰</div>
+                <div class="menu-sub">담당 중개사 현황</div>
+              </div>
+              <span class="menu-badge" style="background:#EDF3FF;color:#0066FF;">2건</span>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <!-- 세후 실수령 -->
+            <div class="menu-row" onclick="showPanel('panel_profit')">
+              <div class="menu-icon" style="background:#F0FFF4;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">세후 실수령</div>
+                <div class="menu-sub">세금·수수료 차감 후 순수익</div>
+              </div>
+              <span style="font-size:14px;font-weight:900;color:#22C55E;">+2.8억</span>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <!-- 갈아타기 시뮬 -->
+            <div class="menu-row">
+              <div class="menu-icon" style="background:#FFF7ED;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">갈아타기 시뮬레이션</div>
+                <div class="menu-sub">실수령으로 갈 수 있는 곳</div>
+              </div>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <!-- 시세 분석 -->
+            <div class="menu-row">
+              <div class="menu-icon" style="background:#EDF3FF;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">시세 분석</div>
+                <div class="menu-sub">실거래·경쟁매물·AI 의견</div>
+              </div>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <!-- 판매 설정 -->
+            <div class="menu-row" onclick="showPanel('panel_settings')">
+              <div class="menu-icon" style="background:#F7F8FC;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">판매 설정</div>
+                <div class="menu-sub">가격 조정 · 일시중지 · 사진 수정</div>
+              </div>
+              <span class="menu-arrow">›</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ 매물 카드 2: 보유중 (확장 가능) ═══ -->
+      <div style="background:#fff;border-radius:18px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);overflow:hidden;">
+        <div style="padding:18px;" onclick="toggleCard('card2')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <span style="font-size:16px;font-weight:800;color:#191F28;">송파 헬리오 24평</span>
+            <span style="padding:4px 10px;background:#F0F1F5;border-radius:6px;font-size:10px;font-weight:700;color:#8B95A1;">보유중</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px;">
+            <span style="font-size:24px;font-weight:900;color:#191F28;">15.1억</span>
+            <span style="font-size:13px;font-weight:700;color:#4ADE80;">+31.3%</span>
+          </div>
+          <div style="text-align:center;margin-top:10px;">
+            <span id="card2arrow" style="font-size:11px;color:#A0AEC0;font-weight:600;">상세보기 ▾</span>
+          </div>
+        </div>
+
+        <div id="card2" class="expand-area">
+          <div style="padding:0 18px 18px;border-top:1px solid #F0F1F5;">
+
+            <div class="menu-row">
+              <div class="menu-icon" style="background:#F0FFF4;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">세후 실수령</div>
+                <div class="menu-sub">지금 팔면 세금 빼고 얼마?</div>
+              </div>
+              <span style="font-size:14px;font-weight:900;color:#22C55E;">+2.3억</span>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <div class="menu-row">
+              <div class="menu-icon" style="background:#EDF3FF;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">시세 분석</div>
+                <div class="menu-sub">실거래·시세 추이</div>
+              </div>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <div class="menu-row">
+              <div class="menu-icon" style="background:#FFF7ED;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+              </div>
+              <div class="menu-label">
+                <div class="menu-title">이 집도 팔기</div>
+                <div class="menu-sub">매물 등록하고 빠르게 매칭</div>
+              </div>
+              <span class="menu-arrow">›</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 최근 활동 -->
+      <div style="padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:#4ADE80;"></div>
+          <span style="font-size:13px;font-weight:700;color:#191F28;">최근 활동 3건</span>
+        </div>
+        <span style="font-size:12px;color:#A0AEC0;">자세히 ›</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ 패널: 중개사 입찰 ═══ -->
+<div id="panel_agent" class="panel">
+  <div style="height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:600;color:#191F28;"><span>9:41</span><span>5G 🔋</span></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 16px;">
+    <span onclick="hidePanel('panel_agent')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">중개사 입찰</span>
+  </div>
+
+  <!-- 요약 -->
+  <div style="margin:0 16px 14px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:13px;color:#8B95A1;margin-bottom:4px;">마포 래미안 34평 · 12.2억</div>
+    <div style="display:flex;gap:8px;">
+      <div style="flex:1;padding:10px 6px;background:#EDF3FF;border-radius:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:900;color:#0066FF;">2</div>
+        <div style="font-size:10px;color:#8B95A1;">입찰 중개사</div>
+      </div>
+      <div style="flex:1;padding:10px 6px;background:#F7F8FC;border-radius:10px;text-align:center;">
+        <div style="font-size:20px;font-weight:900;color:#191F28;">5</div>
+        <div style="font-size:10px;color:#8B95A1;">총 열람 중개사</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 필터 -->
+  <div style="margin:0 16px 12px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+    <div style="padding:8px 14px;background:#0066FF;border-radius:20px;font-size:12px;font-weight:700;color:#fff;white-space:nowrap;cursor:pointer;flex-shrink:0;">수수료 낮은 순</div>
+    <div style="padding:8px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;font-size:12px;font-weight:600;color:#8B95A1;white-space:nowrap;cursor:pointer;flex-shrink:0;">평점 높은 순</div>
+    <div style="padding:8px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;font-size:12px;font-weight:600;color:#8B95A1;white-space:nowrap;cursor:pointer;flex-shrink:0;">거래 많은 순</div>
+    <div style="padding:8px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;font-size:12px;font-weight:600;color:#8B95A1;white-space:nowrap;cursor:pointer;flex-shrink:0;">빠른 거래 순</div>
+  </div>
+
+  <!-- 중개사 1 -->
+  <div style="margin:0 16px 10px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);overflow:hidden;">
+    <div style="padding:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#EDF3FF,#D4E5FF);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:800;color:#191F28;">김민수 공인중개사</div>
+          <div style="font-size:11px;color:#8B95A1;margin-top:2px;">⭐ 4.8 · 거래 47건 · 평균 12일</div>
+        </div>
+        <button style="padding:8px 14px;border:none;border-radius:8px;font-size:12px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;flex-shrink:0;">선택</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#EDF3FF;border-radius:10px;">
+        <span style="font-size:13px;font-weight:700;color:#191F28;">제안 수수료</span>
+        <div><span style="font-size:18px;font-weight:900;color:#0066FF;">0.4%</span><span style="font-size:12px;color:#8B95A1;margin-left:6px;">약 488만원</span></div>
+      </div>
+      <div style="text-align:center;margin-top:10px;cursor:pointer;" onclick="toggleCard('agent1')"><span id="agent1arrow" style="font-size:11px;color:#A0AEC0;font-weight:600;">상세보기 ▾</span></div>
+    </div>
+    <div id="agent1" class="expand-area">
+      <div style="padding:0 16px 16px;border-top:1px solid #F0F1F5;">
+        <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;margin-top:12px;margin-bottom:12px;font-size:12px;color:#4A5568;line-height:1.6;">
+          💬 "마포구에서 10년간 200건 이상 거래했습니다. 빠른 매칭에 자신 있습니다."
+        </div>
+        <div style="display:flex;gap:6px;">
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#191F28;">⭐ 4.8</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">평점</div></div>
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#191F28;">47건</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">거래 실적</div></div>
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#0066FF;">12일</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">평균 거래기간</div></div>
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#191F28;">12년</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">경력</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 중개사 2 -->
+  <div style="margin:0 16px 10px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);overflow:hidden;">
+    <div style="padding:16px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#EDF3FF,#D4E5FF);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:14px;font-weight:800;color:#191F28;">이정호 공인중개사</div>
+          <div style="font-size:11px;color:#8B95A1;margin-top:2px;">⭐ 4.6 · 거래 32건 · 평균 15일</div>
+        </div>
+        <button style="padding:8px 14px;border:none;border-radius:8px;font-size:12px;font-weight:800;color:#0066FF;background:#EDF3FF;cursor:pointer;font-family:inherit;flex-shrink:0;">선택</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#F7F8FC;border-radius:10px;">
+        <span style="font-size:13px;font-weight:700;color:#191F28;">제안 수수료</span>
+        <div><span style="font-size:18px;font-weight:900;color:#191F28;">0.5%</span><span style="font-size:12px;color:#8B95A1;margin-left:6px;">약 610만원</span></div>
+      </div>
+      <div style="text-align:center;margin-top:10px;cursor:pointer;" onclick="toggleCard('agent2')"><span id="agent2arrow" style="font-size:11px;color:#A0AEC0;font-weight:600;">상세보기 ▾</span></div>
+    </div>
+    <div id="agent2" class="expand-area">
+      <div style="padding:0 16px 16px;border-top:1px solid #F0F1F5;">
+        <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;margin-top:12px;margin-bottom:12px;font-size:12px;color:#4A5568;line-height:1.6;">
+          💬 "VIP 고객 전담 서비스로 계약부터 잔금까지 원스톱으로 진행합니다."
+        </div>
+        <div style="display:flex;gap:6px;">
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#191F28;">⭐ 4.6</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">평점</div></div>
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#191F28;">32건</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">거래 실적</div></div>
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#191F28;">15일</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">평균 거래기간</div></div>
+          <div style="flex:1;padding:10px;background:#F7F8FC;border-radius:10px;text-align:center;"><div style="font-size:15px;font-weight:900;color:#191F28;">8년</div><div style="font-size:9px;color:#8B95A1;margin-top:2px;">경력</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin:4px 16px 20px;padding:12px 14px;background:#F7F8FC;border-radius:12px;text-align:center;">
+    <span style="font-size:12px;color:#8B95A1;">수수료는 중개사가 직접 제안한 금액이에요</span>
+  </div>
+</div>
+
+<!-- ═══ 패널: 세후 실수령 ═══ -->
+<div id="panel_profit" class="panel">
+  <div style="height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:600;color:#191F28;"><span>9:41</span><span>5G 🔋</span></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 16px;">
+    <span onclick="hidePanel('panel_profit')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">세후 실수령</span>
+  </div>
+
+  <div style="margin:0 16px 14px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:13px;color:#8B95A1;margin-bottom:14px;">마포 래미안 34평 · 12.2억 기준</div>
+
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
+      <span style="color:#8B95A1;">매도 예상가</span><span style="font-weight:700;color:#191F28;">12억 2,000만</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
+      <span style="color:#8B95A1;">양도소득세</span><span style="font-weight:700;color:#E53E3E;">-5,800만</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
+      <span style="color:#8B95A1;">지방소득세</span><span style="font-weight:700;color:#E53E3E;">-580만</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
+      <span style="color:#8B95A1;">중개보수</span><span style="font-weight:700;color:#E53E3E;">-480만</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
+      <span style="color:#8B95A1;">매수가 차감</span><span style="font-weight:700;color:#E53E3E;">-8억 5,000만</span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;padding:14px 0 0;margin-top:4px;">
+      <span style="font-size:15px;font-weight:900;color:#191F28;">내 손에 남는 돈</span>
+      <span style="font-size:20px;font-weight:900;color:#0066FF;">+2억 8,140만</span>
+    </div>
+  </div>
+
+  <!-- 보유 기간 혜택 -->
+  <div style="margin:0 16px 14px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:10px;">보유 기간 혜택</div>
+    <div style="padding:12px;background:#EDF3FF;border-radius:10px;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:700;color:#0066FF;">6개월 더 보유하면</div>
+      <div style="font-size:12px;color:#8B95A1;margin-top:4px;">장기보유특별공제 구간 변동으로 약 <strong style="color:#0066FF;">1,200만원</strong> 절감</div>
+    </div>
+    <div style="padding:12px;background:#F7F8FC;border-radius:10px;">
+      <div style="font-size:13px;font-weight:700;color:#191F28;">2년 더 보유하면</div>
+      <div style="font-size:12px;color:#8B95A1;margin-top:4px;">1세대 1주택 비과세 요건 충족 가능</div>
+    </div>
+  </div>
+
+  <!-- 연결 -->
+  <div style="margin:0 16px;display:flex;flex-direction:column;gap:6px;">
+    <div style="padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;">
+      <div style="width:32px;height:32px;border-radius:8px;background:#F0FFF4;display:flex;align-items:center;justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">양도세 상세 계산하기</div>
+      <span style="font-size:12px;color:#0066FF;font-weight:700;">양도세 계산기 ›</span>
+    </div>
+    <div style="padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;">
+      <div style="width:32px;height:32px;border-radius:8px;background:#EDF3FF;display:flex;align-items:center;justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      </div>
+      <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">세금 전문가 상담</div>
+      <span style="font-size:12px;color:#0066FF;font-weight:700;">고수상담 ›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ 패널: 판매 설정 ═══ -->
+<div id="panel_settings" class="panel">
+  <div style="height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:600;color:#191F28;"><span>9:41</span><span>5G 🔋</span></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 16px;">
+    <span onclick="hidePanel('panel_settings')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">판매 설정</span>
+  </div>
+
+  <!-- 현재 상태 -->
+  <div style="margin:0 16px 14px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+      <span style="font-size:15px;font-weight:800;color:#191F28;">마포 래미안 34평</span>
+      <span style="padding:4px 10px;background:#0066FF;border-radius:6px;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;gap:3px;"><div style="width:4px;height:4px;border-radius:50%;background:#fff;animation:pulse 1.5s infinite;"></div>판매중</span>
+    </div>
+    <div style="font-size:13px;color:#8B95A1;">현재 매도가: <strong style="color:#191F28;">12억 2,000만</strong></div>
+  </div>
+
+  <!-- 가격 조정 -->
+  <div style="margin:0 16px 10px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#EDF3FF;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2" stroke-linecap="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:800;color:#191F28;">가격 조정</div>
+        <div style="font-size:11px;color:#8B95A1;">매도 희망가를 변경합니다</div>
+      </div>
+    </div>
+    <div style="font-size:12px;font-weight:700;color:#191F28;margin-bottom:6px;">새 매도가</div>
+    <div style="padding:14px 16px;background:#F7F8FC;border:1.5px solid #0066FF;border-radius:12px;font-size:16px;font-weight:800;color:#191F28;margin-bottom:6px;">12억 0,000만원</div>
+    <div style="padding:6px 10px;background:#EDF3FF;border-radius:8px;font-size:11px;color:#0066FF;font-weight:600;margin-bottom:14px;">AI 추천 범위 12.0~12.3억</div>
+    <button style="width:100%;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;">가격 변경하기</button>
+  </div>
+
+  <!-- 판매 일시중지 -->
+  <div style="margin:0 16px 10px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:800;color:#191F28;">판매 일시중지</div>
+        <div style="font-size:11px;color:#8B95A1;">매물 노출을 일시 중단합니다</div>
+      </div>
+      <!-- 토글 -->
+      <div style="width:44px;height:26px;background:#E2E8F0;border-radius:13px;position:relative;cursor:pointer;">
+        <div style="width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;box-shadow:0 1px 4px rgba(0,0,0,0.15);transition:left 0.2s;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 사진/정보 수정 -->
+  <div style="margin:0 16px 10px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);cursor:pointer;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#F7F8FC;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:800;color:#191F28;">사진/정보 수정</div>
+        <div style="font-size:11px;color:#8B95A1;">매물 사진, 층수, 방향 등 변경</div>
+      </div>
+      <span style="font-size:14px;color:#CBD5E0;">›</span>
+    </div>
+  </div>
+
+  <!-- 매물 삭제 -->
+  <div style="margin:0 16px 10px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);cursor:pointer;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#FFF5F5;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E53E3E" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:800;color:#E53E3E;">매물 삭제</div>
+        <div style="font-size:11px;color:#8B95A1;">매물을 완전히 내립니다</div>
+      </div>
+      <span style="font-size:14px;color:#CBD5E0;">›</span>
+    </div>
+  </div>
+</div>
+
+  <!-- 탭바 -->
+  <div class="tabbar">
+    <div class="tab-i on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span>자산</span></div>
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>커뮤니티</span></div>
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>고수상담</span></div>
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>멤버십</span></div>
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>내정보</span></div>
+  </div>
+</div></div>
+
+<script>
+function toggleCard(id){
+  const el=document.getElementById(id);
+  const arrow=document.getElementById(id+'arrow');
+  el.classList.toggle('open');
+  arrow.textContent=el.classList.contains('open')?'접기 ▴':'상세보기 ▾';
+}
+function showPanel(id){document.getElementById(id).style.display='block';}
+function hidePanel(id){document.getElementById(id).style.display='none';}
+function toggleAsset(){
+  const el=document.getElementById('assetExpand');
+  const arrow=document.getElementById('assetArrow');
+  const isOpen=el.style.maxHeight!=='0px'&&el.style.maxHeight!=='';
+  if(isOpen||el.classList.contains('asset-open')){el.style.maxHeight='0px';el.classList.remove('asset-open');arrow.textContent='상세보기 ▾';}
+  else{el.style.maxHeight='200px';el.classList.add('asset-open');arrow.textContent='접기 ▴';}
+}
+</script>
+</body>
+</html>
