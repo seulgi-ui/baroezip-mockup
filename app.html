@@ -260,7 +260,7 @@
 </div>
 
 <!-- ═══ HOME_SELL: 매도자 홈 ═══ -->
-<div id="home_sell" class="page hidden page-with-tab" style="background:#F7F8FC;">
+<div id="home_sell" class="page hidden page-with-tab" data-tab style="background:#F7F8FC;">
   <div class="scroll-area">
   <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>5G 🔋</span></div>
   <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 18px 10px;">
@@ -380,7 +380,7 @@
 </div>
 
 <!-- ═══ HOME_BUY: 매수자 홈 ═══ -->
-<div id="home_buy" class="page hidden page-with-tab" style="background:#F7F8FC;">
+<div id="home_buy" class="page hidden page-with-tab" data-tab style="background:#F7F8FC;">
   <div class="scroll-area">
   <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>5G 🔋</span></div>
   <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 18px 10px;">
@@ -478,7 +478,7 @@
 </div>
 
 <!-- ═══ AGENT_HOME: 중개사 홈 ═══ -->
-<div id="agent_home" class="page hidden page-with-tab" style="background:#F7F8FC;">
+<div id="agent_home" class="page hidden page-with-tab" data-tab style="background:#F7F8FC;">
   <div class="scroll-area">
   <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>5G 🔋</span></div>
 
@@ -606,8 +606,11 @@
 (function(){let c=document.getElementById('counter'),n=0,t=127;function r(){if(n<=t){c.textContent=n;let s=n<80?12:n<110?25:50;n+=n<80?4:n<110?2:1;setTimeout(r,s)}else{setTimeout(()=>{n=0;r()},2500)}};r()})();
 // 화면전환
 let hist=['p1'];
-function go(id){const cur=hist[hist.length-1];if(cur===id)return;document.getElementById(cur).className='page left';const el=document.getElementById(id);el.className=el.classList.contains('page-with-tab')?'page active page-with-tab':'page active';hist.push(id);if(el.querySelector('.scroll-area'))el.querySelector('.scroll-area').scrollTop=0;else el.scrollTop=0;}
-function goBack(){if(hist.length<=1)return;const cur=hist.pop();const prev=hist[hist.length-1];document.getElementById(cur).className='page hidden';const el=document.getElementById(prev);el.className=el.classList.contains('page-with-tab')?'page active page-with-tab':'page active';}
+function getPageClass(el,state){const base=el.getAttribute('data-has-tab')?'page '+state+' page-with-tab':'page '+state;return base;}
+function go(id){const cur=hist[hist.length-1];if(cur===id)return;const curEl=document.getElementById(cur);const nextEl=document.getElementById(id);// 현재 페이지 숨김
+curEl.className='page hidden';if(curEl.classList.contains('page-with-tab'))curEl.className+=' page-with-tab';// 다음 페이지 표시
+nextEl.className='page active';if(nextEl.hasAttribute('data-tab'))nextEl.className+=' page-with-tab';hist.push(id);if(nextEl.querySelector('.scroll-area'))nextEl.querySelector('.scroll-area').scrollTop=0;else nextEl.scrollTop=0;}
+function goBack(){if(hist.length<=1)return;const cur=hist.pop();const prev=hist[hist.length-1];const curEl=document.getElementById(cur);const prevEl=document.getElementById(prev);curEl.className='page hidden';prevEl.className='page active';if(prevEl.hasAttribute('data-tab'))prevEl.className+=' page-with-tab';}
 // 브라우저 뒤로가기 지원
 history.pushState(null,null,location.href);
 window.addEventListener('popstate',function(){history.pushState(null,null,location.href);goBack();});
