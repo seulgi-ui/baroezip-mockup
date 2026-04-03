@@ -117,15 +117,15 @@
 
       <!-- ═══ 매물 카드 1: 판매중 (확장 가능) ═══ -->
       <div style="background:#fff;border-radius:18px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.04);overflow:hidden;">
-        <!-- 접힌 상태 (항상 보임) -->
+        <!-- 접힌 상태 -->
         <div style="padding:18px;" onclick="toggleCard('card1')">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
             <span style="font-size:16px;font-weight:800;color:#191F28;">마포 래미안 34평</span>
-            <span style="padding:4px 10px;background:#0066FF;border-radius:6px;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;gap:3px;"><div style="width:4px;height:4px;border-radius:50%;background:#fff;animation:pulse 1.5s infinite;"></div>판매중</span>
+            <span style="padding:4px 10px;background:#191F28;border-radius:6px;font-size:10px;font-weight:700;color:#fff;display:flex;align-items:center;gap:3px;"><div style="width:4px;height:4px;border-radius:50%;background:#4ADE80;animation:pulse 1.5s infinite;"></div>판매중</span>
           </div>
           <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:14px;">
             <span style="font-size:24px;font-weight:900;color:#191F28;">12.2억</span>
-            <span style="font-size:13px;font-weight:700;color:#4ADE80;">+43.5%</span>
+            <span style="font-size:13px;font-weight:700;color:#8B95A1;">+43.5%</span>
           </div>
           <div style="display:flex;gap:0;">
             <div style="flex:1;text-align:center;padding:10px 0;border-right:1px solid #F0F1F5;"><div style="font-size:18px;font-weight:900;color:#191F28;">14</div><div style="font-size:10px;color:#A0AEC0;margin-top:2px;">열람</div></div>
@@ -133,46 +133,42 @@
             <div style="flex:1;text-align:center;padding:10px 0;border-right:1px solid #F0F1F5;"><div style="font-size:18px;font-weight:900;color:#191F28;">1</div><div style="font-size:10px;color:#A0AEC0;margin-top:2px;">네고</div></div>
             <div style="flex:1;text-align:center;padding:10px 0;"><div style="font-size:18px;font-weight:900;color:#191F28;">2</div><div style="font-size:10px;color:#A0AEC0;margin-top:2px;">중개사</div></div>
           </div>
-          <!-- 펼치기 힌트 -->
           <div style="text-align:center;margin-top:10px;">
             <span id="card1arrow" style="font-size:11px;color:#A0AEC0;font-weight:600;">상세보기 ▾</span>
           </div>
         </div>
 
-        <!-- 펼친 상태 (숨겨짐) -->
+        <!-- 펼친 상태 -->
         <div id="card1" class="expand-area">
           <div style="padding:0 18px 18px;border-top:1px solid #F0F1F5;">
 
-            <!-- 중개사 입찰 -->
             <div class="menu-row" onclick="showPanel('panel_agent')">
-              <div class="menu-icon" style="background:#EDF3FF;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
+              <div class="menu-icon" style="background:#F7F8FC;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6"/><path d="M23 11h-6"/></svg>
               </div>
               <div class="menu-label">
                 <div class="menu-title">중개사 입찰</div>
                 <div class="menu-sub">담당 중개사 현황</div>
               </div>
-              <span class="menu-badge" style="background:#EDF3FF;color:#0066FF;">2건</span>
+              <span class="menu-badge" style="background:#F7F8FC;color:#191F28;">2건</span>
               <span class="menu-arrow">›</span>
             </div>
 
-            <!-- 세후 실수령 -->
             <div class="menu-row" onclick="showPanel('panel_profit')">
-              <div class="menu-icon" style="background:#F0FFF4;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              <div class="menu-icon" style="background:#F7F8FC;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
               </div>
               <div class="menu-label">
                 <div class="menu-title">세후 실수령</div>
                 <div class="menu-sub">세금·수수료 차감 후 순수익</div>
               </div>
-              <span style="font-size:14px;font-weight:900;color:#22C55E;">+2.8억</span>
+              <span style="font-size:14px;font-weight:900;color:#0066FF;">+2.8억</span>
               <span class="menu-arrow">›</span>
             </div>
 
-            <!-- 갈아타기 시뮬 -->
             <div class="menu-row">
-              <div class="menu-icon" style="background:#FFF7ED;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
+              <div class="menu-icon" style="background:#F7F8FC;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>
               </div>
               <div class="menu-label">
                 <div class="menu-title">갈아타기 시뮬레이션</div>
@@ -181,10 +177,9 @@
               <span class="menu-arrow">›</span>
             </div>
 
-            <!-- 시세 분석 -->
             <div class="menu-row">
-              <div class="menu-icon" style="background:#EDF3FF;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <div class="menu-icon" style="background:#F7F8FC;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
               </div>
               <div class="menu-label">
                 <div class="menu-title">시세 분석</div>
@@ -193,10 +188,9 @@
               <span class="menu-arrow">›</span>
             </div>
 
-            <!-- 판매 설정 -->
             <div class="menu-row" onclick="showPanel('panel_settings')">
               <div class="menu-icon" style="background:#F7F8FC;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
               </div>
               <div class="menu-label">
                 <div class="menu-title">판매 설정</div>
