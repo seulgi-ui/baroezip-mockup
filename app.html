@@ -13,6 +13,7 @@
   html,body{height:100%;overflow:hidden;}
   body{font-family:'Pretendard',-apple-system,sans-serif;background:#F7F8FC;-webkit-tap-highlight-color:transparent;}
   .page{position:absolute;top:0;left:0;width:100%;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;transition:transform 0.3s ease,opacity 0.3s;background:#F7F8FC;}
+  .page.page-with-tab{overflow:hidden;}
   .page.hidden{transform:translateX(100%);opacity:0;pointer-events:none;}
   .page.active{transform:translateX(0);opacity:1;pointer-events:auto;}
   .page.left{transform:translateX(-30%);opacity:0.5;pointer-events:none;}
