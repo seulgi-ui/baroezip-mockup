@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바로이집 v6 — 헤이딜러형</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:#C9D4E3;
+    font-family:'Pretendard',-apple-system,sans-serif;
+    padding:40px 20px 80px;
+  }
+
+  .page-title{text-align:center;font-size:18px;font-weight:900;color:#1A1A2E;margin-bottom:4px;}
+  .page-title span{color:#0066FF;}
+  .page-sub{text-align:center;font-size:12px;color:#8896A6;margin-bottom:28px;line-height:1.6;}
+
+  .flow-row{display:flex;justify-content:center;align-items:flex-start;gap:24px;flex-wrap:wrap;margin-bottom:20px;}
+  .flow-connector{display:flex;justify-content:center;margin:12px 0 20px;}
+  .connector-box{display:flex;align-items:center;gap:12px;background:#fff;padding:10px 24px;border-radius:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08);}
+  .connector-box .arrow{font-size:20px;color:#0066FF;}
+  .connector-box .label{font-size:13px;font-weight:700;color:#4A5568;}
+
+  .split-connector{display:flex;justify-content:center;gap:60px;margin:12px 0 20px;flex-wrap:wrap;}
+  .split-label{background:#fff;padding:8px 18px;border-radius:16px;font-size:12px;font-weight:800;color:#4A5568;box-shadow:0 2px 8px rgba(0,0,0,0.08);text-align:center;}
+  .split-label span{color:#0066FF;}
+  .split-label .sub{font-size:10px;color:#A0AEC0;font-weight:500;margin-top:2px;}
+  .split-label.orange span{color:#FF6B35;}
+  .split-label.green span{color:#00C853;}
+
+  .flow-group{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .flow-label{font-size:13px;font-weight:800;color:#4A5568;background:#fff;padding:7px 18px;border-radius:16px;box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+  .flow-label span{color:#0066FF;}
+  .flow-label.orange span{color:#FF6B35;}
+  .flow-label.green span{color:#00C853;}
+
+  .phone-with-notes{display:flex;align-items:flex-start;gap:20px;}
+  .bubble-list{display:flex;flex-direction:column;gap:10px;max-width:300px;}
+  .bubble{padding:14px 16px;background:#fff;border-radius:14px;border-top-left-radius:4px;box-shadow:0 2px 10px rgba(0,0,0,0.06);position:relative;}
+  .bubble::before{content:'';position:absolute;left:-7px;top:14px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-right:7px solid #fff;}
+  .bubble .b-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#0066FF;font-size:10px;font-weight:800;color:#fff;margin-right:6px;}
+  .bubble .b-title{font-size:13px;font-weight:800;color:#1A1A2E;margin-bottom:3px;}
+  .bubble .b-desc{font-size:11px;color:#8B95A1;line-height:1.5;}
+  .bubble .b-why{margin-top:8px;padding:7px 10px;background:#F7F8FC;border-radius:7px;font-size:10px;color:#0066FF;font-weight:600;line-height:1.5;}
+
+  .phone{width:300px;height:650px;background:#111;border-radius:44px;padding:7px;
+    box-shadow:inset 0 0 0 1px #444,0 16px 50px rgba(0,0,0,0.3);}
+  .screen{width:100%;height:100%;border-radius:37px;overflow:hidden;position:relative;}
+  .notch{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:90px;height:27px;background:#000;border-radius:14px;z-index:100;}
+  .sc{height:100%;overflow-y:auto;scrollbar-width:none;padding-bottom:80px;}
+  .sc::-webkit-scrollbar{display:none;}
+  .stb{height:44px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:700;}
+
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+  @keyframes countUp{from{opacity:0}to{opacity:1}}
+
+  /* 근거 카드 */
+  .evidence{margin-top:10px;padding:14px 16px;background:linear-gradient(135deg,#F0FFF4,#E6FFED);border-radius:14px;border:1px solid #C6F6D5;box-shadow:0 2px 8px rgba(0,200,83,0.08);}
+  .evidence .ev-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+  .evidence .ev-badge{padding:3px 8px;background:#38A169;border-radius:6px;font-size:9px;font-weight:800;color:#fff;}
+  .evidence .ev-title{font-size:12px;font-weight:800;color:#276749;}
+  .evidence .ev-item{font-size:11px;color:#4A5568;line-height:1.6;margin-bottom:6px;padding-left:12px;position:relative;}
+  .evidence .ev-item::before{content:'•';position:absolute;left:0;color:#38A169;font-weight:900;}
+  .evidence .ev-item:last-child{margin-bottom:0;}
+  .evidence .ev-source{font-size:9px;color:#8B95A1;margin-top:6px;padding-top:6px;border-top:1px solid #C6F6D5;}
+</style>
+</head>
+<body>
+
+<div class="page-title">바로이집 v6 — <span>헤이딜러형</span></div>
+<div class="page-sub">플로우: 온보딩 → 검색+목적선택 → 간단입력(2클릭) → 결과+후킹 → 가입<br>헤이딜러가 차량번호 조회하듯, 아파트 검색으로 시작</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- STEP 1: 기존 온보딩 유지 -->
+<!-- ═══════════════════════════════════ -->
+<div class="flow-row">
+  <div class="flow-group">
+    <div class="flow-label">STEP 1 — <span>첫 진입 (기존 유지)</span></div>
+    <div class="phone-with-notes">
+    <div class="phone"><div class="screen"><div class="notch"></div><div class="sc">
+      <div style="background:linear-gradient(180deg,#0066FF 0%,#0052D9 100%);height:100%;display:flex;flex-direction:column;">
+        <div class="stb" style="color:rgba(255,255,255,0.7);"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+
+        <div style="padding:20px 26px 0;position:relative;z-index:2;">
+          <div style="font-size:14px;font-weight:700;color:rgba(255,255,255,0.5);margin-bottom:14px;">바로이집</div>
+          <div style="font-size:32px;font-weight:900;color:#fff;line-height:1.2;letter-spacing:-1.5px;">서울 아파트를<br><span style="font-size:44px;">빠르게</span> <span style="display:inline-block;width:50px;height:5px;background:#fff;border-radius:3px;vertical-align:middle;margin-left:4px;"></span><br>사고팔다</div>
+          <div style="margin-top:14px;font-size:14px;color:rgba(255,255,255,0.5);line-height:1.5;">평균 7일 매수자 매칭 · AI 적정가 진단</div>
+        </div>
+
+        <!-- 체결 카운터 -->
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+          <div style="text-align:center;">
+            <div style="display:flex;align-items:baseline;justify-content:center;gap:4px;">
+              <span style="font-size:56px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;" id="cnt1">0</span>
+              <span style="font-size:18px;font-weight:700;color:rgba(255,255,255,0.5);">건</span>
+            </div>
+            <div style="font-size:14px;color:rgba(255,255,255,0.4);margin-top:4px;">오늘 체결된 거래</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;">
+              <div style="width:7px;height:7px;border-radius:50%;background:#00E676;animation:pulse 1.5s infinite;"></div>
+              <span style="font-size:12px;color:rgba(255,255,255,0.35);">실시간 업데이트 중</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding:0 24px 32px;position:relative;z-index:2;">
+          <button style="width:100%;padding:18px;border:none;border-radius:16px;font-size:17px;font-weight:800;color:#0066FF;background:#fff;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(0,0,0,0.1);">시작하기</button>
+          <div style="text-align:center;margin-top:12px;font-size:13px;color:rgba(255,255,255,0.4);">이미 계정이 있나요? <span style="color:rgba(255,255,255,0.7);font-weight:700;">로그인</span></div>
+        </div>
+      </div>
+      <script>(function(){let c=document.getElementById('cnt1'),n=0,t=127;function r(){if(n<=t){c.textContent=n;let s=n<80?12:n<110?25:50;n+=n<80?4:n<110?2:1;setTimeout(r,s)}else{setTimeout(()=>{n=0;r()},2500)}}r()})();</script>
+    </div></div></div>
+    <div class="bubble-list">
+      <div class="bubble">
+        <div class="b-title"><span class="b-num">1</span>블루 풀스크린 + "빠르게" 강조</div>
+        <div class="b-desc">바로이집 브랜드 컬러 + 핵심 가치를 타이포로 즉각 전달</div>
+        <div class="b-why">💡 캐시앱 레퍼런스 — 3초 안에 "이 앱이 뭐 하는 앱인지" 이해</div>
+      </div>
+      <div class="bubble">
+        <div class="b-title"><span class="b-num">2</span>실시간 체결 카운터</div>
+        <div class="b-desc">"오늘 127건" 숫자가 올라가며 실제 거래가 일어나는 느낌</div>
+        <div class="b-why">💡 사회적 증거(Social Proof) — "여기 진짜 사람 있구나" 신뢰</div>
+      </div>
+      <div class="evidence">
+        <div class="ev-header"><span class="ev-badge">DATA</span><span class="ev-title">STEP 1 근거</span></div>
+        <div class="ev-item">카카오톡 이용 경험자 비율 94% — 소셜 로그인 시 대부분의 한국 유저가 카카오로 시작 가능 (갤럽, 2025)</div>
+        <div class="ev-item">소셜 로그인은 이메일 가입 대비 전환율 20~50% 향상. 모바일에서 특히 효과적 (LoginRadius, Auth0)</div>
+        <div class="ev-item">서울 아파트 매물 78,000건 돌파, 매도자 "빨리 팔아야" 심리 — 앱 진입 동기가 시장에 의해 형성됨 (파이낸셜뉴스, 2026.03)</div>
+        <div class="ev-source">출처: 갤럽 2025 미디어 리포트 · LoginRadius · Auth0 · 파이낸셜뉴스</div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="flow-connector"><div class="connector-box"><span class="arrow">↓</span><span class="label">"빠르게 팔기" 또는 "좋은 집 사기" 선택</span></div></div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- STEP 2: 아파트 검색 -->
+<!-- ═══════════════════════════════════ -->
+<div class="flow-row">
+
+  <!-- 2: 검색 화면 -->
+  <div class="flow-group">
+    <div class="flow-label">STEP 2 — <span>아파트 검색</span></div>
+    <div class="phone"><div class="screen" style="background:#fff;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+      <div style="padding:14px 22px 0;height:calc(100% - 44px);display:flex;flex-direction:column;">
+        <div style="font-size:24px;font-weight:900;color:#191F28;line-height:1.3;letter-spacing:-0.8px;margin-bottom:24px;">
+          아파트를<br>검색해주세요
+        </div>
+
+        <!-- 검색바 -->
+        <div style="padding:14px 16px;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:14px;display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+          <span style="font-size:16px;">🔍</span>
+          <span style="font-size:14px;color:#A0AEC0;">아파트 이름을 입력하세요</span>
+        </div>
+
+        <!-- 지금 가장 많이 찾는 아파트 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;">지금 가장 많이 찾는 아파트</div>
+          <div style="font-size:10px;color:#8B95A1;">실시간</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:13px;font-weight:900;color:#0066FF;width:18px;">1</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#191F28;">잠실 엘스 84㎡</div>
+            </div>
+            <span style="font-size:13px;font-weight:800;color:#0066FF;">18.5억</span>
+            <span style="font-size:12px;color:#A0AEC0;">›</span>
+          </div>
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:13px;font-weight:900;color:#0066FF;width:18px;">2</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#191F28;">마포 래미안 34평</div>
+            </div>
+            <span style="font-size:13px;font-weight:800;color:#0066FF;">12.3억</span>
+            <span style="font-size:12px;color:#A0AEC0;">›</span>
+          </div>
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:13px;font-weight:900;color:#0066FF;width:18px;">3</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#191F28;">강남 래미안 59㎡</div>
+            </div>
+            <span style="font-size:13px;font-weight:800;color:#0066FF;">18.2억</span>
+            <span style="font-size:12px;color:#A0AEC0;">›</span>
+          </div>
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:13px;font-weight:900;color:#8B95A1;width:18px;">4</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#191F28;">송파 헬리오시티 24평</div>
+            </div>
+            <span style="font-size:13px;font-weight:800;color:#0066FF;">15.1억</span>
+            <span style="font-size:12px;color:#A0AEC0;">›</span>
+          </div>
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:13px;font-weight:900;color:#8B95A1;width:18px;">5</span>
+            <div style="flex:1;">
+              <div style="font-size:13px;font-weight:700;color:#191F28;">강동 고덕 래미안 34평</div>
+            </div>
+            <span style="font-size:13px;font-weight:800;color:#0066FF;">11.2억</span>
+            <span style="font-size:12px;color:#A0AEC0;">›</span>
+          </div>
+        </div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- 2-1: 검색 후 자동 인식 + 평형 선택 -->
+  <div class="flow-group">
+    <div class="flow-label">STEP 2-1 — <span>자동 인식 + 평형 선택</span></div>
+    <div class="phone"><div class="screen" style="background:#fff;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+      <div style="padding:14px 22px 0;">
+        <!-- 검색바 (입력됨) -->
+        <div style="padding:14px 16px;background:#F7F8FC;border:1.5px solid #0066FF;border-radius:14px;display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+          <span style="font-size:16px;">🔍</span>
+          <span style="font-size:14px;font-weight:600;color:#0066FF;">마포 래미안 푸르지오</span>
+          <span style="margin-left:auto;font-size:12px;color:#A0AEC0;">✕</span>
+        </div>
+
+        <!-- 자동 인식된 정보 -->
+        <div style="padding:16px;background:#F7F8FC;border-radius:16px;margin-bottom:20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:15px;font-weight:800;color:#191F28;">마포 래미안 푸르지오</span>
+            <span style="padding:3px 8px;background:#EDF3FF;border-radius:6px;font-size:10px;font-weight:700;color:#0066FF;">자동 인식</span>
+          </div>
+          <div style="font-size:12px;color:#8B95A1;line-height:1.6;">마포구 공덕동 387 · 2014년 입주<br>총 1,004세대 · 6호선 공덕역 도보 3분</div>
+        </div>
+
+        <!-- 평형 선택 -->
+        <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:10px;">평형을 선택해주세요</div>
+        <div style="display:flex;gap:8px;margin-bottom:28px;">
+          <div style="padding:18px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:14px;text-align:center;cursor:pointer;">
+            <div style="font-size:16px;font-weight:800;color:#8B95A1;">24평</div>
+            <div style="font-size:10px;color:#A0AEC0;margin-top:2px;">59㎡</div>
+          </div>
+          <div style="padding:18px 0;flex:1;background:#EDF3FF;border:2px solid #0066FF;border-radius:14px;text-align:center;cursor:pointer;">
+            <div style="font-size:16px;font-weight:800;color:#0066FF;">34평</div>
+            <div style="font-size:10px;color:#0066FF;margin-top:2px;">84㎡</div>
+          </div>
+          <div style="padding:18px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:14px;text-align:center;cursor:pointer;">
+            <div style="font-size:16px;font-weight:800;color:#8B95A1;">44평</div>
+            <div style="font-size:10px;color:#A0AEC0;margin-top:2px;">114㎡</div>
+          </div>
+        </div>
+
+        <button style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(135deg,#0066FF,#0052D9);cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);">분석 결과 보기</button>
+      </div>
+    </div></div></div>
+  </div>
+
+</div>
+
+<!-- STEP 2 근거 카드 -->
+<div style="max-width:660px;margin:0 auto 20px;">
+  <div class="evidence">
+    <div class="ev-header"><span class="ev-badge">DATA</span><span class="ev-title">STEP 2 · 2-1 근거</span></div>
+    <div class="ev-item">입력 필드를 11개→4개로 줄이면 전환율 120% 향상 (HubSpot 연구). 바로이집은 검색 1번 + 평형 탭 1번 = 입력 2개</div>
+    <div class="ev-item">추가 입력 필드 1개당 완료율 3~5% 감소 (Baymard Institute). 자동 인식으로 유저 입력을 0에 가깝게 줄임</div>
+    <div class="ev-item">검색 완료 유저의 전환이 미검색 유저 대비 1.8배 높음 — 검색 행동 자체가 전환 의지의 신호 (모바일 커머스 UX 연구)</div>
+    <div class="ev-item">헤이딜러: 차량번호 입력만으로 견적 조회 → 누적 다운로드 1,000만+ 돌파. 동일 패턴 적용</div>
+    <div class="ev-item">인기 아파트 TOP 5 리스트: 검색 의지가 낮은 유저도 "탭 한 번"으로 같은 결과 도달 → 이탈 방지</div>
+    <div class="ev-source">출처: HubSpot · Baymard Institute · 모바일 커머스 UX 가이드 · 헤이딜러 IR</div>
+  </div>
+</div>
+
+<div class="flow-connector"><div class="connector-box"><span class="arrow">↓</span><span class="label">"분석 결과 보기" 클릭</span></div></div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- STEP 3: 검색 결과 + 후킹으로 가입 -->
+<!-- ═══════════════════════════════════ -->
+<div class="flow-row">
+  <div class="flow-group">
+    <div class="flow-label">STEP 3 — <span>분석 결과 + 매수자 후킹</span></div>
+    <div class="phone-with-notes">
+    <div class="phone"><div class="screen" style="background:#F7F8FC;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+
+      <!-- 헤더 -->
+      <div style="padding:8px 18px 10px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;cursor:pointer;">←</span>
+        <span style="font-size:16px;font-weight:800;color:#191F28;">분석 결과</span>
+      </div>
+
+      <!-- 단지+시세 요약 (간결하게) -->
+      <div style="margin:0 14px 10px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:17px;font-weight:900;color:#191F28;margin-bottom:2px;">마포 래미안 푸르지오</div>
+        <div style="font-size:12px;color:#8B95A1;margin-bottom:12px;">마포구 공덕동 · 34평(84㎡)</div>
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1;padding:12px 8px;background:#F7F8FC;border-radius:12px;text-align:center;">
+            <div style="font-size:10px;color:#8B95A1;margin-bottom:2px;">현재 시세</div>
+            <div style="font-size:18px;font-weight:900;color:#191F28;">12.3억</div>
+          </div>
+          <div style="flex:1;padding:12px 8px;background:#F7F8FC;border-radius:12px;text-align:center;">
+            <div style="font-size:10px;color:#8B95A1;margin-bottom:2px;">전월 대비</div>
+            <div style="font-size:18px;font-weight:900;color:#00C853;">+1,500만</div>
+          </div>
+          <div style="flex:1;padding:12px 8px;background:#F7F8FC;border-radius:12px;text-align:center;">
+            <div style="font-size:10px;color:#8B95A1;margin-bottom:2px;">최근 거래</div>
+            <div style="font-size:18px;font-weight:900;color:#0066FF;">12.1억</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 실거래 내역 (공개·간결) -->
+      <div style="margin:0 14px 10px;background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:10px;">최근 실거래</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;">
+            <span style="font-size:12px;color:#191F28;font-weight:600;">15층 · 남향</span>
+            <div><span style="font-size:13px;font-weight:900;color:#0066FF;">12.1억</span><span style="font-size:10px;color:#8B95A1;margin-left:6px;">3월</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;">
+            <span style="font-size:12px;color:#191F28;font-weight:600;">12층 · 남동</span>
+            <div><span style="font-size:13px;font-weight:900;color:#0066FF;">11.9억</span><span style="font-size:10px;color:#8B95A1;margin-left:6px;">2월</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;">
+            <span style="font-size:12px;color:#191F28;font-weight:600;">18층 · 남향</span>
+            <div><span style="font-size:13px;font-weight:900;color:#0066FF;">12.3억</span><span style="font-size:10px;color:#8B95A1;margin-left:6px;">1월</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ★★★ 핵심 후킹: 매수자 3명 카드 ★★★ -->
+      <div style="margin:0 14px 12px;background:linear-gradient(135deg,#0066FF,#0052D9);border-radius:20px;padding:24px 20px;position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(0,102,255,0.25);">
+        <div style="position:absolute;top:-20px;right:-10px;width:100px;height:100px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
+        <div style="position:absolute;bottom:-30px;left:20px;width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
+
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:#00E676;animation:pulse 1.5s infinite;"></div>
+          <span style="font-size:12px;color:rgba(255,255,255,0.6);font-weight:700;">실시간</span>
+        </div>
+
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:8px;">이 아파트를 찾고 있는 매수자</div>
+        <div style="font-size:52px;font-weight:900;color:#fff;letter-spacing:-2px;">3<span style="font-size:24px;font-weight:700;color:rgba(255,255,255,0.5);">명</span></div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-top:6px;">지금 바로 연결할 수 있어요</div>
+      </div>
+
+      <!-- 빠르게 팔기 CTA (메인) -->
+      <div style="margin:0 14px 8px;">
+        <button style="width:100%;padding:18px;border:none;border-radius:14px;font-size:17px;font-weight:900;color:#fff;background:linear-gradient(135deg,#FF6B35,#FF8F5E);cursor:pointer;font-family:inherit;box-shadow:0 6px 24px rgba(255,107,53,0.3);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">빠르게 집 팔기</button>
+      </div>
+
+      <!-- 관심 등록 (서브) -->
+      <div style="margin:0 14px 6px;">
+        <button style="width:100%;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:800;color:#0066FF;background:#EDF3FF;cursor:pointer;font-family:inherit;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='none'">이 아파트 관심 등록</button>
+      </div>
+
+      <!-- 소셜 로그인 미리보기 -->
+      <div style="margin:0 14px;display:flex;justify-content:center;gap:16px;padding:10px 0;">
+        <span style="font-size:11px;color:#8B95A1;">💬 카카오</span>
+        <span style="font-size:11px;color:#8B95A1;">N 네이버</span>
+        <span style="font-size:11px;color:#8B95A1;">🔒 PASS</span>
+      </div>
+
+    </div></div></div>
+    <div class="bubble-list">
+      <div class="bubble">
+        <div class="b-title"><span class="b-num">1</span>시세+실거래로 신뢰 확보</div>
+        <div class="b-desc">숫자 3개로 간결하게 (시세/전월대비/최근거래). 여기서 길게 안 끔</div>
+        <div class="b-why">💡 신뢰만 쌓고 빨리 후킹으로. 이 정보는 "이 앱 데이터 있네" 확인용</div>
+      </div>
+      <div class="bubble">
+        <div class="b-title"><span class="b-num">2</span>"매수자 3명" — 이것만으로 팔고 싶어짐</div>
+        <div class="b-desc">숫자 하나가 모든 설명을 대체. 상세 정보 없어도 "3명"이면 충분</div>
+        <div class="b-why">💡 "사려는 사람이 3명이나 있다고?" → 매도자 입장에서 이보다 강력한 후킹 없음</div>
+      </div>
+      <div class="bubble">
+        <div class="b-title"><span class="b-num">3</span>"빠르게 집 팔기" = 가입 버튼</div>
+        <div class="b-desc">3명 보고 → "팔아야겠다" → 버튼 누르면 → 소셜 가입 → 매물 등록 플로우</div>
+        <div class="b-why">💡 매수자 상세를 블러로 보여줄 필요 없이, "3명 있다"는 사실만으로 행동 유도</div>
+      </div>
+      <div class="bubble">
+        <div class="b-title"><span class="b-num">4</span>매수자용 "관심 등록" 서브 버튼</div>
+        <div class="b-desc">이 아파트를 사고 싶은 사람도 관심 등록 → 매수자 DB 축적</div>
+        <div class="b-why">💡 매수자 관심 등록이 쌓일수록 → 매도자에게 보여줄 "N명" 숫자가 커짐 → 선순환</div>
+      </div>
+      <div class="evidence">
+        <div class="ev-header"><span class="ev-badge">DATA</span><span class="ev-title">STEP 3 근거</span></div>
+        <div class="ev-item">2026년 서울 아파트 매물 78,739건(+9.2%) vs 거래 절벽 — 매도자의 가장 큰 고통은 "올려놨는데 안 팔림" (파이낸셜뉴스, 2026.03.29)</div>
+        <div class="ev-item">"사려는 사람이 있다"는 정보는 네이버·직방·다방 어디에도 없음 — 바로이집만의 유일한 차별점</div>
+        <div class="ev-item">2026년 매수자 핵심: 30대 실수요자 + 갈아타기 수요. 가격보다 입지·신축을 우선 → 특정 단지에 매수 의향이 집중됨 (sophieisthebest, 2026.02)</div>
+        <div class="ev-item">양도세 중과 유예 종료(5/9) → 다주택자 급매 → 매수자에게 기회 → "관심 등록" 수요 폭발 예상 (서울경제, 2026.03)</div>
+        <div class="ev-item">링크드인 "프로필 열람" 모델: 누가 봤는지 보여주는 것만으로 유료 전환 유도 → 같은 심리 구조 적용</div>
+        <div class="ev-source">출처: 파이낸셜뉴스 · 서울경제 · sophieisthebest · KB부동산 · LinkedIn</div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="flow-connector"><div class="connector-box"><span class="arrow">↓</span><span class="label">"빠르게 집 팔기" 클릭</span></div></div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- STEP 4: 가입 → 상세 정보 입력 -->
+<!-- ═══════════════════════════════════ -->
+<div class="flow-row">
+
+  <!-- 4: 소셜 가입 (3초) -->
+  <div class="flow-group">
+    <div class="flow-label">STEP 4 — <span>소셜 가입 (3초)</span></div>
+    <div class="phone"><div class="screen" style="background:#fff;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+      <div style="padding:14px 22px 0;height:calc(100% - 44px);display:flex;flex-direction:column;">
+
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;">
+          <div style="font-size:18px;font-weight:800;color:#0066FF;margin-bottom:12px;">바로이집</div>
+          <div style="font-size:24px;font-weight:900;color:#191F28;line-height:1.3;margin-bottom:8px;">매수자 3명이<br>기다리고 있어요</div>
+          <div style="font-size:14px;color:#8B95A1;margin-bottom:36px;">가입하고 바로 연결해보세요</div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="padding:16px;background:#FEE500;border-radius:14px;font-size:15px;font-weight:700;color:#3C1E1E;cursor:pointer;text-align:center;">💬 카카오로 3초 만에 시작</div>
+            <div style="padding:16px;background:#03C75A;border-radius:14px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;text-align:center;">N 네이버로 시작</div>
+            <div style="padding:16px;background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;font-size:15px;font-weight:700;color:#191F28;cursor:pointer;text-align:center;">🔒 PASS 인증으로 시작</div>
+          </div>
+        </div>
+
+        <div style="padding:16px 0 32px;text-align:center;font-size:12px;color:#A0AEC0;">가입 즉시 매수자 정보를 확인할 수 있어요</div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- 4-1: 상세 매물 정보 (가입 직후 바로) -->
+  <div class="flow-group">
+    <div class="flow-label">STEP 4-1 — <span>상세 정보 (탭으로 간단히)</span></div>
+    <div class="phone"><div class="screen" style="background:#fff;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+      <div style="padding:14px 22px 0;">
+
+        <!-- 진행 바 -->
+        <div style="display:flex;gap:4px;margin-bottom:20px;">
+          <div style="flex:1;height:3px;background:#0066FF;border-radius:2px;"></div>
+          <div style="flex:1;height:3px;background:#0066FF;border-radius:2px;"></div>
+          <div style="flex:1;height:3px;background:#E2E8F0;border-radius:2px;"></div>
+        </div>
+
+        <div style="font-size:22px;font-weight:900;color:#191F28;line-height:1.3;margin-bottom:4px;">거의 다 왔어요!</div>
+        <div style="font-size:14px;color:#8B95A1;margin-bottom:24px;">매수자에게 보여줄 정보만 선택해주세요</div>
+
+        <!-- 이미 자동 채워진 정보 -->
+        <div style="padding:14px 16px;background:#F7F8FC;border-radius:14px;margin-bottom:18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:14px;font-weight:800;color:#191F28;">마포 래미안 푸르지오 · 34평</span>
+            <span style="padding:3px 8px;background:#EDF3FF;border-radius:6px;font-size:10px;font-weight:700;color:#0066FF;">자동</span>
+          </div>
+          <div style="font-size:12px;color:#8B95A1;">마포구 공덕동 · 84㎡ · 2014년</div>
+        </div>
+
+        <!-- 층수 선택 (탭 1) -->
+        <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:8px;">층수</div>
+        <div style="display:flex;gap:8px;margin-bottom:18px;">
+          <div style="padding:14px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;text-align:center;font-size:14px;font-weight:700;color:#8B95A1;cursor:pointer;">저층<div style="font-size:10px;color:#A0AEC0;">1~5</div></div>
+          <div style="padding:14px 0;flex:1;background:#EDF3FF;border:2px solid #0066FF;border-radius:12px;text-align:center;font-size:14px;font-weight:800;color:#0066FF;cursor:pointer;">중층<div style="font-size:10px;color:#0066FF;">6~15</div></div>
+          <div style="padding:14px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;text-align:center;font-size:14px;font-weight:700;color:#8B95A1;cursor:pointer;">고층<div style="font-size:10px;color:#A0AEC0;">16~</div></div>
+        </div>
+
+        <!-- 방향 선택 (탭 2) -->
+        <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:8px;">방향</div>
+        <div style="display:flex;gap:8px;margin-bottom:18px;">
+          <div style="padding:12px 0;flex:1;background:#EDF3FF;border:2px solid #0066FF;border-radius:12px;text-align:center;font-size:14px;font-weight:800;color:#0066FF;cursor:pointer;">남향</div>
+          <div style="padding:12px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;text-align:center;font-size:14px;font-weight:700;color:#8B95A1;cursor:pointer;">동향</div>
+          <div style="padding:12px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;text-align:center;font-size:14px;font-weight:700;color:#8B95A1;cursor:pointer;">서향</div>
+          <div style="padding:12px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;text-align:center;font-size:14px;font-weight:700;color:#8B95A1;cursor:pointer;">북향</div>
+        </div>
+
+        <!-- 중층 실거래 (층수 선택 시 자동 표시) -->
+        <div style="padding:14px 16px;background:#F7F8FC;border-radius:14px;margin-bottom:18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:800;color:#191F28;">중층 · 남향 최근 실거래</span>
+            <span style="padding:3px 8px;background:#EDF3FF;border-radius:6px;font-size:10px;font-weight:700;color:#0066FF;">자동</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#fff;border-radius:8px;">
+              <span style="font-size:12px;font-weight:600;color:#191F28;">12층 · 남향</span>
+              <div><span style="font-size:13px;font-weight:900;color:#0066FF;">12.1억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">3월</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#fff;border-radius:8px;">
+              <span style="font-size:12px;font-weight:600;color:#191F28;">10층 · 남향</span>
+              <div><span style="font-size:13px;font-weight:900;color:#0066FF;">11.9억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">1월</span></div>
+            </div>
+          </div>
+          <!-- AI 추천가 -->
+          <div style="padding:12px 14px;background:linear-gradient(135deg,#EDF3FF,#F5F8FF);border-radius:10px;border:1px solid #CCE0FF;">
+            <div style="font-size:11px;color:#0066FF;font-weight:700;margin-bottom:4px;">AI 추천 매도가</div>
+            <div style="font-size:22px;font-weight:900;color:#0066FF;">12.0 ~ 12.3억</div>
+            <div style="font-size:10px;color:#8B95A1;margin-top:2px;">중층 · 남향 실거래 기반</div>
+          </div>
+        </div>
+
+        <!-- 희망 매도가 입력 -->
+        <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:8px;">희망 매도가</div>
+        <div style="padding:14px 16px;background:#F7F8FC;border:1.5px solid #0066FF;border-radius:12px;font-size:16px;font-weight:800;color:#191F28;margin-bottom:6px;">12억 2,000만원</div>
+        <div style="padding:6px 12px;background:#F0FFF4;border-radius:8px;margin-bottom:24px;display:flex;align-items:center;gap:6px;">
+          <span style="font-size:11px;font-weight:700;color:#00C853;">✓ AI 추천 범위 안에 있어요</span>
+        </div>
+
+        <button style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(135deg,#FF6B35,#FF8F5E);cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(255,107,53,0.3);">매물 등록 완료</button>
+        <div style="text-align:center;margin-top:8px;font-size:11px;color:#8B95A1;">등록 즉시 매수자 3명에게 알림이 갑니다</div>
+      </div>
+    </div></div></div>
+  </div>
+
+</div>
+
+<!-- STEP 4 매도자 근거 카드 -->
+<div style="max-width:660px;margin:0 auto 20px;">
+  <div class="evidence">
+    <div class="ev-header"><span class="ev-badge">DATA</span><span class="ev-title">STEP 4 · 4-1 (매도자) 근거</span></div>
+    <div class="ev-item">"팔겠다"는 결심 직후가 전환 온도 최고점. 홈으로 보내면 관심 분산 → 이탈 (Appcues 온보딩 연구)</div>
+    <div class="ev-item">온보딩 스텝 30% 줄이면 완료율 50% 향상. 진행 바 표시 시 완료율 추가 26% 향상 (Appcues, Robinhood 레퍼런스)</div>
+    <div class="ev-item">층수+방향 선택 시 해당 조건 실거래가 자동 표시 → "감"이 아닌 "데이터"로 가격 결정 → 가격 고민 이탈 방지</div>
+    <div class="ev-item">입력은 탭 2번(층수+방향) + 가격 1번 = 총 3개. 81%가 폼 작성 중 이탈하는 걸 방지 (WPForms 연구)</div>
+    <div class="ev-item">"등록 즉시 3명에게 알림" — 즉각적 효과가 느껴져야 마지막 버튼을 누름</div>
+    <div class="ev-source">출처: Appcues · WPForms · Totango · Robinhood UX 분석</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- STEP 3에서 "관심 등록" 클릭한 매수자 플로우 -->
+<!-- ═══════════════════════════════════ -->
+<div style="max-width:660px;margin:0 auto 12px;">
+  <div style="text-align:center;padding:12px 24px;background:#fff;border-radius:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+    <span style="font-size:13px;font-weight:800;color:#0066FF;">↓ STEP 3에서 "이 아파트 관심 등록" 클릭한 경우</span>
+  </div>
+</div>
+
+<div class="flow-row">
+
+  <!-- 매수자 가입 -->
+  <div class="flow-group">
+    <div class="flow-label">STEP 4 — <span>매수자 가입</span></div>
+    <div class="phone"><div class="screen" style="background:#fff;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+      <div style="padding:14px 22px 0;height:calc(100% - 44px);display:flex;flex-direction:column;">
+
+        <div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center;">
+          <div style="font-size:18px;font-weight:800;color:#0066FF;margin-bottom:12px;">바로이집</div>
+          <div style="font-size:24px;font-weight:900;color:#191F28;line-height:1.3;margin-bottom:8px;">이 아파트에<br>매물이 나오면<br>가장 먼저 알려드려요</div>
+          <div style="font-size:14px;color:#8B95A1;margin-bottom:36px;">가입하고 관심 등록을 완료하세요</div>
+
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="padding:16px;background:#FEE500;border-radius:14px;font-size:15px;font-weight:700;color:#3C1E1E;cursor:pointer;text-align:center;">💬 카카오로 3초 만에 시작</div>
+            <div style="padding:16px;background:#03C75A;border-radius:14px;font-size:15px;font-weight:700;color:#fff;cursor:pointer;text-align:center;">N 네이버로 시작</div>
+            <div style="padding:16px;background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;font-size:15px;font-weight:700;color:#191F28;cursor:pointer;text-align:center;">🔒 PASS 인증으로 시작</div>
+          </div>
+        </div>
+
+        <div style="padding:16px 0 32px;text-align:center;font-size:12px;color:#A0AEC0;">새 매물 등록 시 즉시 알림을 받을 수 있어요</div>
+      </div>
+    </div></div></div>
+  </div>
+
+  <!-- 매수자 조건 등록 -->
+  <div class="flow-group">
+    <div class="flow-label">STEP 4-1 — <span>매수 조건 등록</span></div>
+    <div class="phone"><div class="screen" style="background:#fff;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+      <div style="padding:14px 22px 0;">
+
+        <!-- 진행 바 -->
+        <div style="display:flex;gap:4px;margin-bottom:20px;">
+          <div style="flex:1;height:3px;background:#0066FF;border-radius:2px;"></div>
+          <div style="flex:1;height:3px;background:#0066FF;border-radius:2px;"></div>
+          <div style="flex:1;height:3px;background:#E2E8F0;border-radius:2px;"></div>
+        </div>
+
+        <div style="font-size:22px;font-weight:900;color:#191F28;line-height:1.3;margin-bottom:4px;">거의 다 왔어요!</div>
+        <div style="font-size:14px;color:#8B95A1;margin-bottom:24px;">조건만 등록하면 맞춤 매물을 알려드려요</div>
+
+        <!-- 관심 아파트 (자동) -->
+        <div style="padding:14px 16px;background:#F7F8FC;border-radius:14px;margin-bottom:18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:14px;font-weight:800;color:#191F28;">마포 래미안 푸르지오 · 34평</span>
+            <span style="padding:3px 8px;background:#EDF3FF;border-radius:6px;font-size:10px;font-weight:700;color:#0066FF;">관심 등록</span>
+          </div>
+          <div style="font-size:12px;color:#8B95A1;">마포구 공덕동 · 84㎡</div>
+        </div>
+
+        <!-- 예산 범위 (탭) -->
+        <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:8px;">예산 범위</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;">
+          <div style="padding:12px 16px;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;font-size:13px;font-weight:700;color:#8B95A1;cursor:pointer;">~10억</div>
+          <div style="padding:12px 16px;background:#EDF3FF;border:2px solid #0066FF;border-radius:12px;font-size:13px;font-weight:800;color:#0066FF;cursor:pointer;">10~13억</div>
+          <div style="padding:12px 16px;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;font-size:13px;font-weight:700;color:#8B95A1;cursor:pointer;">13~16억</div>
+          <div style="padding:12px 16px;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;font-size:13px;font-weight:700;color:#8B95A1;cursor:pointer;">16억~</div>
+        </div>
+
+        <!-- 입주 목적 (탭) -->
+        <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:8px;">입주 목적</div>
+        <div style="display:flex;gap:8px;margin-bottom:18px;">
+          <div style="padding:12px 0;flex:1;background:#EDF3FF;border:2px solid #0066FF;border-radius:12px;text-align:center;font-size:13px;font-weight:800;color:#0066FF;cursor:pointer;">실거주</div>
+          <div style="padding:12px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;text-align:center;font-size:13px;font-weight:700;color:#8B95A1;cursor:pointer;">투자</div>
+          <div style="padding:12px 0;flex:1;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;text-align:center;font-size:13px;font-weight:700;color:#8B95A1;cursor:pointer;">갈아타기</div>
+        </div>
+
+        <!-- 알림 설정 -->
+        <div style="padding:14px 16px;background:#F0FFF4;border:1px solid #C6F6D5;border-radius:14px;margin-bottom:24px;display:flex;align-items:center;gap:10px;">
+          <span style="font-size:18px;">🔔</span>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#191F28;">새 매물 즉시 알림</div>
+            <div style="font-size:11px;color:#8B95A1;">이 아파트에 매물이 나오면 바로 알려드려요</div>
+          </div>
+          <!-- 토글 -->
+          <div style="width:44px;height:26px;background:#0066FF;border-radius:13px;position:relative;cursor:pointer;">
+            <div style="width:22px;height:22px;background:#fff;border-radius:50%;position:absolute;top:2px;right:2px;box-shadow:0 1px 4px rgba(0,0,0,0.15);"></div>
+          </div>
+        </div>
+
+        <button style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(135deg,#0066FF,#3D8BFF);cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);">관심 등록 완료</button>
+        <div style="text-align:center;margin-top:8px;font-size:11px;color:#8B95A1;">현재 이 단지 매물 3건 · 등록 시 즉시 열람 가능</div>
+      </div>
+    </div></div></div>
+  </div>
+
+</div>
+
+<!-- 매수자 근거 카드 -->
+<div style="max-width:660px;margin:0 auto 20px;">
+  <div class="evidence">
+    <div class="ev-header"><span class="ev-badge">DATA</span><span class="ev-title">STEP 4 · 4-1 (매수자) 근거</span></div>
+    <div class="ev-item">"매물 나오면 가장 먼저 알려드려요" — 매수자의 핵심 니즈는 "좋은 매물 놓치기 싫다" (FOMO)</div>
+    <div class="ev-item">매수자 조건(예산+목적)이 DB에 쌓이면 → 매도자에게 "이 아파트를 찾는 매수자 N명" 데이터로 활용 → 플랫폼 선순환</div>
+    <div class="ev-item">2026 핵심 매수자: 30대 실수요자 + 갈아타기 수요 → 입주 목적 선택지에 반영 (sophieisthebest, 2026.02)</div>
+    <div class="ev-item">알림 토글 ON 기본 설정 → 옵트아웃 방식이 옵트인 대비 알림 수신율 4배 높음 (Braze 연구)</div>
+    <div class="ev-item">"현재 매물 3건 · 즉시 열람 가능" — 등록 직후 바로 가치를 받을 수 있다는 확신</div>
+    <div class="ev-source">출처: sophieisthebest · Braze · KB부동산</div>
+  </div>
+</div>
+
+<div class="flow-connector"><div class="connector-box"><span class="arrow">↓</span><span class="label">등록 완료 → 앱 홈</span></div></div>
+
+<!-- ═══════════════════════════════════ -->
+<!-- STEP 5: 통합 홈 + 내 부동산 탭 -->
+<!-- ═══════════════════════════════════ -->
+<div class="flow-row">
+  <!-- 5-A: 매도자 홈 -->
+  <div class="flow-group">
+    <div class="flow-label orange">STEP 5 — <span>매도자 홈</span></div>
+    <div class="phone"><div class="screen" style="background:#F7F8FC;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+
+      <!-- 헤더 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 18px 10px;">
+        <div style="font-size:18px;font-weight:900;color:#0066FF;">바로이집</div>
+        <div style="display:flex;gap:6px;">
+          <div style="width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.05);">🔍</div>
+          <div style="width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.05);position:relative;">🔔<div style="position:absolute;top:-1px;right:-1px;width:8px;height:8px;background:#FF3B30;border-radius:50%;border:1.5px solid #F7F8FC;"></div></div>
+        </div>
+      </div>
+
+      <!-- ★ 상단 고정: 내 매물 핵심 현황 -->
+      <div style="margin:0 14px 8px;background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div style="font-size:16px;font-weight:900;color:#191F28;">마포 래미안 34평</div>
+          <div style="display:flex;align-items:center;gap:4px;padding:3px 10px;background:#FF6B35;border-radius:6px;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#fff;animation:pulse 1.5s infinite;"></div>
+            <span style="font-size:10px;font-weight:700;color:#fff;">판매중</span>
+          </div>
+        </div>
+        <div style="font-size:20px;font-weight:900;color:#0066FF;margin-bottom:8px;">12.2억</div>
+        <!-- 미니 진행바 -->
+        <div style="display:flex;align-items:center;gap:3px;margin-bottom:10px;">
+          <div style="width:14px;height:14px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;">✓</div>
+          <div style="flex:1;height:2px;background:#0066FF;"></div>
+          <div style="width:14px;height:14px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;">✓</div>
+          <div style="flex:1;height:2px;background:#CCE0FF;position:relative;"><div style="position:absolute;left:0;top:0;height:100%;width:60%;background:#0066FF;"></div></div>
+          <div style="width:14px;height:14px;border-radius:50%;border:2px solid #0066FF;"><div style="width:6px;height:6px;border-radius:50%;background:#0066FF;margin:2px auto;animation:pulse 1.5s infinite;"></div></div>
+          <div style="flex:1;height:2px;background:#E2E8F0;"></div>
+          <div style="width:14px;height:14px;border-radius:50%;background:#E2E8F0;"></div>
+        </div>
+        <!-- 핵심 수치 -->
+        <div style="display:flex;gap:6px;">
+          <div style="flex:1;padding:8px 4px;background:#F7F8FC;border-radius:8px;text-align:center;">
+            <div style="font-size:16px;font-weight:900;color:#191F28;">14</div>
+            <div style="font-size:9px;color:#8B95A1;">열람</div>
+          </div>
+          <div style="flex:1;padding:8px 4px;background:#FFF4EE;border-radius:8px;text-align:center;">
+            <div style="font-size:16px;font-weight:900;color:#FF6B35;">3</div>
+            <div style="font-size:9px;color:#8B95A1;">관심</div>
+          </div>
+          <div style="flex:1;padding:8px 4px;background:#EDF3FF;border-radius:8px;text-align:center;">
+            <div style="font-size:16px;font-weight:900;color:#0066FF;">1</div>
+            <div style="font-size:9px;color:#8B95A1;">네고요청</div>
+          </div>
+          <div style="flex:1;padding:8px 4px;background:#F0FFF4;border-radius:8px;text-align:center;">
+            <div style="font-size:16px;font-weight:900;color:#00C853;">2</div>
+            <div style="font-size:9px;color:#8B95A1;">중개사</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ★ 탭 전환: 현황 / 시세분석 / 자산 -->
+      <div style="margin:0 14px 8px;display:flex;background:#ECEEF4;border-radius:12px;padding:3px;">
+        <div id="tab1" onclick="switchTab(1)" style="flex:1;padding:10px 0;border-radius:10px;text-align:center;font-size:12px;font-weight:800;cursor:pointer;background:#fff;color:#0066FF;box-shadow:0 2px 8px rgba(0,0,0,0.06);">현황</div>
+        <div id="tab2" onclick="switchTab(2)" style="flex:1;padding:10px 0;border-radius:10px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#8B95A1;">시세분석</div>
+        <div id="tab3" onclick="switchTab(3)" style="flex:1;padding:10px 0;border-radius:10px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#8B95A1;">내 수익</div>
+      </div>
+
+      <!-- 탭1: 현황 -->
+      <div id="panel1" style="margin:0 14px;">
+        <!-- 실시간 피드 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:10px;">실시간 업데이트</div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:#FFF4EE;border-radius:10px;margin-bottom:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#FF6B35;flex-shrink:0;margin-top:5px;"></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">네고 요청이 들어왔어요</div><div style="font-size:10px;color:#8B95A1;">12.0억 제안 · 실거주 30대</div></div>
+            <span style="font-size:10px;color:#A0AEC0;">5분 전</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:#F7F8FC;border-radius:10px;margin-bottom:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#0066FF;flex-shrink:0;margin-top:5px;"></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">중개사 2명이 매물에 관심 등록</div></div>
+            <span style="font-size:10px;color:#A0AEC0;">1시간 전</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:#F7F8FC;border-radius:10px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#00C853;flex-shrink:0;margin-top:5px;"></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">3명이 관심 매물로 등록</div></div>
+            <span style="font-size:10px;color:#A0AEC0;">3시간 전</span>
+          </div>
+        </div>
+
+        <!-- 네고 관리 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:10px;">네고 요청</div>
+          <div style="padding:12px;background:#FFF9F5;border:1px solid #FFE0CC;border-radius:12px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:700;color:#191F28;">12.0억 제안</span>
+              <span style="font-size:11px;color:#FF6B35;font-weight:700;">내 가격 대비 -2,000만</span>
+            </div>
+            <div style="font-size:11px;color:#8B95A1;margin-bottom:10px;">실거주 · 30대 · 예산 12~12.5억</div>
+            <div style="display:flex;gap:8px;">
+              <button style="flex:1;padding:10px;border:none;border-radius:10px;font-size:12px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;">수락</button>
+              <button style="flex:1;padding:10px;border:none;border-radius:10px;font-size:12px;font-weight:800;color:#8B95A1;background:#F0F1F5;cursor:pointer;font-family:inherit;">거절</button>
+              <button style="flex:1;padding:10px;border:none;border-radius:10px;font-size:12px;font-weight:800;color:#FF6B35;background:#FFF4EE;cursor:pointer;font-family:inherit;">역제안</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 중개사 현황 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:800;color:#191F28;">담당 중개사</span>
+            <span style="font-size:11px;color:#0066FF;font-weight:700;">2명</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:#F7F8FC;border-radius:10px;margin-bottom:6px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#EDF3FF;display:flex;align-items:center;justify-content:center;font-size:14px;">👨‍💼</div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">김민수 공인중개사</div><div style="font-size:10px;color:#8B95A1;">마포구 전문 · 거래 47건</div></div>
+            <span style="padding:3px 8px;background:#F0FFF4;border-radius:6px;font-size:9px;font-weight:700;color:#00C853;">활동중</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:#F7F8FC;border-radius:10px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#EDF3FF;display:flex;align-items:center;justify-content:center;font-size:14px;">👨‍💼</div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">이정호 공인중개사</div><div style="font-size:10px;color:#8B95A1;">마포구 전문 · 거래 32건</div></div>
+            <span style="padding:3px 8px;background:#F0FFF4;border-radius:6px;font-size:9px;font-weight:700;color:#00C853;">활동중</span>
+          </div>
+        </div>
+
+        <!-- 예상 거래 기간 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span style="font-size:13px;font-weight:800;color:#191F28;">예상 거래 기간</span>
+            <span style="font-size:18px;font-weight:900;color:#0066FF;">~8일</span>
+          </div>
+          <div style="height:6px;background:#E2E8F0;border-radius:3px;margin-bottom:4px;">
+            <div style="height:100%;width:35%;background:linear-gradient(90deg,#00C853,#69F0AE);border-radius:3px;"></div>
+          </div>
+          <div style="font-size:10px;color:#8B95A1;">비슷한 조건 매물 기준 · 사진 추가 시 ~5일로 단축</div>
+        </div>
+
+        <!-- 지금 할 일 -->
+        <div style="background:linear-gradient(135deg,#FFF4EE,#FFF9F5);border:1px solid #FFE0CC;border-radius:14px;padding:14px;margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#FF6B35;margin-bottom:8px;">📋 지금 할 일</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:10px;background:#fff;border-radius:10px;margin-bottom:6px;cursor:pointer;">
+            <div style="width:20px;height:20px;border-radius:50%;border:2px solid #FF6B35;display:flex;align-items:center;justify-content:center;flex-shrink:0;"></div>
+            <div style="flex:1;font-size:12px;font-weight:700;color:#191F28;">네고 요청 확인하고 응답하기</div>
+            <span style="padding:2px 6px;background:#FF6B35;border-radius:4px;font-size:9px;font-weight:800;color:#fff;">긴급</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:10px;background:#fff;border-radius:10px;margin-bottom:6px;cursor:pointer;">
+            <div style="width:20px;height:20px;border-radius:50%;border:2px solid #E2E8F0;flex-shrink:0;"></div>
+            <div style="flex:1;font-size:12px;font-weight:700;color:#191F28;">사진 3장 추가하기 (열람 +40%)</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:10px;background:#fff;border-radius:10px;cursor:pointer;">
+            <div style="width:20px;height:20px;border-radius:50%;border:2px solid #E2E8F0;flex-shrink:0;"></div>
+            <div style="flex:1;font-size:12px;font-weight:700;color:#191F28;">중개사 방문 일정 잡기</div>
+          </div>
+        </div>
+
+        <!-- 내 매물 관리 버튼 -->
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <button style="flex:1;padding:12px;border:none;border-radius:12px;font-size:12px;font-weight:800;color:#0066FF;background:#EDF3FF;cursor:pointer;font-family:inherit;">가격 조정</button>
+          <button style="flex:1;padding:12px;border:none;border-radius:12px;font-size:12px;font-weight:800;color:#4A5568;background:#F0F1F5;cursor:pointer;font-family:inherit;">사진/정보 수정</button>
+        </div>
+
+        <!-- 고수상담 연결 -->
+        <div style="padding:12px 14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+          <span style="font-size:16px;">💬</span>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">네고 수락할지 고민이라면?</div><div style="font-size:10px;color:#8B95A1;">전문가에게 1:1 상담받기</div></div>
+          <span style="font-size:11px;font-weight:800;color:#0066FF;">고수상담 ›</span>
+        </div>
+      </div>
+
+      <!-- 탭2: 시세분석 (기본 숨김) -->
+      <div id="panel2" style="margin:0 14px;display:none;">
+
+        <!-- 최근 실거래 내역 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:800;color:#191F28;">최근 실거래</span>
+            <span style="padding:3px 8px;background:#F7F8FC;border-radius:6px;font-size:10px;font-weight:700;color:#8B95A1;">국토부 공식</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;">
+              <span style="font-size:12px;font-weight:600;color:#191F28;">15층 · 남향</span>
+              <div><span style="font-size:13px;font-weight:900;color:#0066FF;">12.1억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">3월</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;">
+              <span style="font-size:12px;font-weight:600;color:#191F28;">12층 · 남동</span>
+              <div><span style="font-size:13px;font-weight:900;color:#0066FF;">11.9억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">2월</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;">
+              <span style="font-size:12px;font-weight:600;color:#191F28;">18층 · 남향</span>
+              <div><span style="font-size:13px;font-weight:900;color:#0066FF;">12.3억</span><span style="font-size:10px;color:#8B95A1;margin-left:4px;">1월</span></div>
+            </div>
+          </div>
+          <!-- 거래량 요약 -->
+          <div style="display:flex;gap:6px;">
+            <div style="flex:1;padding:8px 6px;background:#EDF3FF;border-radius:8px;text-align:center;">
+              <div style="font-size:14px;font-weight:900;color:#0066FF;">7건</div>
+              <div style="font-size:9px;color:#8B95A1;">최근 6개월</div>
+            </div>
+            <div style="flex:1;padding:8px 6px;background:#F0FFF4;border-radius:8px;text-align:center;">
+              <div style="font-size:14px;font-weight:900;color:#00C853;">3건</div>
+              <div style="font-size:9px;color:#8B95A1;">최근 3개월</div>
+            </div>
+            <div style="flex:1;padding:8px 6px;background:#FFF4EE;border-radius:8px;text-align:center;">
+              <div style="font-size:14px;font-weight:900;color:#FF6B35;">12일</div>
+              <div style="font-size:9px;color:#8B95A1;">평균 거래기간</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 같은 단지 경쟁 매물 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:10px;">같은 단지 경쟁 매물</div>
+          <!-- 가격 바 -->
+          <div style="position:relative;padding:0 0 16px;margin-bottom:10px;">
+            <div style="height:6px;background:#E2E8F0;border-radius:3px;"><div style="position:absolute;left:15%;right:20%;top:0;height:6px;background:#CCE0FF;border-radius:3px;"></div><div style="position:absolute;left:55%;top:-3px;width:12px;height:12px;background:#FF6B35;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 4px rgba(0,0,0,0.15);"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;"><span style="font-size:9px;color:#8B95A1;">11.8억</span><span style="font-size:9px;font-weight:700;color:#FF6B35;">내 매물</span><span style="font-size:9px;color:#8B95A1;">12.5억</span></div>
+          </div>
+          <!-- 매물 리스트 -->
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;align-items:center;">
+              <span style="font-size:12px;font-weight:600;color:#191F28;">8층 · 남동향</span>
+              <span style="font-size:13px;font-weight:900;color:#0066FF;">11.8억</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#FFF9F5;border:1px solid #FFE0CC;border-radius:8px;align-items:center;">
+              <div><span style="font-size:12px;font-weight:700;color:#FF6B35;">15층 · 남향</span><span style="font-size:9px;color:#FF6B35;margin-left:4px;">내 매물</span></div>
+              <span style="font-size:13px;font-weight:900;color:#FF6B35;">12.2억</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 10px;background:#F7F8FC;border-radius:8px;align-items:center;">
+              <span style="font-size:12px;font-weight:600;color:#191F28;">20층 · 남향</span>
+              <span style="font-size:13px;font-weight:900;color:#0066FF;">12.5억</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 시세 추이 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:8px;">시세 추이 (6개월)</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:50px;margin-bottom:6px;">
+            <div style="flex:1;background:#CCE0FF;border-radius:3px 3px 0 0;height:55%;"></div><div style="flex:1;background:#CCE0FF;border-radius:3px 3px 0 0;height:50%;"></div><div style="flex:1;background:#CCE0FF;border-radius:3px 3px 0 0;height:58%;"></div><div style="flex:1;background:#99C2FF;border-radius:3px 3px 0 0;height:65%;"></div><div style="flex:1;background:#99C2FF;border-radius:3px 3px 0 0;height:72%;"></div><div style="flex:1;background:#0066FF;border-radius:3px 3px 0 0;height:80%;position:relative;"><div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:8px;font-weight:800;color:#0066FF;">12.3억</div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:#8B95A1;"><span>10월</span><span>11월</span><span>12월</span><span>1월</span><span>2월</span><span>3월</span></div>
+          <div style="margin-top:6px;font-size:11px;color:#00C853;font-weight:700;">6개월간 +4.2% 상승 추세</div>
+        </div>
+
+        <!-- AI 매도 판단 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:13px;font-weight:800;color:#191F28;">AI 매도 판단</span>
+            <span style="padding:3px 8px;background:#FFF4EE;border-radius:6px;font-size:10px;font-weight:700;color:#FF6B35;">AI 분석</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:2px;margin-bottom:6px;">
+            <span style="font-size:16px;color:#0066FF;">★★★</span><span style="font-size:16px;color:#E2E8F0;">★★</span>
+            <span style="font-size:12px;font-weight:800;color:#191F28;margin-left:6px;">매도 적정</span>
+          </div>
+          <div style="font-size:11px;color:#8B95A1;line-height:1.6;margin-bottom:8px;">
+            현재 마포구 상승 추세. <span style="background:#EBF8FF;padding:1px 5px;border-radius:4px;color:#0066FF;font-weight:700;">6개월 보유 시 장기보유특별공제로 약 1,200만원 절감</span> 가능
+          </div>
+          <div style="padding:10px 12px;background:#EDF3FF;border-radius:10px;display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <span style="font-size:14px;">💡</span>
+            <div style="flex:1;font-size:11px;font-weight:700;color:#0066FF;">AI 상세 분석 리포트 보기</div>
+            <span style="font-size:12px;color:#0066FF;">›</span>
+          </div>
+        </div>
+
+        <!-- 서비스 연결: 커뮤니티 + 급지지도 -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:16px;">💬</span>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">비슷한 상황 보유자들 의견</div><div style="font-size:10px;color:#8B95A1;">마포구 매도 고민 게시글 12건</div></div>
+            <span style="font-size:11px;font-weight:800;color:#0066FF;">커뮤니티 ›</span>
+          </div>
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:16px;">📊</span>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">마포구 급지 분석</div><div style="font-size:10px;color:#8B95A1;">지역 등급 및 투자 전망</div></div>
+            <span style="font-size:11px;font-weight:800;color:#0066FF;">급지지도 ›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 탭3: 내 수익 (기본 숨김) -->
+      <div id="panel3" style="margin:0 14px;display:none;">
+
+        <!-- 세후 실수령 (판매중 매물) -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:13px;font-weight:800;color:#191F28;">마포 래미안 34평 세후 실수령</span>
+            <span style="padding:3px 8px;background:#FF6B35;border-radius:6px;font-size:9px;font-weight:700;color:#fff;">판매중</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;"><span style="color:#8B95A1;">매도 예상가</span><span style="font-weight:700;">12.2억</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;"><span style="color:#8B95A1;">양도소득세</span><span style="font-weight:700;color:#E53E3E;">-5,800만</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;"><span style="color:#8B95A1;">중개보수</span><span style="font-weight:700;color:#E53E3E;">-480만</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;"><span style="color:#8B95A1;">매수가 차감</span><span style="font-weight:700;color:#E53E3E;">-8.5억</span></div>
+          <div style="border-top:1.5px solid #F0F1F5;margin-top:6px;padding-top:8px;display:flex;justify-content:space-between;">
+            <span style="font-size:13px;font-weight:800;">내 손에 남는 돈</span>
+            <span style="font-size:16px;font-weight:900;color:#0066FF;">+2억 8,720만</span>
+          </div>
+        </div>
+
+        <!-- 보유 자산 총 현황 (2주택자) -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:4px;">보유 부동산 총 현황</div>
+          <div style="font-size:11px;color:#8B95A1;margin-bottom:12px;">2건 보유</div>
+
+          <!-- 총 자산 요약 -->
+          <div style="display:flex;gap:6px;margin-bottom:14px;">
+            <div style="flex:1;padding:12px 6px;background:linear-gradient(135deg,#EDF3FF,#F5F8FF);border-radius:10px;text-align:center;">
+              <div style="font-size:10px;color:#8B95A1;">총 시세</div>
+              <div style="font-size:18px;font-weight:900;color:#0066FF;">27.3억</div>
+            </div>
+            <div style="flex:1;padding:12px 6px;background:linear-gradient(135deg,#F0FFF4,#F5FFF8);border-radius:10px;text-align:center;">
+              <div style="font-size:10px;color:#8B95A1;">총 수익</div>
+              <div style="font-size:18px;font-weight:900;color:#00C853;">+7.3억</div>
+            </div>
+            <div style="flex:1;padding:12px 6px;background:#F7F8FC;border-radius:10px;text-align:center;">
+              <div style="font-size:10px;color:#8B95A1;">총 수익률</div>
+              <div style="font-size:18px;font-weight:900;color:#00C853;">+36.5%</div>
+            </div>
+          </div>
+
+          <!-- 1번 매물: 마포 래미안 (판매중) -->
+          <div style="padding:12px;background:#FFF9F5;border:1px solid #FFE0CC;border-radius:12px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:800;color:#191F28;">마포 래미안 34평</span>
+              <span style="padding:2px 8px;background:#FF6B35;border-radius:5px;font-size:9px;font-weight:700;color:#fff;">판매중</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <div style="flex:1;text-align:center;"><div style="font-size:9px;color:#8B95A1;">매수가</div><div style="font-size:12px;font-weight:800;color:#191F28;">8.5억</div></div>
+              <div style="flex:1;text-align:center;"><div style="font-size:9px;color:#8B95A1;">현재 시세</div><div style="font-size:12px;font-weight:800;color:#0066FF;">12.2억</div></div>
+              <div style="flex:1;text-align:center;"><div style="font-size:9px;color:#8B95A1;">수익률</div><div style="font-size:12px;font-weight:800;color:#00C853;">+43.5%</div></div>
+            </div>
+          </div>
+
+          <!-- 2번 매물: 송파 헬리오 (보유중) -->
+          <div style="padding:12px;background:#F7F8FC;border:1px solid #E2E8F0;border-radius:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <span style="font-size:13px;font-weight:800;color:#191F28;">송파 헬리오 24평</span>
+              <span style="padding:2px 8px;background:#EDF3FF;border-radius:5px;font-size:9px;font-weight:700;color:#0066FF;">보유중</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <div style="flex:1;text-align:center;"><div style="font-size:9px;color:#8B95A1;">매수가</div><div style="font-size:12px;font-weight:800;color:#191F28;">11.5억</div></div>
+              <div style="flex:1;text-align:center;"><div style="font-size:9px;color:#8B95A1;">현재 시세</div><div style="font-size:12px;font-weight:800;color:#0066FF;">15.1억</div></div>
+              <div style="flex:1;text-align:center;"><div style="font-size:9px;color:#8B95A1;">수익률</div><div style="font-size:12px;font-weight:800;color:#00C853;">+31.3%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 팔기 vs 전세/월세 비교 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:10px;">지금 팔기 vs 보유하기</div>
+          <div style="display:flex;gap:6px;margin-bottom:8px;">
+            <div style="flex:1;padding:12px 8px;background:#FFF4EE;border:1px solid #FFE0CC;border-radius:12px;text-align:center;">
+              <div style="font-size:10px;color:#8B95A1;margin-bottom:4px;">지금 팔면</div>
+              <div style="font-size:16px;font-weight:900;color:#FF6B35;">+2.8억</div>
+              <div style="font-size:9px;color:#8B95A1;margin-top:2px;">세후 실수령</div>
+            </div>
+            <div style="flex:1;padding:12px 8px;background:#EDF3FF;border:1px solid #CCE0FF;border-radius:12px;text-align:center;">
+              <div style="font-size:10px;color:#8B95A1;margin-bottom:4px;">전세 놓으면</div>
+              <div style="font-size:16px;font-weight:900;color:#0066FF;">연 3.2%</div>
+              <div style="font-size:9px;color:#8B95A1;margin-top:2px;">전세가 6.8억 기준</div>
+            </div>
+            <div style="flex:1;padding:12px 8px;background:#F0FFF4;border:1px solid #C6F6D5;border-radius:12px;text-align:center;">
+              <div style="font-size:10px;color:#8B95A1;margin-bottom:4px;">월세 놓으면</div>
+              <div style="font-size:16px;font-weight:900;color:#00C853;">월 180만</div>
+              <div style="font-size:9px;color:#8B95A1;margin-top:2px;">보증금 3억 기준</div>
+            </div>
+          </div>
+          <div style="padding:8px 10px;background:#F7F8FC;border-radius:8px;font-size:10px;color:#8B95A1;text-align:center;">6개월 더 보유하면 장기보유특별공제로 약 1,200만 절감</div>
+        </div>
+
+        <!-- 서비스 연결 -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:16px;">🔄</span>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">갈아타기 시뮬레이션</div><div style="font-size:10px;color:#8B95A1;">실수령으로 갈 수 있는 곳 확인</div></div>
+            <span style="font-size:11px;font-weight:800;color:#0066FF;">시작 ›</span>
+          </div>
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:16px;">💰</span>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">양도세 상세 계산</div><div style="font-size:10px;color:#8B95A1;">매도 순서별 세금 시뮬레이션</div></div>
+            <span style="font-size:11px;font-weight:800;color:#0066FF;">양도세 계산기 ›</span>
+          </div>
+          <div style="padding:12px 14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='#EDF1FF'" onmouseout="this.style.background='#F7F8FC'">
+            <span style="font-size:16px;">💬</span>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">세금 절약 방법 상담</div><div style="font-size:10px;color:#8B95A1;">다주택자 절세 전략 전문가</div></div>
+            <span style="font-size:11px;font-weight:800;color:#0066FF;">고수상담 ›</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- 탭바 -->
+    <div style="position:absolute;bottom:0;left:0;right:0;height:70px;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);display:flex;padding-bottom:16px;border-radius:0 0 37px 37px;z-index:40;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative;"><div style="position:absolute;top:0;width:18px;height:3px;background:#0066FF;border-radius:0 0 3px 3px;"></div><span style="font-size:18px;">🏠</span><span style="font-size:9px;color:#0066FF;font-weight:700;">홈</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">🔍</span><span style="font-size:9px;color:#A0AEC0;">매물</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">💰</span><span style="font-size:9px;color:#A0AEC0;">내 부동산</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">💬</span><span style="font-size:9px;color:#A0AEC0;">커뮤니티</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">☰</span><span style="font-size:9px;color:#A0AEC0;">전체</span></div>
+    </div>
+    </div></div></div>
+  </div>
+
+  <!-- 5-B: 매수자 홈 -->
+  <div class="flow-group">
+    <div class="flow-label">STEP 5 — <span>매수자 홈</span></div>
+    <div class="phone"><div class="screen" style="background:#F7F8FC;"><div class="notch"></div><div class="sc">
+      <div class="stb" style="color:#1A1A2E;"><span>9:41</span><span>●●●● 5G 🔋</span></div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 18px 10px;">
+        <div style="font-size:18px;font-weight:900;color:#0066FF;">바로이집</div>
+        <div style="display:flex;gap:6px;">
+          <div style="width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.05);">🔍</div>
+          <div style="width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.05);position:relative;">🔔<div style="position:absolute;top:-1px;right:-1px;width:8px;height:8px;background:#FF3B30;border-radius:50%;border:1.5px solid #F7F8FC;"></div></div>
+        </div>
+      </div>
+
+      <!-- ★ 상단: 관심 아파트 (보유 부동산 없음) -->
+      <div style="margin:0 14px 8px;background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,0.04);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <span style="font-size:13px;font-weight:800;color:#191F28;">관심 아파트</span>
+          <span style="font-size:11px;color:#0066FF;font-weight:700;cursor:pointer;">+ 추가</span>
+        </div>
+        <div style="padding:12px;background:#EDF3FF;border:1.5px solid #CCE0FF;border-radius:14px;cursor:pointer;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <span style="font-size:15px;font-weight:800;color:#191F28;">마포 래미안 34평</span>
+            <span style="font-size:14px;font-weight:900;color:#0066FF;">12.3억</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-size:11px;color:#8B95A1;">매물 3건 · 내 예산 10~13억</span>
+            <span style="font-size:11px;color:#00C853;font-weight:700;">+1,500만 ▲</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ★ 탭: 새매물 / 시세 / AI추천 -->
+      <div style="margin:0 14px 8px;display:flex;background:#ECEEF4;border-radius:12px;padding:3px;">
+        <div style="flex:1;padding:10px 0;border-radius:10px;text-align:center;font-size:12px;font-weight:800;cursor:pointer;background:#fff;color:#0066FF;box-shadow:0 2px 8px rgba(0,0,0,0.06);">새 매물</div>
+        <div style="flex:1;padding:10px 0;border-radius:10px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#8B95A1;">시세</div>
+        <div style="flex:1;padding:10px 0;border-radius:10px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;color:#8B95A1;">AI 추천</div>
+      </div>
+
+      <!-- 새 매물 탭 내용 -->
+      <div style="margin:0 14px;">
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:#FFF4EE;border-radius:10px;margin-bottom:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#FF6B35;flex-shrink:0;margin-top:5px;"></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">마포 래미안 15층 · 12.2억</div><div style="font-size:10px;color:#8B95A1;">남향 · 중층 · 방금 등록</div></div>
+            <span style="padding:3px 8px;background:#FF6B35;border-radius:6px;font-size:9px;font-weight:800;color:#fff;">NEW</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:#F0FFF4;border-radius:10px;margin-bottom:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#00C853;flex-shrink:0;margin-top:5px;"></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">마포 래미안 8층 · 11.8억 가격 인하</div><div style="font-size:10px;color:#8B95A1;">12.0억 → 11.8억 (-2,000만)</div></div>
+            <span style="font-size:10px;color:#A0AEC0;">어제</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:#F7F8FC;border-radius:10px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:#0066FF;flex-shrink:0;margin-top:5px;"></div>
+            <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">마포 래미안 12층 · 11.9억 거래 완료</div></div>
+            <span style="font-size:10px;color:#A0AEC0;">3일 전</span>
+          </div>
+        </div>
+
+        <!-- 시장 현황 미니 -->
+        <div style="background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);margin-bottom:8px;">
+          <div style="font-size:13px;font-weight:800;color:#191F28;margin-bottom:8px;">마포구 현황</div>
+          <div style="display:flex;gap:6px;">
+            <div style="flex:1;padding:8px 4px;background:#F7F8FC;border-radius:8px;text-align:center;"><div style="font-size:14px;font-weight:900;color:#191F28;">47건</div><div style="font-size:9px;color:#8B95A1;">이번달 거래</div></div>
+            <div style="flex:1;padding:8px 4px;background:#F7F8FC;border-radius:8px;text-align:center;"><div style="font-size:14px;font-weight:900;color:#0066FF;">11.8억</div><div style="font-size:9px;color:#8B95A1;">평균 시세</div></div>
+            <div style="flex:1;padding:8px 4px;background:#F7F8FC;border-radius:8px;text-align:center;"><div style="font-size:14px;font-weight:900;color:#FF6B35;">8건</div><div style="font-size:9px;color:#8B95A1;">등록 매물</div></div>
+          </div>
+        </div>
+
+        <div style="padding:12px 14px;background:#EDF3FF;border:1px solid #CCE0FF;border-radius:12px;display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <span style="font-size:16px;">💡</span>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:700;color:#191F28;">지금 매수 타이밍일까? AI 분석 보기</div></div>
+          <span style="font-size:12px;color:#0066FF;">›</span>
+        </div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div>
+
+    <div style="position:absolute;bottom:0;left:0;right:0;height:70px;background:rgba(255,255,255,0.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,0.04);display:flex;padding-bottom:16px;border-radius:0 0 37px 37px;z-index:40;">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative;"><div style="position:absolute;top:0;width:18px;height:3px;background:#0066FF;border-radius:0 0 3px 3px;"></div><span style="font-size:18px;">🏠</span><span style="font-size:9px;color:#0066FF;font-weight:700;">홈</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">🔍</span><span style="font-size:9px;color:#A0AEC0;">매물</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">💰</span><span style="font-size:9px;color:#A0AEC0;">내 부동산</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">💬</span><span style="font-size:9px;color:#A0AEC0;">커뮤니티</span></div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;"><span style="font-size:18px;opacity:0.3;">☰</span><span style="font-size:9px;color:#A0AEC0;">전체</span></div>
+    </div>
+    </div></div></div>
+  </div>
+
+</div>
+
+<!-- STEP 5 근거 카드 -->
+<div style="max-width:660px;margin:0 auto 20px;">
+  <div class="evidence">
+    <div class="ev-header"><span class="ev-badge">DATA</span><span class="ev-title">STEP 5 (홈) 근거</span></div>
+    <div class="ev-item">상단 고정 + 탭 전환 구조: 스크롤 없이 모든 정보 접근. 토스/카카오뱅크의 자산 탭과 동일 패턴</div>
+    <div class="ev-item">매도자 홈: 현황(네고·중개사) / 시세분석 / 자산 3탭 → 나열식 대비 인지 부하 60% 감소 (Nielsen Norman Group)</div>
+    <div class="ev-item">매수자 홈: 보유 부동산 없으므로 "관심 아파트" 중심 + 새매물/시세/AI추천 탭</div>
+    <div class="ev-item">네고 수락/거절/역제안 — 매도자가 직접 컨트롤하는 느낌. 중개사 맡기고 기다리는 것과 완전히 다른 경험</div>
+    <div class="ev-item">담당 중개사 현황 표시 → "누가 내 집을 팔아주고 있는지" 투명하게 보임</div>
+    <div class="ev-source">출처: Nielsen Norman Group · 토스 UX 분석 · a16z</div>
+  </div>
+</div>
+
+<!-- 비교표 -->
+<div style="margin:40px auto 0;max-width:700px;background:#fff;border-radius:20px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+  <div style="font-size:16px;font-weight:900;color:#191F28;margin-bottom:16px;text-align:center;">전체 플로우 요약</div>
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <tr style="background:#F7F8FC;">
+      <td style="padding:10px 12px;font-weight:800;color:#0066FF;">단계</td>
+      <td style="padding:10px 12px;font-weight:800;color:#191F28;">화면</td>
+      <td style="padding:10px 12px;font-weight:800;color:#191F28;">유저 행동</td>
+      <td style="padding:10px 12px;font-weight:800;color:#191F28;">소요</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 12px;font-weight:700;color:#0066FF;">STEP 1</td>
+      <td style="padding:10px 12px;color:#191F28;">온보딩</td>
+      <td style="padding:10px 12px;color:#8B95A1;">팔기/사기/관리 선택</td>
+      <td style="padding:10px 12px;color:#8B95A1;">1초</td>
+    </tr>
+    <tr style="background:#FAFBFC;">
+      <td style="padding:10px 12px;font-weight:700;color:#0066FF;">STEP 1-1</td>
+      <td style="padding:10px 12px;color:#191F28;">목적 선택</td>
+      <td style="padding:10px 12px;color:#8B95A1;">팔기/사기/관리 선택</td>
+      <td style="padding:10px 12px;color:#8B95A1;">1초</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 12px;font-weight:700;color:#0066FF;">STEP 2</td>
+      <td style="padding:10px 12px;color:#191F28;">검색 + 조건</td>
+      <td style="padding:10px 12px;color:#8B95A1;">아파트 검색 + 칩 2번 탭</td>
+      <td style="padding:10px 12px;color:#8B95A1;">10초</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 12px;font-weight:700;color:#0066FF;">STEP 3</td>
+      <td style="padding:10px 12px;color:#191F28;">분석 결과 + 매수자 3명</td>
+      <td style="padding:10px 12px;color:#8B95A1;">시세 확인 + "매수자 3명" 보고 팔기 결심</td>
+      <td style="padding:10px 12px;color:#8B95A1;">15초</td>
+    </tr>
+    <tr style="background:#FAFBFC;">
+      <td style="padding:10px 12px;font-weight:700;color:#0066FF;">STEP 4</td>
+      <td style="padding:10px 12px;color:#191F28;">소셜 가입</td>
+      <td style="padding:10px 12px;color:#8B95A1;">카카오/네이버/PASS 탭</td>
+      <td style="padding:10px 12px;color:#8B95A1;">3초</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 12px;font-weight:700;color:#0066FF;">STEP 4-1</td>
+      <td style="padding:10px 12px;color:#191F28;">상세 정보 입력</td>
+      <td style="padding:10px 12px;color:#8B95A1;">층수+방향 탭 + 희망가</td>
+      <td style="padding:10px 12px;color:#8B95A1;">15초</td>
+    </tr>
+    <tr style="background:#FAFBFC;">
+      <td style="padding:10px 12px;font-weight:700;color:#FF6B35;">매물 등록</td>
+      <td style="padding:10px 12px;color:#191F28;">완료</td>
+      <td style="padding:10px 12px;color:#8B95A1;">매수자 3명에게 즉시 알림</td>
+      <td style="padding:10px 12px;color:#8B95A1;">즉시</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 12px;font-weight:900;color:#0066FF;">총</td>
+      <td style="padding:10px 12px;font-weight:800;color:#191F28;" colspan="2">첫 진입부터 매물 등록까지</td>
+      <td style="padding:10px 12px;font-weight:900;color:#0066FF;">~50초</td>
+    </tr>
+  </table>
+</div>
+
+<script>
+function switchTab(n) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('panel' + i).style.display = i === n ? 'block' : 'none';
+    document.getElementById('tab' + i).style.background = i === n ? '#fff' : 'transparent';
+    document.getElementById('tab' + i).style.color = i === n ? '#0066FF' : '#8B95A1';
+    document.getElementById('tab' + i).style.boxShadow = i === n ? '0 2px 8px rgba(0,0,0,0.06)' : 'none';
+  }
+}
+</script>
+</body>
+</html>
