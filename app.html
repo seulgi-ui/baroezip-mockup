@@ -605,7 +605,11 @@
 (function(){let c=document.getElementById('counter'),n=0,t=127;function r(){if(n<=t){c.textContent=n;let s=n<80?12:n<110?25:50;n+=n<80?4:n<110?2:1;setTimeout(r,s)}else{setTimeout(()=>{n=0;r()},2500)}};r()})();
 // 화면전환
 let hist=['p1'];
-function go(id){const cur=hist[hist.length-1];if(cur===id)return;document.getElementById(cur).className='page left';document.getElementById(id).className='page active';hist.push(id);document.getElementById(id).scrollTop=0;}
+function go(id){const cur=hist[hist.length-1];if(cur===id)return;document.getElementById(cur).className='page left';const el=document.getElementById(id);el.className=el.classList.contains('page-with-tab')?'page active page-with-tab':'page active';hist.push(id);if(el.querySelector('.scroll-area'))el.querySelector('.scroll-area').scrollTop=0;else el.scrollTop=0;}
+function goBack(){if(hist.length<=1)return;const cur=hist.pop();const prev=hist[hist.length-1];document.getElementById(cur).className='page hidden';const el=document.getElementById(prev);el.className=el.classList.contains('page-with-tab')?'page active page-with-tab':'page active';}
+// 브라우저 뒤로가기 지원
+history.pushState(null,null,location.href);
+window.addEventListener('popstate',function(){history.pushState(null,null,location.href);goBack();});
 // 칩선택
 function sel(el){el.parentElement.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
 // 매도자홈 탭
