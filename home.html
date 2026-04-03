@@ -390,46 +390,86 @@
     <span style="font-size:17px;font-weight:800;color:#191F28;">세후 실수령</span>
   </div>
 
-  <div style="margin:0 16px 14px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-    <div style="font-size:13px;color:#8B95A1;margin-bottom:14px;">마포 래미안 34평 · 12.2억 기준</div>
+  <!-- ★ 핵심 숫자 먼저 (크게) -->
+  <div style="margin:0 16px 14px;padding:24px 20px;background:linear-gradient(135deg,#0F1724,#182540);border-radius:20px;text-align:center;">
+    <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:6px;">마포 래미안 34평 · 12.2억 매도 시</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:4px;">내 손에 남는 돈</div>
+    <div style="font-size:38px;font-weight:900;color:#4ADE80;letter-spacing:-1px;">+2억 8,140만</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:6px;">매도가 대비 <strong style="color:rgba(255,255,255,0.7);">23.1%</strong> 수익</div>
+  </div>
 
-    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
-      <span style="color:#8B95A1;">매도 예상가</span><span style="font-weight:700;color:#191F28;">12억 2,000만</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
-      <span style="color:#8B95A1;">양도소득세</span><span style="font-weight:700;color:#E53E3E;">-5,800만</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
-      <span style="color:#8B95A1;">지방소득세</span><span style="font-weight:700;color:#E53E3E;">-580만</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
-      <span style="color:#8B95A1;">중개보수</span><span style="font-weight:700;color:#E53E3E;">-480만</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px solid #F0F1F5;">
-      <span style="color:#8B95A1;">매수가 차감</span><span style="font-weight:700;color:#E53E3E;">-8억 5,000만</span>
+  <!-- ★ 시각적 차감 바 -->
+  <div style="margin:0 16px 14px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:14px;">수익 계산 상세</div>
+
+    <!-- 매도가 (전체) -->
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#8B95A1;">매도 예상가</span><span style="font-size:13px;font-weight:800;color:#191F28;">12억 2,000만</span></div>
+      <div style="height:8px;background:#E2E8F0;border-radius:4px;"><div style="height:100%;width:100%;background:#0066FF;border-radius:4px;"></div></div>
     </div>
 
-    <div style="display:flex;justify-content:space-between;padding:14px 0 0;margin-top:4px;">
-      <span style="font-size:15px;font-weight:900;color:#191F28;">내 손에 남는 돈</span>
-      <span style="font-size:20px;font-weight:900;color:#0066FF;">+2억 8,140만</span>
+    <!-- 매수가 -->
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#8B95A1;">매수가 (취득가)</span><span style="font-size:13px;font-weight:800;color:#191F28;">-8억 5,000만</span></div>
+      <div style="height:8px;background:#E2E8F0;border-radius:4px;"><div style="height:100%;width:69.7%;background:#8B95A1;border-radius:4px;"></div></div>
+    </div>
+
+    <!-- 양도소득세 -->
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <div style="display:flex;align-items:center;gap:4px;"><span style="font-size:12px;color:#8B95A1;">양도소득세</span><span style="padding:1px 5px;background:#F7F8FC;border-radius:4px;font-size:9px;color:#8B95A1;">장기보유공제 적용</span></div>
+        <span style="font-size:13px;font-weight:800;color:#E53E3E;">-5,800만</span>
+      </div>
+      <div style="height:8px;background:#E2E8F0;border-radius:4px;"><div style="height:100%;width:4.75%;background:#E53E3E;border-radius:4px;"></div></div>
+    </div>
+
+    <!-- 지방소득세 -->
+    <div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#8B95A1;">지방소득세 (양도세의 10%)</span><span style="font-size:13px;font-weight:800;color:#E53E3E;">-580만</span></div>
+      <div style="height:8px;background:#E2E8F0;border-radius:4px;"><div style="height:100%;width:0.5%;background:#E53E3E;border-radius:4px;min-width:4px;"></div></div>
+    </div>
+
+    <!-- 중개보수 -->
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:12px;color:#8B95A1;">중개보수 (0.4%)</span><span style="font-size:13px;font-weight:800;color:#E53E3E;">-480만</span></div>
+      <div style="height:8px;background:#E2E8F0;border-radius:4px;"><div style="height:100%;width:0.4%;background:#E53E3E;border-radius:4px;min-width:4px;"></div></div>
+    </div>
+
+    <!-- 구분선 + 합계 -->
+    <div style="border-top:2px solid #F0F1F5;padding-top:14px;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:14px;font-weight:900;color:#191F28;">순수익</div>
+        <div style="font-size:11px;color:#8B95A1;margin-top:2px;">세금 + 비용 총 <strong style="color:#E53E3E;">6,860만</strong> 차감</div>
+      </div>
+      <div style="font-size:22px;font-weight:900;color:#0066FF;">+2억 8,140만</div>
     </div>
   </div>
 
-  <!-- 보유 기간 혜택 -->
-  <div style="margin:0 16px 14px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-    <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:10px;">보유 기간 혜택</div>
-    <div style="padding:12px;background:#EDF3FF;border-radius:10px;margin-bottom:8px;">
-      <div style="font-size:13px;font-weight:700;color:#0066FF;">6개월 더 보유하면</div>
-      <div style="font-size:12px;color:#8B95A1;margin-top:4px;">장기보유특별공제 구간 변동으로 약 <strong style="color:#0066FF;">1,200만원</strong> 절감</div>
+  <!-- ★ 보유 기간 혜택 -->
+  <div style="margin:0 16px 14px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:14px;font-weight:800;color:#191F28;margin-bottom:12px;">더 절약할 수 있어요</div>
+    <div style="padding:14px;background:#EDF3FF;border-radius:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:#0066FF;">6개월 더 보유하면</div>
+        <div style="font-size:12px;color:#8B95A1;margin-top:2px;">장기보유공제로 약 <strong style="color:#0066FF;">1,200만원</strong> 절감</div>
+      </div>
     </div>
-    <div style="padding:12px;background:#F7F8FC;border-radius:10px;">
-      <div style="font-size:13px;font-weight:700;color:#191F28;">2년 더 보유하면</div>
-      <div style="font-size:12px;color:#8B95A1;margin-top:4px;">1세대 1주택 비과세 요건 충족 가능</div>
+    <div style="padding:14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:12px;">
+      <div style="width:36px;height:36px;border-radius:10px;background:#F0F1F5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="font-size:13px;font-weight:700;color:#191F28;">2년 더 보유하면</div>
+        <div style="font-size:12px;color:#8B95A1;margin-top:2px;">1세대 1주택 비과세 요건 충족 가능</div>
+      </div>
     </div>
   </div>
 
-  <!-- 연결 -->
-  <div style="margin:0 16px;display:flex;flex-direction:column;gap:6px;">
+  <!-- ★ 연결 -->
+  <div style="margin:0 16px 20px;display:flex;flex-direction:column;gap:6px;">
     <div style="padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;">
       <div style="width:32px;height:32px;border-radius:8px;background:#F0FFF4;display:flex;align-items:center;justify-content:center;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
