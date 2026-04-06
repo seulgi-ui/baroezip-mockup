@@ -827,15 +827,16 @@
 
     <!-- 지도보기/리스트 토글 -->
     <div style="display:flex;margin:0 16px 14px;background:#F0F1F5;border-radius:10px;padding:3px;">
-      <div style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:800;background:#fff;color:#191F28;box-shadow:0 1px 4px rgba(0,0,0,0.06);cursor:pointer;">
+      <div id="dealMapBtn" onclick="switchDealView('map')" style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:800;background:#fff;color:#191F28;box-shadow:0 1px 4px rgba(0,0,0,0.06);cursor:pointer;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>지도
       </div>
-      <div style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:700;color:#8B95A1;cursor:pointer;">
+      <div id="dealListBtn" onclick="switchDealView('list')" style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:700;color:#8B95A1;cursor:pointer;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>리스트
       </div>
     </div>
 
-    <!-- 미니 지도 -->
+    <!-- 지도 뷰 -->
+    <div id="dealMapView">
     <div style="margin:0 16px 14px;height:180px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:16px;position:relative;overflow:hidden;">
       <!-- 지도 배경 -->
       <div style="position:absolute;inset:0;opacity:0.15;">
@@ -865,6 +866,101 @@
       <div style="padding:7px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:18px;font-size:11px;font-weight:600;color:#8B95A1;white-space:nowrap;flex-shrink:0;">강남구</div>
       <div style="padding:7px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:18px;font-size:11px;font-weight:600;color:#8B95A1;white-space:nowrap;flex-shrink:0;">강동구</div>
     </div>
+
+    </div><!-- /dealMapView -->
+
+    <!-- 리스트 뷰 (기본 숨김) -->
+    <div id="dealListView" style="display:none;">
+
+      <!-- 정렬 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px 10px;">
+        <span style="font-size:14px;font-weight:800;color:#191F28;">전체 매물 <span style="color:#0066FF;">24건</span></span>
+        <div style="display:flex;gap:6px;">
+          <span style="padding:5px 10px;background:#191F28;border-radius:14px;font-size:10px;font-weight:700;color:#fff;cursor:pointer;">낮은가격순</span>
+          <span style="padding:5px 10px;background:#fff;border:1px solid #E2E8F0;border-radius:14px;font-size:10px;font-weight:600;color:#8B95A1;cursor:pointer;">최신순</span>
+        </div>
+      </div>
+
+      <!-- 리스트 아이템 1 -->
+      <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;">
+        <div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="font-size:14px;font-weight:800;color:#191F28;">마포 래미안 34평</span>
+            <span style="padding:2px 6px;background:#FF3B30;border-radius:4px;font-size:9px;font-weight:800;color:#fff;">급매</span>
+          </div>
+          <div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">11.8억 <span style="font-size:11px;color:#FF3B30;text-decoration:line-through;font-weight:600;">12.3억</span></div>
+          <div style="font-size:11px;color:#8B95A1;">마포구 공덕동 · 8층 · 남동향</div>
+          <div style="margin-top:6px;font-size:10px;font-weight:700;color:#0066FF;">AI 적정가 대비 4.1% 저렴</div>
+        </div>
+      </div>
+
+      <!-- 리스트 아이템 2 -->
+      <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;">
+        <div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="font-size:14px;font-weight:800;color:#191F28;">송파 헬리오시티 24평</span>
+            <span style="padding:2px 6px;background:#FF3B30;border-radius:4px;font-size:9px;font-weight:800;color:#fff;">급매</span>
+          </div>
+          <div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">14.5억 <span style="font-size:11px;color:#FF3B30;text-decoration:line-through;font-weight:600;">15.1억</span></div>
+          <div style="font-size:11px;color:#8B95A1;">송파구 가락동 · 15층 · 남향</div>
+          <div style="margin-top:6px;font-size:10px;font-weight:700;color:#0066FF;">AI 적정가 대비 3.8% 저렴</div>
+        </div>
+      </div>
+
+      <!-- 리스트 아이템 3 -->
+      <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;">
+        <div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="font-size:14px;font-weight:800;color:#191F28;">강동 고덕 래미안 34평</span>
+            <span style="padding:2px 6px;background:#FFF5F5;border-radius:4px;font-size:9px;font-weight:700;color:#FF3B30;">-2,000만↓</span>
+          </div>
+          <div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">11.0억 <span style="font-size:11px;color:#8B95A1;text-decoration:line-through;font-weight:600;">11.2억</span></div>
+          <div style="font-size:11px;color:#8B95A1;">강동구 고덕동 · 18층 · 남향</div>
+        </div>
+      </div>
+
+      <!-- 리스트 아이템 4 -->
+      <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;">
+        <div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="font-size:14px;font-weight:800;color:#191F28;">잠실 엘스 84㎡</span>
+            <span style="padding:2px 6px;background:#FFF5F5;border-radius:4px;font-size:9px;font-weight:700;color:#FF3B30;">-3,000만↓</span>
+          </div>
+          <div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">18.2억 <span style="font-size:11px;color:#8B95A1;text-decoration:line-through;font-weight:600;">18.5억</span></div>
+          <div style="font-size:11px;color:#8B95A1;">송파구 잠실동 · 22층 · 남동향</div>
+        </div>
+      </div>
+
+      <!-- 리스트 아이템 5 -->
+      <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;">
+        <div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+            <span style="font-size:14px;font-weight:800;color:#191F28;">강남 래미안 59㎡</span>
+            <span style="padding:2px 6px;background:#EDF3FF;border-radius:4px;font-size:9px;font-weight:700;color:#0066FF;">AI -2.8%</span>
+          </div>
+          <div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">17.7억</div>
+          <div style="font-size:11px;color:#8B95A1;">강남구 도곡동 · 10층 · 남향</div>
+          <div style="margin-top:6px;font-size:10px;font-weight:700;color:#0066FF;">AI 적정가 18.2억 대비 저렴</div>
+        </div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div><!-- /dealListView -->
 
     <!-- 🔥 오늘의 급매 -->
     <div style="padding:0 16px 6px;display:flex;align-items:center;gap:6px;">
@@ -1010,6 +1106,21 @@ function toggleCard(id){
 }
 function showPanel(id){document.getElementById(id).style.display='block';}
 function hidePanel(id){document.getElementById(id).style.display='none';}
+function switchDealView(v){
+  const map=document.getElementById('dealMapView');
+  const list=document.getElementById('dealListView');
+  const mapBtn=document.getElementById('dealMapBtn');
+  const listBtn=document.getElementById('dealListBtn');
+  if(v==='map'){
+    map.style.display='block';list.style.display='none';
+    mapBtn.style.background='#fff';mapBtn.style.color='#191F28';mapBtn.style.fontWeight='800';mapBtn.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)';
+    listBtn.style.background='transparent';listBtn.style.color='#8B95A1';listBtn.style.fontWeight='700';listBtn.style.boxShadow='none';
+  }else{
+    map.style.display='none';list.style.display='block';
+    listBtn.style.background='#fff';listBtn.style.color='#191F28';listBtn.style.fontWeight='800';listBtn.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)';
+    mapBtn.style.background='transparent';mapBtn.style.color='#8B95A1';mapBtn.style.fontWeight='700';mapBtn.style.boxShadow='none';
+  }
+}
 function toggleAsset(){
   const el=document.getElementById('assetExpand');
   const arrow=document.getElementById('assetArrow');
