@@ -447,12 +447,12 @@
     <div class="link-row"><span style="font-size:16px;">💬</span><div style="flex:1;font-size:12px;font-weight:700;">세금 절약 방법 상담</div><span style="font-size:11px;font-weight:800;color:#0066FF;">고수상담 ›</span></div>
   </div>
   <!-- 탭바 -->
-  <div class="tabbar">
-    <div class="tab-i on"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></span><span>자산</span></div>
-    <div class="tab-i"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span>급매물</span></div>
-    <div class="tab-i"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span><span>고수상담</span></div>
-    <div class="tab-i"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><span>멤버십</span></div>
-    <div class="tab-i"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span>내정보</span></div>
+  <div class="tabbar" id="tabbar_sell">
+    <div class="tab-i on" onclick="switchTab(this,0)"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></span><span>자산</span></div>
+    <div class="tab-i" onclick="switchTab(this,1);showPanel('panel_deals')"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span>급매물</span></div>
+    <div class="tab-i" onclick="switchTab(this,2);showPanel('panel_consult')"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span><span>고수상담</span></div>
+    <div class="tab-i" onclick="switchTab(this,3)"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span><span>멤버십</span></div>
+    <div class="tab-i" onclick="switchTab(this,4)"><span><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><span>내정보</span></div>
   </div>
 </div>
 
@@ -675,6 +675,141 @@
     <div class="tab-i"><span>💳</span><span>크레딧</span></div>
     <div class="tab-i"><span>📊</span><span>성과</span></div>
     <div class="tab-i"><span>☰</span><span>전체</span></div>
+  </div>
+</div>
+
+<!-- ═══ 패널: 급매물 ═══ -->
+<div id="panel_deals" class="panel" style="background:#F7F8FC;overflow-y:auto;">
+  <div style="height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:600;color:#191F28;"><span>9:41</span><span>5G</span></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px 14px;">
+    <span onclick="hidePanel('panel_deals')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">급매물</span>
+    <div style="display:flex;gap:8px;">
+      <div style="width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <div style="width:32px;height:32px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.06);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+    </div>
+  </div>
+  <!-- 지도/리스트 토글 -->
+  <div style="display:flex;margin:0 16px 14px;background:#F0F1F5;border-radius:10px;padding:3px;">
+    <div id="dealMapBtn" onclick="switchDealView('map')" style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:800;background:#fff;color:#191F28;box-shadow:0 1px 4px rgba(0,0,0,0.06);cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>지도</div>
+    <div id="dealListBtn" onclick="switchDealView('list')" style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:700;color:#8B95A1;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>리스트</div>
+  </div>
+  <!-- 지도 뷰 -->
+  <div id="dealMapView">
+    <div style="margin:0 16px 14px;height:180px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:16px;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;opacity:0.15;"><div style="position:absolute;top:20%;left:15%;width:70%;height:1px;background:#8B95A1;"></div><div style="position:absolute;top:40%;left:10%;width:80%;height:1px;background:#8B95A1;"></div><div style="position:absolute;top:60%;left:20%;width:60%;height:1px;background:#8B95A1;"></div><div style="position:absolute;top:30%;left:30%;width:1px;height:50%;background:#8B95A1;"></div><div style="position:absolute;top:20%;left:60%;width:1px;height:60%;background:#8B95A1;"></div></div>
+      <div style="position:absolute;top:25%;left:20%;"><div style="padding:4px 8px;background:#FF3B30;border-radius:8px;font-size:10px;font-weight:800;color:#fff;white-space:nowrap;">11.8억</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #FF3B30;margin:0 auto;"></div></div>
+      <div style="position:absolute;top:45%;left:50%;"><div style="padding:4px 8px;background:#0066FF;border-radius:8px;font-size:10px;font-weight:800;color:#fff;white-space:nowrap;">12.2억</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #0066FF;margin:0 auto;"></div></div>
+      <div style="position:absolute;top:60%;left:70%;"><div style="padding:4px 8px;background:#FF3B30;border-radius:8px;font-size:10px;font-weight:800;color:#fff;white-space:nowrap;">14.5억</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #FF3B30;margin:0 auto;"></div></div>
+      <div style="position:absolute;top:35%;left:75%;"><div style="padding:4px 8px;background:#0066FF;border-radius:8px;font-size:10px;font-weight:800;color:#fff;white-space:nowrap;">15.1억</div><div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #0066FF;margin:0 auto;"></div></div>
+      <div style="position:absolute;bottom:10px;left:10px;display:flex;gap:8px;padding:4px 8px;background:rgba(255,255,255,0.9);border-radius:6px;font-size:9px;"><span style="display:flex;align-items:center;gap:3px;"><div style="width:6px;height:6px;border-radius:50%;background:#FF3B30;"></div>급매</span><span style="display:flex;align-items:center;gap:3px;"><div style="width:6px;height:6px;border-radius:50%;background:#0066FF;"></div>일반</span></div>
+    </div>
+    <div style="display:flex;gap:6px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none;">
+      <div style="padding:7px 14px;background:#191F28;border-radius:18px;font-size:11px;font-weight:700;color:#fff;white-space:nowrap;flex-shrink:0;">서울 전체</div>
+      <div style="padding:7px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:18px;font-size:11px;font-weight:600;color:#8B95A1;white-space:nowrap;flex-shrink:0;">마포구</div>
+      <div style="padding:7px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:18px;font-size:11px;font-weight:600;color:#8B95A1;white-space:nowrap;flex-shrink:0;">송파구</div>
+      <div style="padding:7px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:18px;font-size:11px;font-weight:600;color:#8B95A1;white-space:nowrap;flex-shrink:0;">강남구</div>
+    </div>
+  </div>
+  <!-- 리스트 뷰 -->
+  <div id="dealListView" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px 10px;"><span style="font-size:14px;font-weight:800;color:#191F28;">전체 매물 <span style="color:#0066FF;">24건</span></span><div style="display:flex;gap:6px;"><span style="padding:5px 10px;background:#191F28;border-radius:14px;font-size:10px;font-weight:700;color:#fff;">낮은가격순</span><span style="padding:5px 10px;background:#fff;border:1px solid #E2E8F0;border-radius:14px;font-size:10px;font-weight:600;color:#8B95A1;">최신순</span></div></div>
+    <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;"><div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:14px;font-weight:800;color:#191F28;">마포 래미안 34평</span><span style="padding:2px 6px;background:#FF3B30;border-radius:4px;font-size:9px;font-weight:800;color:#fff;">급매</span></div><div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">11.8억 <span style="font-size:11px;color:#FF3B30;text-decoration:line-through;font-weight:600;">12.3억</span></div><div style="font-size:11px;color:#8B95A1;">마포구 공덕동 · 8층 · 남동향</div><div style="margin-top:6px;font-size:10px;font-weight:700;color:#0066FF;">AI 적정가 대비 4.1% 저렴</div></div></div>
+    <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;"><div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:14px;font-weight:800;color:#191F28;">송파 헬리오시티 24평</span><span style="padding:2px 6px;background:#FF3B30;border-radius:4px;font-size:9px;font-weight:800;color:#fff;">급매</span></div><div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">14.5억 <span style="font-size:11px;color:#FF3B30;text-decoration:line-through;font-weight:600;">15.1억</span></div><div style="font-size:11px;color:#8B95A1;">송파구 가락동 · 15층 · 남향</div><div style="margin-top:6px;font-size:10px;font-weight:700;color:#0066FF;">AI 적정가 대비 3.8% 저렴</div></div></div>
+    <div style="margin:0 16px 8px;padding:16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);cursor:pointer;display:flex;gap:14px;"><div style="width:80px;height:80px;background:linear-gradient(135deg,#E8ECF4,#D4DAE6);border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:14px;font-weight:800;color:#191F28;">강동 고덕 래미안 34평</span><span style="padding:2px 6px;background:#FFF5F5;border-radius:4px;font-size:9px;font-weight:700;color:#FF3B30;">-2,000만↓</span></div><div style="font-size:18px;font-weight:900;color:#191F28;margin-bottom:4px;">11.0억 <span style="font-size:11px;color:#8B95A1;text-decoration:line-through;font-weight:600;">11.2억</span></div><div style="font-size:11px;color:#8B95A1;">강동구 고덕동 · 18층 · 남향</div></div></div>
+  </div>
+  <!-- 오늘의 급매 -->
+  <div style="padding:14px 16px 6px;display:flex;align-items:center;gap:6px;"><span style="font-size:15px;font-weight:800;color:#191F28;">오늘의 급매</span><span style="font-size:12px;color:#FF3B30;font-weight:700;">3건</span></div>
+  <div style="margin:8px 16px 10px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);border-left:4px solid #FF3B30;cursor:pointer;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:15px;font-weight:800;color:#191F28;">마포 래미안 34평</span><span style="padding:3px 8px;background:#FF3B30;border-radius:6px;font-size:10px;font-weight:800;color:#fff;">급매</span></div>
+    <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:10px;"><span style="font-size:22px;font-weight:900;color:#191F28;">11.8억</span><span style="font-size:12px;font-weight:700;color:#FF3B30;text-decoration:line-through;">12.3억</span><span style="padding:2px 6px;background:#FFF5F5;border-radius:4px;font-size:11px;font-weight:800;color:#FF3B30;">-5,000만</span></div>
+    <div style="display:flex;gap:8px;font-size:11px;color:#8B95A1;"><span>마포구 공덕동</span><span>·</span><span>8층 · 남동향</span></div>
+    <div style="margin-top:10px;padding:8px 10px;background:#EDF3FF;border-radius:8px;font-size:11px;font-weight:700;color:#0066FF;">AI 적정가 대비 4.1% 저렴</div>
+  </div>
+  <div style="margin:0 16px 10px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);border-left:4px solid #FF3B30;cursor:pointer;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:15px;font-weight:800;color:#191F28;">송파 헬리오시티 24평</span><span style="padding:3px 8px;background:#FF3B30;border-radius:6px;font-size:10px;font-weight:800;color:#fff;">급매</span></div>
+    <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:10px;"><span style="font-size:22px;font-weight:900;color:#191F28;">14.5억</span><span style="font-size:12px;font-weight:700;color:#FF3B30;text-decoration:line-through;">15.1억</span><span style="padding:2px 6px;background:#FFF5F5;border-radius:4px;font-size:11px;font-weight:800;color:#FF3B30;">-6,000만</span></div>
+    <div style="display:flex;gap:8px;font-size:11px;color:#8B95A1;"><span>송파구 가락동</span><span>·</span><span>15층 · 남향</span></div>
+    <div style="margin-top:10px;padding:8px 10px;background:#EDF3FF;border-radius:8px;font-size:11px;font-weight:700;color:#0066FF;">AI 적정가 대비 3.8% 저렴</div>
+  </div>
+  <div style="height:8px;background:#F0F1F5;margin:6px 0;"></div>
+  <!-- AI 적정가보다 저렴한 매물 -->
+  <div style="padding:14px 16px 6px;"><span style="font-size:15px;font-weight:800;color:#191F28;">AI 적정가보다 저렴한 매물</span></div>
+  <div style="margin:8px 16px 10px;padding:16px;background:#fff;border-radius:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);cursor:pointer;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:15px;font-weight:800;color:#191F28;">강남 래미안 59㎡</span><span style="padding:3px 8px;background:#EDF3FF;border-radius:6px;font-size:10px;font-weight:700;color:#0066FF;">AI -2.8%</span></div>
+    <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px;"><span style="font-size:20px;font-weight:900;color:#0066FF;">17.7억</span><span style="font-size:12px;color:#8B95A1;">AI 적정가 18.2억</span></div>
+    <div style="display:flex;gap:8px;font-size:11px;color:#8B95A1;"><span>강남구 도곡동</span><span>·</span><span>10층 · 남향</span></div>
+  </div>
+  <div style="margin:6px 16px 20px;padding:14px 16px;background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;align-items:center;gap:10px;cursor:pointer;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#F7F8FC;display:flex;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+    <div style="flex:1;font-size:13px;font-weight:700;color:#191F28;">관심 지역 급매 알림 받기</div>
+    <span style="font-size:12px;color:#0066FF;font-weight:700;">설정 ›</span>
+  </div>
+</div>
+
+<!-- ═══ 패널: 고수상담 ═══ -->
+<div id="panel_consult" class="panel" style="background:#fff;overflow-y:auto;">
+  <div style="height:48px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 22px 5px;font-size:11px;font-weight:600;color:#191F28;"><span>9:41</span><span>5G</span></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 16px;">
+    <span onclick="hidePanel('panel_consult')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">고수상담</span>
+  </div>
+  <!-- 히어로 -->
+  <div style="margin:0 16px 16px;padding:24px 20px;background:linear-gradient(135deg,#0F1724,#182540);border-radius:20px;text-align:center;">
+    <div style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:6px;">부동산 고민, 전문가에게 맡기세요</div>
+    <div style="font-size:22px;font-weight:900;color:#fff;line-height:1.3;">고민을 올리면<br>전문가가 직접 제안합니다</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:10px;">평균 응답 시간 <strong style="color:#4ADE80;">2시간</strong> · 만족도 <strong style="color:#4ADE80;">4.8</strong></div>
+  </div>
+  <!-- 신뢰 수치 -->
+  <div style="display:flex;margin:0 16px 16px;background:#F7F8FC;border-radius:14px;overflow:hidden;">
+    <div style="flex:1;padding:16px 8px;text-align:center;border-right:1px solid #E2E8F0;"><div style="font-size:22px;font-weight:900;color:#0066FF;">4.8</div><div style="font-size:10px;color:#8B95A1;margin-top:3px;">평균 만족도</div></div>
+    <div style="flex:1;padding:16px 8px;text-align:center;border-right:1px solid #E2E8F0;"><div style="font-size:22px;font-weight:900;color:#191F28;">1,847건</div><div style="font-size:10px;color:#8B95A1;margin-top:3px;">누적 상담</div></div>
+    <div style="flex:1;padding:16px 8px;text-align:center;"><div style="font-size:22px;font-weight:900;color:#191F28;">52명</div><div style="font-size:10px;color:#8B95A1;margin-top:3px;">등록 전문가</div></div>
+  </div>
+  <!-- 카테고리 -->
+  <div style="padding:0 16px 16px;">
+    <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:12px;">이런 고민, 다 해결됩니다</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;"><div style="width:40px;height:40px;border-radius:12px;background:#FFF5F5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">💰</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">양도세 · 절세</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"얼마를 아낄 수 있을까?"</div></div><span style="font-size:12px;color:#A0AEC0;">›</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;"><div style="width:40px;height:40px;border-radius:12px;background:#EDF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🔄</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">갈아타기 · 매도 전략</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"언제, 어떻게 팔아야 할까?"</div></div><span style="font-size:12px;color:#A0AEC0;">›</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;"><div style="width:40px;height:40px;border-radius:12px;background:#F0FFF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🏠</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">청약 · 분양</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"당첨 확률 높이는 전략"</div></div><span style="font-size:12px;color:#A0AEC0;">›</span></div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;"><div style="width:40px;height:40px;border-radius:12px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">⚖️</div><div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">경매 · 공매</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"첫 경매, 뭘 알아야 할까?"</div></div><span style="font-size:12px;color:#A0AEC0;">›</span></div>
+    </div>
+  </div>
+  <div style="height:8px;background:#F7F8FC;"></div>
+  <!-- 전문가 풀 -->
+  <div style="padding:16px;">
+    <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:4px;">다양한 분야의 고수가 대기 중</div>
+    <div style="font-size:12px;color:#8B95A1;margin-bottom:14px;">고민을 올리면 관련 전문가들이 직접 제안을 보내드려요</div>
+    <div style="display:flex;gap:8px;margin-bottom:10px;">
+      <div style="flex:1;padding:16px 12px;background:#F7F8FC;border-radius:14px;text-align:center;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg></div>
+        <div style="font-size:13px;font-weight:800;color:#191F28;">리즈너블</div>
+        <div style="font-size:10px;color:#0066FF;font-weight:700;margin-top:3px;">청약 전문</div>
+        <div style="font-size:10px;color:#8B95A1;margin-top:4px;">4.9 · 312건</div>
+      </div>
+      <div style="flex:1;padding:16px 12px;background:#F7F8FC;border-radius:14px;text-align:center;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg></div>
+        <div style="font-size:13px;font-weight:800;color:#191F28;">규프로</div>
+        <div style="font-size:10px;color:#0066FF;font-weight:700;margin-top:3px;">경매 전문</div>
+        <div style="font-size:10px;color:#8B95A1;margin-top:4px;">4.7 · 189건</div>
+      </div>
+      <div style="flex:1;padding:16px 12px;background:#F7F8FC;border-radius:14px;text-align:center;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;"><svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg></div>
+        <div style="font-size:13px;font-weight:800;color:#191F28;">김세무</div>
+        <div style="font-size:10px;color:#0066FF;font-weight:700;margin-top:3px;">세무 전문</div>
+        <div style="font-size:10px;color:#8B95A1;margin-top:4px;">4.8 · 245건</div>
+      </div>
+    </div>
+  </div>
+  <!-- 가격 -->
+  <div style="margin:0 16px 16px;padding:16px;background:#EDF3FF;border-radius:14px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><span style="font-size:14px;font-weight:800;color:#191F28;">상담 비용</span><span style="font-size:20px;font-weight:900;color:#0066FF;">89,000원</span></div>
+    <div style="font-size:11px;color:#8B95A1;">1건 기준 · 멤버십 회원 30% 할인</div>
+  </div>
+  <!-- CTA -->
+  <div style="padding:0 16px 30px;">
+    <button style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(0,102,255,0.3);">고민 올리기</button>
   </div>
 </div>
 
@@ -930,6 +1065,8 @@ function toggleCard(id){const el=document.getElementById(id);const arrow=documen
 // 자산 영역 접기/펼치기
 function showPanel(id){document.getElementById(id).style.display='block';}
 function hidePanel(id){document.getElementById(id).style.display='none';}
+function switchTab(el,idx){const bar=el.parentElement;bar.querySelectorAll('.tab-i').forEach(t=>t.classList.remove('on'));el.classList.add('on');}
+function switchDealView(v){const map=document.getElementById('dealMapView'),list=document.getElementById('dealListView'),mb=document.getElementById('dealMapBtn'),lb=document.getElementById('dealListBtn');if(v==='map'){map.style.display='block';list.style.display='none';mb.style.background='#fff';mb.style.color='#191F28';mb.style.fontWeight='800';mb.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)';lb.style.background='transparent';lb.style.color='#8B95A1';lb.style.fontWeight='700';lb.style.boxShadow='none';}else{map.style.display='none';list.style.display='block';lb.style.background='#fff';lb.style.color='#191F28';lb.style.fontWeight='800';lb.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)';mb.style.background='transparent';mb.style.color='#8B95A1';mb.style.fontWeight='700';mb.style.boxShadow='none';}}
 function toggleAsset(){const el=document.getElementById('assetExpand');const arrow=document.getElementById('assetArrow');if(!el||!arrow)return;const isOpen=el.classList.contains('asset-open');if(isOpen){el.style.maxHeight='0px';el.classList.remove('asset-open');arrow.textContent='상세보기 ▾';}else{el.style.maxHeight='200px';el.classList.add('asset-open');arrow.textContent='접기 ▴';}}
 </script>
 </body>
