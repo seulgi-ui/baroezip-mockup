@@ -55,9 +55,25 @@
   .htab.on{background:#fff;color:#0066FF;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
   .link-row{padding:12px 14px;background:#F7F8FC;border-radius:12px;display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:6px;}
   .link-row:active{background:#EDF1FF;}
+  #dev-nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:10px 16px;max-width:500px;margin:0 auto;}
+  #dev-nav a{padding:6px 12px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;font-size:11px;font-weight:700;color:#4A5568;text-decoration:none;cursor:pointer;transition:all 0.15s;font-family:'Pretendard',sans-serif;}
+  #dev-nav a:hover{background:#0066FF;color:#fff;border-color:#0066FF;}
+  #dev-nav a.on{background:#0066FF;color:#fff;border-color:#0066FF;}
+  @media(max-width:499px){#dev-nav{padding:6px 10px;gap:4px;}#dev-nav a{padding:5px 8px;font-size:10px;}}
 </style>
 </head>
 <body>
+
+<nav id="dev-nav">
+  <a onclick="jumpTo('home_sell')">홈(매도)</a>
+  <a onclick="jumpTo('home_buy')">홈(매수)</a>
+  <a onclick="jumpTo('panel_deals')">급매물</a>
+  <a onclick="jumpTo('panel_consult')">고수상담</a>
+  <a onclick="jumpTo('panel_community')">커뮤니티</a>
+  <a onclick="jumpTo('panel_menu')">전체메뉴</a>
+  <a onclick="jumpTo('panel_membership')">멤버십</a>
+  <a onclick="jumpTo('panel_myinfo')">내정보</a>
+</nav>
 
 <div id="app-wrap">
 <!-- ═══ P1: 온보딩 ═══ -->
@@ -1501,6 +1517,22 @@ function toggleCard(id){const el=document.getElementById(id);const arrow=documen
 // 자산 영역 접기/펼치기
 function showPanel(id){document.getElementById(id).style.display='block';}
 function hidePanel(id){document.getElementById(id).style.display='none';}
+function jumpTo(target){
+  // 모든 패널 닫기
+  document.querySelectorAll('.panel').forEach(p=>p.style.display='none');
+  // 모든 페이지 hidden
+  document.querySelectorAll('.page').forEach(p=>{p.className='page hidden';if(p.hasAttribute('data-tab'))p.className+=' page-with-tab';});
+  // home_sell 활성화
+  const home=document.getElementById('home_sell');
+  home.className='page active page-with-tab';
+  hist=['home_sell'];
+  // 패널이면 열기, 페이지면 이동
+  if(target.startsWith('panel_')){document.getElementById(target).style.display='block';}
+  else if(target!=='home_sell'){go(target);}
+  // 네비 하이라이트
+  document.querySelectorAll('#dev-nav a').forEach(a=>a.classList.remove('on'));
+  event.target.classList.add('on');
+}
 function switchTab(el,idx){const bar=el.parentElement;bar.querySelectorAll('.tab-i').forEach(t=>t.classList.remove('on'));el.classList.add('on');}
 function selCat(el){document.querySelectorAll('.chip-sel').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
 function switchDealView(v){const map=document.getElementById('dealMapView'),list=document.getElementById('dealListView'),mb=document.getElementById('dealMapBtn'),lb=document.getElementById('dealListBtn');if(v==='map'){map.style.display='block';list.style.display='none';mb.style.background='#fff';mb.style.color='#191F28';mb.style.fontWeight='800';mb.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)';lb.style.background='transparent';lb.style.color='#8B95A1';lb.style.fontWeight='700';lb.style.boxShadow='none';}else{map.style.display='none';list.style.display='block';lb.style.background='#fff';lb.style.color='#191F28';lb.style.fontWeight='800';lb.style.boxShadow='0 1px 4px rgba(0,0,0,0.06)';mb.style.background='transparent';mb.style.color='#8B95A1';mb.style.fontWeight='700';mb.style.boxShadow='none';}}
