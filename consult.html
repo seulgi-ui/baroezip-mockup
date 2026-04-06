@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바로이집 — 고수상담</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066FF'/><text y='68' x='18' font-size='55' font-weight='bold' fill='white'>B</text></svg>">
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;overflow:hidden;}
+  body{background:#E2E8F0;font-family:'Pretendard',-apple-system,sans-serif;display:flex;justify-content:center;align-items:center;}
+  .phone{width:100%;max-width:430px;height:100%;max-height:932px;position:relative;overflow:hidden;background:#fff;}
+  @media(min-width:500px){.phone{border-radius:40px;height:90vh;box-shadow:0 20px 60px rgba(0,0,0,0.2);}}
+  .screen{width:100%;height:100%;display:flex;flex-direction:column;position:relative;overflow:hidden;}
+  .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .scroll::-webkit-scrollbar{display:none;}
+  .panel{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:#fff;z-index:30;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+  .chip-sel{padding:12px 18px;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:14px;font-size:14px;font-weight:700;color:#191F28;cursor:pointer;text-align:center;transition:all 0.2s;}
+  .chip-sel.on{background:#EDF3FF;border-color:#0066FF;color:#0066FF;}
+  .tabbar{flex-shrink:0;background:#fff;border-top:1px solid rgba(0,0,0,0.06);display:flex;padding:10px 0;padding-bottom:max(env(safe-area-inset-bottom),16px);}
+  .tab-i{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+  .tab-i svg{color:#CBD5E0;width:20px;height:20px;}
+  .tab-i.on svg{color:#0066FF;}
+  .tab-i span{font-size:9px;color:#A0AEC0;font-weight:500;}
+  .tab-i.on span{color:#0066FF;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="phone"><div class="screen">
+  <div class="scroll">
+    <div style="height:env(safe-area-inset-top,48px);min-height:48px;"></div>
+
+    <!-- 헤더 -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 20px 16px;">
+      <span style="font-size:22px;font-weight:900;color:#191F28;">고수상담</span>
+      <div style="display:flex;gap:8px;">
+        <div style="width:34px;height:34px;background:#F7F8FC;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#191F28" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+      </div>
+    </div>
+
+    <!-- ═══ 히어로 ═══ -->
+    <div style="margin:0 16px 18px;padding:28px 20px;background:linear-gradient(135deg,#0F1724,#1A2744);border-radius:20px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-20px;right:-10px;width:100px;height:100px;background:rgba(255,255,255,0.04);border-radius:50%;"></div>
+      <div style="font-size:22px;font-weight:900;color:#fff;line-height:1.35;margin-bottom:6px;">고민을 올리면<br>전문가가 찾아옵니다</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;margin-bottom:20px;">상담 요청을 올리면 관련 전문가들이<br>직접 입찰하고, 원하는 분을 선택하세요</div>
+      <button onclick="showP('step1')" style="width:100%;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:800;color:#0066FF;background:#fff;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,0.1);">상담 요청하기</button>
+    </div>
+
+    <!-- ═══ 숫자로 신뢰 ═══ -->
+    <div style="display:flex;gap:0;margin:0 16px 18px;background:#F7F8FC;border-radius:14px;overflow:hidden;">
+      <div style="flex:1;padding:16px 8px;text-align:center;border-right:1px solid #E2E8F0;">
+        <div style="font-size:22px;font-weight:900;color:#191F28;">2,847</div>
+        <div style="font-size:10px;color:#8B95A1;margin-top:3px;">누적 상담</div>
+      </div>
+      <div style="flex:1;padding:16px 8px;text-align:center;border-right:1px solid #E2E8F0;">
+        <div style="font-size:22px;font-weight:900;color:#191F28;">4.8</div>
+        <div style="font-size:10px;color:#8B95A1;margin-top:3px;">평균 만족도</div>
+      </div>
+      <div style="flex:1;padding:16px 8px;text-align:center;">
+        <div style="font-size:22px;font-weight:900;color:#191F28;">52명</div>
+        <div style="font-size:10px;color:#8B95A1;margin-top:3px;">등록 전문가</div>
+      </div>
+    </div>
+
+    <!-- ═══ 이런 고민, 다 해결됩니다 ═══ -->
+    <div style="padding:0 16px 16px;">
+      <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:12px;">이런 고민, 다 해결됩니다</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#FFF5F5;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">💰</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">양도세 · 절세</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"얼마를 아낄 수 있을까?"</div></div>
+          <span style="font-size:12px;color:#A0AEC0;">›</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#EDF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🔄</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">갈아타기 · 매도 전략</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"언제, 어떻게 팔아야 할까?"</div></div>
+          <span style="font-size:12px;color:#A0AEC0;">›</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#F0FFF4;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">🏠</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">청약 · 분양</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"당첨 확률 높이는 전략"</div></div>
+          <span style="font-size:12px;color:#A0AEC0;">›</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:14px;cursor:pointer;">
+          <div style="width:40px;height:40px;border-radius:12px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;">⚖️</div>
+          <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#191F28;">경매 · 공매</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">"첫 경매, 뭘 알아야 할까?"</div></div>
+          <span style="font-size:12px;color:#A0AEC0;">›</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 구분선 -->
+    <div style="height:8px;background:#F7F8FC;"></div>
+
+    <!-- ═══ 다양한 전문가가 대기 중 ═══ -->
+    <div style="padding:16px;">
+      <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:4px;">다양한 분야의 고수가 대기 중</div>
+      <div style="font-size:12px;color:#8B95A1;margin-bottom:14px;">고민을 올리면 관련 전문가들이 직접 제안을 보내드려요</div>
+
+      <!-- 전문가 분야 카드들 -->
+      <div style="display:flex;gap:8px;margin-bottom:10px;">
+        <!-- 카드 1 -->
+        <div style="flex:1;padding:16px 12px;background:#F7F8FC;border-radius:14px;text-align:center;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg>
+          </div>
+          <div style="font-size:13px;font-weight:800;color:#191F28;">리즈너블</div>
+          <div style="font-size:10px;color:#0066FF;font-weight:700;margin-top:3px;">청약 전문</div>
+          <div style="font-size:10px;color:#8B95A1;margin-top:4px;">⭐ 4.9 · 312건</div>
+        </div>
+        <!-- 카드 2 -->
+        <div style="flex:1;padding:16px 12px;background:#F7F8FC;border-radius:14px;text-align:center;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg>
+          </div>
+          <div style="font-size:13px;font-weight:800;color:#191F28;">규프로</div>
+          <div style="font-size:10px;color:#0066FF;font-weight:700;margin-top:3px;">경매 전문</div>
+          <div style="font-size:10px;color:#8B95A1;margin-top:4px;">⭐ 4.8 · 289건</div>
+        </div>
+        <!-- 카드 3 -->
+        <div style="flex:1;padding:16px 12px;background:#F7F8FC;border-radius:14px;text-align:center;">
+          <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg>
+          </div>
+          <div style="font-size:13px;font-weight:800;color:#191F28;">김세무</div>
+          <div style="font-size:10px;color:#0066FF;font-weight:700;margin-top:3px;">양도세 전문</div>
+          <div style="font-size:10px;color:#8B95A1;margin-top:4px;">⭐ 4.9 · 847건</div>
+        </div>
+      </div>
+
+      <div style="text-align:center;padding:8px 0;font-size:12px;color:#8B95A1;">외 49명의 전문가가 대기 중</div>
+    </div>
+
+    <!-- 구분선 -->
+    <div style="height:8px;background:#F7F8FC;"></div>
+
+    <!-- ═══ 이용 방법 ═══ -->
+    <div style="padding:16px;">
+      <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:14px;">이용 방법</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">1</div>
+          <div><div style="font-size:14px;font-weight:700;color:#191F28;">고민을 올려주세요</div><div style="font-size:12px;color:#8B95A1;margin-top:2px;">카테고리 선택 + 상황 작성 (3분)</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">2</div>
+          <div><div style="font-size:14px;font-weight:700;color:#191F28;">전문가들이 제안을 보내요</div><div style="font-size:12px;color:#8B95A1;margin-top:2px;">평균 3~5명의 전문가가 입찰 (24h 내)</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">3</div>
+          <div><div style="font-size:14px;font-weight:700;color:#191F28;">원하는 전문가를 선택하세요</div><div style="font-size:12px;color:#8B95A1;margin-top:2px;">프로필 · 후기 · 답변 미리보기 비교</div></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:12px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#191F28;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">4</div>
+          <div><div style="font-size:14px;font-weight:700;color:#191F28;">1:1 상담을 받으세요</div><div style="font-size:12px;color:#8B95A1;margin-top:2px;">채팅 or 전화 · 추가 질문 1회 무료</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 구분선 -->
+    <div style="height:8px;background:#F7F8FC;"></div>
+
+    <!-- ═══ 가격 ═══ -->
+    <div style="padding:16px;">
+      <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:14px;">상담 가격</div>
+      <div style="display:flex;gap:10px;margin-bottom:12px;">
+        <div style="flex:1;padding:18px 14px;background:#F7F8FC;border-radius:16px;text-align:center;border:1.5px solid #E2E8F0;">
+          <div style="font-size:11px;color:#8B95A1;margin-bottom:6px;">일반 회원</div>
+          <div style="font-size:24px;font-weight:900;color:#191F28;">89,000<span style="font-size:12px;font-weight:600;color:#8B95A1;">원</span></div>
+        </div>
+        <div style="flex:1;padding:18px 14px;background:#EDF3FF;border-radius:16px;text-align:center;border:1.5px solid #0066FF;position:relative;">
+          <div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);padding:2px 10px;background:#0066FF;border-radius:10px;font-size:9px;font-weight:800;color:#fff;">추천</div>
+          <div style="font-size:11px;color:#0066FF;font-weight:700;margin-bottom:6px;">멤버십 회원</div>
+          <div style="font-size:24px;font-weight:900;color:#0066FF;">59,000<span style="font-size:12px;font-weight:600;color:#8B95A1;">원</span></div>
+          <div style="font-size:10px;color:#0066FF;font-weight:700;margin-top:4px;">33% 할인</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 구분선 -->
+    <div style="height:8px;background:#F7F8FC;"></div>
+
+    <!-- ═══ 실제 후기 ═══ -->
+    <div style="padding:16px 16px 8px;">
+      <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:14px;">실제 상담 후기</div>
+
+      <div style="padding:16px;background:#F7F8FC;border-radius:14px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+          <span style="font-size:12px;color:#FBBF24;">★★★★★</span>
+          <span style="font-size:11px;color:#8B95A1;">김** · 양도세 상담 · 리즈너블</span>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:#191F28;margin-bottom:4px;">"세금 3,200만원 아꼈습니다"</div>
+        <div style="font-size:12px;color:#8B95A1;line-height:1.5;">매도 순서만 바꿨는데 양도세가 이렇게 차이 날 줄 몰랐어요</div>
+      </div>
+
+      <div style="padding:16px;background:#F7F8FC;border-radius:14px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+          <span style="font-size:12px;color:#FBBF24;">★★★★★</span>
+          <span style="font-size:11px;color:#8B95A1;">이** · 경매 상담 · 규프로</span>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:#191F28;margin-bottom:4px;">"첫 경매 낙찰 성공했어요!"</div>
+        <div style="font-size:12px;color:#8B95A1;line-height:1.5;">입찰가 산정부터 현장 답사 포인트까지 꼼꼼하게 알려주셨어요</div>
+      </div>
+
+      <div style="padding:16px;background:#F7F8FC;border-radius:14px;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">
+          <span style="font-size:12px;color:#FBBF24;">★★★★★</span>
+          <span style="font-size:11px;color:#8B95A1;">박** · 갈아타기 상담</span>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:#191F28;margin-bottom:4px;">"갈아타기 자금 계획을 완벽하게 세웠어요"</div>
+        <div style="font-size:12px;color:#8B95A1;line-height:1.5;">대출, 세금, 타이밍까지 한번에 정리해주셨습니다</div>
+      </div>
+    </div>
+
+    <!-- 하단 CTA -->
+    <div style="padding:16px;padding-bottom:20px;">
+      <button onclick="showP('step1')" style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);">상담 요청하기</button>
+      <div style="text-align:center;margin-top:10px;font-size:12px;color:#8B95A1;">멤버십 가입하면 <span style="color:#0066FF;font-weight:700;">33% 할인</span></div>
+    </div>
+
+  </div>
+
+  <div class="tabbar">
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span>자산</span></div>
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span>급매물</span></div>
+    <div class="tab-i on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span>고수상담</span></div>
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>멤버십</span></div>
+    <div class="tab-i"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>내정보</span></div>
+  </div>
+<!-- ═══ STEP 1: 카테고리 선택 ═══ -->
+<div id="step1" class="panel">
+  <div style="height:env(safe-area-inset-top,48px);min-height:48px;"></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 8px;">
+    <span onclick="hideP('step1')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">상담 요청</span>
+  </div>
+  <!-- 진행 바 -->
+  <div style="display:flex;gap:4px;padding:8px 20px 24px;">
+    <div style="flex:1;height:3px;background:#0066FF;border-radius:2px;"></div>
+    <div style="flex:1;height:3px;background:#E2E8F0;border-radius:2px;"></div>
+  </div>
+  <div style="padding:0 20px;">
+    <div style="font-size:22px;font-weight:900;color:#191F28;line-height:1.3;margin-bottom:6px;">어떤 분야의<br>고민이세요?</div>
+    <div style="font-size:13px;color:#8B95A1;margin-bottom:24px;">해당하는 카테고리를 선택해주세요</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+      <div class="chip-sel" onclick="selCat(this)">💰 양도세 · 절세</div>
+      <div class="chip-sel" onclick="selCat(this)">🔄 갈아타기 · 매도 전략</div>
+      <div class="chip-sel" onclick="selCat(this)">🏠 청약 · 분양</div>
+      <div class="chip-sel" onclick="selCat(this)">⚖️ 경매 · 공매</div>
+      <div class="chip-sel" onclick="selCat(this)">🏦 대출 · 자금 계획</div>
+      <div class="chip-sel" onclick="selCat(this)">📊 기타 부동산 고민</div>
+    </div>
+    <button onclick="showP('step2');hideP('step1')" style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);">다음</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 2: 고민 작성 ═══ -->
+<div id="step2" class="panel">
+  <div style="height:env(safe-area-inset-top,48px);min-height:48px;"></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 8px;">
+    <span onclick="hideP('step2');showP('step1')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">상담 요청</span>
+  </div>
+  <div style="display:flex;gap:4px;padding:8px 20px 24px;">
+    <div style="flex:1;height:3px;background:#0066FF;border-radius:2px;"></div>
+    <div style="flex:1;height:3px;background:#0066FF;border-radius:2px;"></div>
+  </div>
+  <div style="padding:0 20px;">
+    <div style="font-size:22px;font-weight:900;color:#191F28;line-height:1.3;margin-bottom:6px;">고민을<br>자세히 알려주세요</div>
+    <div style="font-size:13px;color:#8B95A1;margin-bottom:20px;">구체적일수록 정확한 답변을 받을 수 있어요</div>
+
+    <div style="font-size:13px;font-weight:700;color:#191F28;margin-bottom:6px;">제목</div>
+    <input style="width:100%;padding:14px 16px;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;font-size:14px;font-family:inherit;outline:none;margin-bottom:16px;" placeholder="예: 2주택자 양도세 절세 방법" />
+
+    <div style="font-size:13px;font-weight:700;color:#191F28;margin-bottom:6px;">상세 내용</div>
+    <textarea style="width:100%;height:140px;padding:14px 16px;background:#F7F8FC;border:1.5px solid #E2E8F0;border-radius:12px;font-size:14px;font-family:inherit;outline:none;resize:none;line-height:1.6;margin-bottom:16px;" placeholder="현재 상황과 고민을 적어주세요&#10;&#10;예: 마포에 34평 1채, 강남에 24평 1채 보유 중입니다. 5/9 전에 하나를 팔아야 하는데 어떤 걸 먼저 파는 게 유리한지 모르겠어요."></textarea>
+
+    <div style="padding:10px 14px;background:#F7F8FC;border-radius:10px;font-size:12px;color:#8B95A1;line-height:1.5;margin-bottom:24px;">
+      💡 보유 주택 수, 매수 시점, 희망 매도가 등을 포함하면 더 정확한 답변을 받을 수 있어요
+    </div>
+
+    <button onclick="showP('step3');hideP('step2')" style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);">요청 보내기</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 3: 요청 완료 ═══ -->
+<div id="step3" class="panel">
+  <div style="height:env(safe-area-inset-top,48px);min-height:48px;"></div>
+  <div style="height:calc(100% - 48px);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 28px;text-align:center;">
+    <div style="width:80px;height:80px;border-radius:50%;background:#EDF3FF;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div style="font-size:22px;font-weight:900;color:#191F28;margin-bottom:8px;">요청이 전달됐어요!</div>
+    <div style="font-size:14px;color:#8B95A1;line-height:1.6;margin-bottom:28px;">전문가들이 고민을 확인하고<br>24시간 내 제안을 보내드려요</div>
+
+    <div style="width:100%;padding:18px;background:#F7F8FC;border-radius:16px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span style="font-size:13px;font-weight:700;color:#191F28;">예상 입찰</span>
+        <span style="font-size:13px;font-weight:800;color:#0066FF;">3~5명</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;font-weight:700;color:#191F28;">답변 예상 시간</span>
+        <span style="font-size:13px;font-weight:800;color:#0066FF;">24시간 내</span>
+      </div>
+    </div>
+
+    <button onclick="showP('step4');hideP('step3')" style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);margin-bottom:10px;">입찰 현황 보기</button>
+    <span onclick="hideP('step3')" style="font-size:13px;color:#8B95A1;cursor:pointer;">홈으로 돌아가기</span>
+  </div>
+</div>
+
+<!-- ═══ STEP 4: 입찰 비교 + 선택 ═══ -->
+<div id="step4" class="panel" style="background:#F7F8FC;">
+  <div style="height:env(safe-area-inset-top,48px);min-height:48px;background:#fff;"></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 14px;background:#fff;">
+    <span onclick="hideP('step4')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">입찰 현황</span>
+  </div>
+
+  <!-- 내 요청 요약 -->
+  <div style="margin:0 16px 14px;padding:14px 16px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+    <div style="font-size:11px;color:#0066FF;font-weight:700;margin-bottom:4px;">양도세 · 절세</div>
+    <div style="font-size:14px;font-weight:800;color:#191F28;">2주택자 양도세 절세 방법</div>
+    <div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:4px;"><div style="width:6px;height:6px;border-radius:50%;background:#4ADE80;"></div><span style="font-size:11px;color:#8B95A1;">전문가 3명 입찰</span></div>
+    </div>
+  </div>
+
+  <!-- 입찰 전문가 1 -->
+  <div style="margin:0 16px 10px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;font-weight:800;color:#191F28;">김세무 세무사</span><span style="font-size:10px;color:#FBBF24;">⭐ 4.9</span></div>
+        <div style="font-size:11px;color:#8B95A1;">양도세 전문 · 847건 상담</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:16px;font-weight:900;color:#191F28;">89,000원</div>
+        <div style="font-size:10px;color:#8B95A1;">일반가</div>
+      </div>
+    </div>
+    <!-- 제안 미리보기 -->
+    <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;margin-bottom:14px;">
+      <div style="font-size:10px;color:#0066FF;font-weight:700;margin-bottom:4px;">제안 메시지</div>
+      <div style="font-size:12px;color:#4A5568;line-height:1.5;">"2주택 양도세, 매도 순서와 시기에 따라 최대 3,200만원 차이가 납니다. 정확한 절세 방안을 안내드리겠습니다."</div>
+    </div>
+    <button style="width:100%;padding:13px;border:none;border-radius:12px;font-size:14px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(0,102,255,0.2);" onclick="showP('step5')">이 전문가 선택하기</button>
+  </div>
+
+  <!-- 입찰 전문가 2 -->
+  <div style="margin:0 16px 10px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;font-weight:800;color:#191F28;">리즈너블</span><span style="font-size:10px;color:#FBBF24;">⭐ 4.9</span></div>
+        <div style="font-size:11px;color:#8B95A1;">청약 · 절세 전문 · 312건</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:16px;font-weight:900;color:#191F28;">89,000원</div>
+      </div>
+    </div>
+    <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;margin-bottom:14px;">
+      <div style="font-size:10px;color:#0066FF;font-weight:700;margin-bottom:4px;">제안 메시지</div>
+      <div style="font-size:12px;color:#4A5568;line-height:1.5;">"다주택자 양도세 중과 대응 경험이 많습니다. 보유 기간별 최적의 매도 전략을 제시해드릴게요."</div>
+    </div>
+    <button style="width:100%;padding:13px;border:none;border-radius:12px;font-size:14px;font-weight:800;color:#0066FF;background:#EDF3FF;cursor:pointer;font-family:inherit;" onclick="showP('step5')">이 전문가 선택하기</button>
+  </div>
+
+  <!-- 입찰 전문가 3 -->
+  <div style="margin:0 16px 10px;padding:18px;background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg>
+      </div>
+      <div style="flex:1;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;font-weight:800;color:#191F28;">규프로</span><span style="font-size:10px;color:#FBBF24;">⭐ 4.8</span></div>
+        <div style="font-size:11px;color:#8B95A1;">경매 · 세금 전문 · 289건</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:16px;font-weight:900;color:#191F28;">79,000원</div>
+        <div style="font-size:10px;color:#4ADE80;font-weight:700;">최저가</div>
+      </div>
+    </div>
+    <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;margin-bottom:14px;">
+      <div style="font-size:10px;color:#0066FF;font-weight:700;margin-bottom:4px;">제안 메시지</div>
+      <div style="font-size:12px;color:#4A5568;line-height:1.5;">"경매/공매 뿐 아니라 일반 매도 세금 상담도 전문입니다. 매도 순서별 시뮬레이션까지 제공해드려요."</div>
+    </div>
+    <button style="width:100%;padding:13px;border:none;border-radius:12px;font-size:14px;font-weight:800;color:#0066FF;background:#EDF3FF;cursor:pointer;font-family:inherit;" onclick="showP('step5')">이 전문가 선택하기</button>
+  </div>
+
+  <div style="padding:12px 16px 20px;text-align:center;">
+    <span style="font-size:12px;color:#8B95A1;">멤버십 회원은 모든 상담 <span style="color:#0066FF;font-weight:700;">33% 할인</span></span>
+  </div>
+</div>
+
+<!-- ═══ STEP 5: 결제 ═══ -->
+<div id="step5" class="panel" style="background:#fff;">
+  <div style="height:env(safe-area-inset-top,48px);min-height:48px;"></div>
+  <div style="display:flex;align-items:center;gap:8px;padding:10px 18px 14px;">
+    <span onclick="hideP('step5')" style="font-size:20px;cursor:pointer;color:#191F28;">←</span>
+    <span style="font-size:17px;font-weight:800;color:#191F28;">결제</span>
+  </div>
+
+  <div style="padding:0 20px;">
+    <!-- 선택한 전문가 -->
+    <div style="padding:16px;background:#F7F8FC;border-radius:16px;margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#E2E8F0;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="16" r="8" fill="#FCD34D"/><circle cx="17" cy="15" r="1" fill="#191F28"/><circle cx="23" cy="15" r="1" fill="#191F28"/><path d="M17 19c0 0 1.5 2.5 3 2.5s3-2.5 3-2.5" stroke="#191F28" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="M12 32c0-5 3-8 8-8s8 3 8 8" fill="#A0AEC0"/></svg>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:800;color:#191F28;">김세무 세무사</div>
+          <div style="font-size:11px;color:#8B95A1;">양도세 전문 · ⭐ 4.9</div>
+        </div>
+      </div>
+      <div style="padding:10px 12px;background:#fff;border-radius:10px;">
+        <div style="font-size:11px;color:#0066FF;font-weight:700;margin-bottom:3px;">상담 내용</div>
+        <div style="font-size:13px;color:#191F28;font-weight:700;">2주택자 양도세 절세 방법</div>
+      </div>
+    </div>
+
+    <!-- 결제 금액 -->
+    <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:14px;">결제 금액</div>
+    <div style="padding:16px;background:#F7F8FC;border-radius:16px;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;">
+        <span style="color:#8B95A1;">상담료</span>
+        <span style="font-weight:700;color:#191F28;">89,000원</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;">
+        <span style="color:#8B95A1;">멤버십 할인</span>
+        <span style="font-weight:700;color:#FF3B30;">-30,000원</span>
+      </div>
+      <div style="border-top:1.5px solid #E2E8F0;margin-top:8px;padding-top:10px;display:flex;justify-content:space-between;">
+        <span style="font-size:14px;font-weight:800;color:#191F28;">최종 결제 금액</span>
+        <span style="font-size:20px;font-weight:900;color:#0066FF;">59,000원</span>
+      </div>
+    </div>
+
+    <!-- 결제 수단 -->
+    <div style="font-size:15px;font-weight:800;color:#191F28;margin-bottom:14px;">결제 수단</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#FEE500;border-radius:12px;cursor:pointer;border:2px solid #FEE500;">
+        <span style="font-size:15px;font-weight:800;color:#3C1E1E;">💬</span>
+        <span style="font-size:14px;font-weight:700;color:#3C1E1E;">카카오페이</span>
+        <div style="margin-left:auto;width:20px;height:20px;border-radius:50%;background:#3C1E1E;display:flex;align-items:center;justify-content:center;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FEE500" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:12px;cursor:pointer;border:2px solid #E2E8F0;">
+        <span style="font-size:15px;">💳</span>
+        <span style="font-size:14px;font-weight:700;color:#191F28;">신용/체크카드</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:#F7F8FC;border-radius:12px;cursor:pointer;border:2px solid #E2E8F0;">
+        <span style="font-size:15px;">🏦</span>
+        <span style="font-size:14px;font-weight:700;color:#191F28;">계좌이체</span>
+      </div>
+    </div>
+
+    <!-- 안내 -->
+    <div style="padding:12px 14px;background:#F7F8FC;border-radius:10px;font-size:11px;color:#8B95A1;line-height:1.6;margin-bottom:20px;">
+      · 결제 후 48시간 내 전문가 답변 보장<br>
+      · 추가 질문 1회 무료<br>
+      · 답변 불만족 시 100% 환불
+    </div>
+
+    <button onclick="showP('step6');hideP('step5')" style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);">59,000원 결제하기</button>
+    <div style="height:30px;"></div>
+  </div>
+</div>
+
+<!-- ═══ STEP 6: 결제 완료 ═══ -->
+<div id="step6" class="panel" style="background:#fff;">
+  <div style="height:env(safe-area-inset-top,48px);min-height:48px;"></div>
+  <div style="height:calc(100% - 48px);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 28px;text-align:center;">
+    <div style="width:80px;height:80px;border-radius:50%;background:#F0FFF4;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div style="font-size:22px;font-weight:900;color:#191F28;margin-bottom:8px;">결제 완료!</div>
+    <div style="font-size:14px;color:#8B95A1;line-height:1.6;margin-bottom:28px;">김세무 세무사가 48시간 내<br>답변을 보내드려요</div>
+
+    <div style="width:100%;padding:18px;background:#F7F8FC;border-radius:16px;margin-bottom:24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:13px;color:#8B95A1;">상담 내용</span>
+        <span style="font-size:13px;font-weight:700;color:#191F28;">2주택자 양도세 절세</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <span style="font-size:13px;color:#8B95A1;">전문가</span>
+        <span style="font-size:13px;font-weight:700;color:#191F28;">김세무 세무사</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:13px;color:#8B95A1;">결제 금액</span>
+        <span style="font-size:13px;font-weight:700;color:#0066FF;">59,000원</span>
+      </div>
+    </div>
+
+    <button onclick="hideP('step6');hideP('step5');hideP('step4');hideP('step3');hideP('step2');hideP('step1')" style="width:100%;padding:16px;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(0,102,255,0.3);margin-bottom:10px;">확인</button>
+    <div style="font-size:12px;color:#8B95A1;">답변이 도착하면 알림으로 알려드려요</div>
+  </div>
+</div>
+
+</div></div>
+
+<script>
+function showP(id){document.getElementById(id).style.display='block';}
+function hideP(id){document.getElementById(id).style.display='none';}
+function selCat(el){document.querySelectorAll('.chip-sel').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+</script>
+</body>
+</html>
