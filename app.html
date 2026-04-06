@@ -1454,7 +1454,38 @@
 // 카운터
 (function(){let c=document.getElementById('counter'),n=0,t=127;function r(){if(n<=t){c.textContent=n;let s=n<80?12:n<110?25:50;n+=n<80?4:n<110?2:1;setTimeout(r,s)}else{setTimeout(()=>{n=0;r()},2500)}};r()})();
 // 화면전환
+// URL 해시 → 바로가기 매핑
+const hashMap={
+  '#home':'home_sell','#sell':'home_sell','#buy':'home_buy',
+  '#deals':'panel_deals','#consult':'panel_consult',
+  '#community':'panel_community','#menu':'panel_menu',
+  '#membership':'panel_membership','#myinfo':'panel_myinfo'
+};
+function initFromHash(){
+  const h=location.hash;
+  if(h && hashMap[h]){
+    // 모든 페이지를 hidden으로
+    document.querySelectorAll('.page').forEach(p=>{
+      p.className='page hidden';
+      if(p.hasAttribute('data-tab'))p.className+=' page-with-tab';
+    });
+    // home_sell을 기본 활성화
+    const home=document.getElementById('home_sell');
+    home.className='page active page-with-tab';
+    hist=['home_sell'];
+    // 패널이면 패널 열기
+    const target=hashMap[h];
+    if(target.startsWith('panel_')){
+      document.getElementById(target).style.display='block';
+    } else if(target!=='home_sell'){
+      go(target);
+    }
+    return true;
+  }
+  return false;
+}
 let hist=['p1'];
+if(initFromHash()){/* 해시로 초기화됨 */}
 function getPageClass(el,state){const base=el.getAttribute('data-has-tab')?'page '+state+' page-with-tab':'page '+state;return base;}
 function go(id){const cur=hist[hist.length-1];if(cur===id)return;const curEl=document.getElementById(cur);const nextEl=document.getElementById(id);// 현재 페이지 숨김
 curEl.className='page hidden';if(curEl.classList.contains('page-with-tab'))curEl.className+=' page-with-tab';// 다음 페이지 표시
