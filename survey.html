@@ -137,6 +137,12 @@ function saveCurrent(){
   setStore(data);
 }
 
+function resetCurrent(){
+  if(!confirm((current+1)+'번 중개사 데이터를 초기화할까요?'))return;
+  data[current]={info:{name:'',area:'',career:'',time:''},answers:{},memos:{},done:false};
+  setStore(data);
+  renderTabs();renderContent();window.scrollTo(0,0);
+}
 function markDone(){
   saveCurrent();
   data[current].done=true;
@@ -259,6 +265,7 @@ function renderContent(){
     h+='<button class="done-btn" onclick="markDone()">'+(current+1)+'번 중개사 조사 완료</button>';
   }else{
     h+='<div style="padding:16px;background:#EDF3FF;border-radius:12px;text-align:center;margin-top:16px;"><div style="font-size:14px;font-weight:800;color:#0066FF;">완료됨</div><div style="font-size:11px;color:#8B95A1;margin-top:4px;">수정하려면 답변을 다시 선택하세요</div></div>';
+    h+='<button class="export-btn" style="margin-top:8px;color:#FF3B30;border-color:#FF3B30;" onclick="resetCurrent()">'+(current+1)+'번 초기화</button>';
   }
 
   // 다음 중개사 버튼
