@@ -3,350 +3,280 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>바로이집 — 공인중개사 피드백 조사</title>
+<title>바로이집 — 공인중개사 피드백 (10곳)</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230066FF'/><text y='68' x='18' font-size='55' font-weight='bold' fill='white'>B</text></svg>">
 <style>
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'Pretendard',-apple-system,sans-serif;background:#F7F8FC;color:#191F28;-webkit-tap-highlight-color:transparent;}
-  .wrap{max-width:500px;margin:0 auto;padding:20px 16px 40px;}
+  .wrap{max-width:500px;margin:0 auto;padding:0 0 40px;}
 
-  /* 헤더 */
-  .header{background:linear-gradient(135deg,#0F1724,#1A2744);border-radius:20px;padding:28px 24px;margin-bottom:20px;color:#fff;position:relative;overflow:hidden;}
-  .header::after{content:'';position:absolute;top:-30px;right:-20px;width:120px;height:120px;background:rgba(0,102,255,0.1);border-radius:50%;}
-  .header .logo{font-size:14px;font-weight:800;color:#0066FF;margin-bottom:12px;}
-  .header h1{font-size:22px;font-weight:900;line-height:1.3;margin-bottom:6px;}
-  .header .sub{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.5;}
+  /* 상단 고정 탭 */
+  .top-bar{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid #F0F1F5;padding:12px 16px 0;}
+  .top-title{font-size:14px;font-weight:900;color:#191F28;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+  .top-title .badge{font-size:10px;font-weight:700;color:#0066FF;background:#EDF3FF;padding:2px 8px;border-radius:6px;}
+  .tab-row{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-bottom:10px;}
+  .tab-row::-webkit-scrollbar{display:none;}
+  .tab-btn{width:36px;height:36px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;font-size:13px;font-weight:800;color:#8B95A1;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;position:relative;}
+  .tab-btn.active{background:#0066FF;border-color:#0066FF;color:#fff;}
+  .tab-btn.done{border-color:#0066FF;color:#0066FF;}
+  .tab-btn.done::after{content:'';position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:#0066FF;border-radius:50%;border:1.5px solid #fff;}
 
-  /* 안내 카드 */
-  .info-card{background:#fff;border-radius:16px;padding:20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
-  .info-card h2{font-size:16px;font-weight:900;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-  .info-card h2 .num{width:24px;height:24px;border-radius:50%;background:#0066FF;color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  /* 콘텐츠 */
+  .content{padding:16px;}
+  .section-label{font-size:10px;font-weight:800;color:#8B95A1;letter-spacing:1px;padding:12px 0 6px;margin-top:8px;}
 
-  /* 섹션 구분 */
-  .section-title{font-size:11px;font-weight:800;color:#8B95A1;text-transform:uppercase;letter-spacing:1px;padding:16px 0 8px;margin-top:8px;}
+  /* 스크립트 박스 */
+  .script{background:#EDF3FF;border-left:3px solid #0066FF;border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:12px;font-size:13px;color:#191F28;line-height:1.7;}
+  .script b{color:#0066FF;}
+  .script .tip{font-size:10px;color:#8B95A1;margin-top:8px;font-style:italic;}
 
-  /* 스크립트 */
-  .script-box{background:#EDF3FF;border-left:3px solid #0066FF;border-radius:0 12px 12px 0;padding:16px 18px;margin-bottom:12px;font-size:14px;color:#191F28;line-height:1.7;}
-  .script-box strong{color:#0066FF;}
-  .script-box .note{font-size:11px;color:#8B95A1;margin-top:8px;font-style:italic;}
+  /* 중개사 정보 입력 */
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  .info-field{background:#fff;border-radius:10px;padding:10px 12px;border:1px solid #E2E8F0;}
+  .info-field label{font-size:10px;color:#8B95A1;display:block;margin-bottom:4px;font-weight:700;}
+  .info-field input,.info-field select{width:100%;border:none;font-size:13px;font-weight:700;color:#191F28;background:transparent;outline:none;font-family:inherit;}
 
-  /* 질문 */
-  .q-card{background:#fff;border-radius:14px;padding:16px 18px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,0.03);}
-  .q-card .q-num{font-size:10px;font-weight:800;color:#0066FF;margin-bottom:4px;}
-  .q-card .q-text{font-size:14px;font-weight:700;color:#191F28;line-height:1.5;margin-bottom:8px;}
-  .q-card .q-options{display:flex;flex-direction:column;gap:6px;}
-  .q-card .q-opt{padding:10px 14px;background:#F7F8FC;border-radius:10px;font-size:13px;color:#4A5568;display:flex;align-items:center;gap:8px;}
-  .q-card .q-opt::before{content:'○';color:#CBD5E0;font-size:14px;}
-  .q-card .q-open{padding:10px 14px;background:#F7F8FC;border:1px dashed #E2E8F0;border-radius:10px;font-size:12px;color:#8B95A1;min-height:50px;}
-  .q-card .q-sub{font-size:11px;color:#8B95A1;margin-bottom:6px;}
+  /* 질문 카드 */
+  .q{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,0.03);}
+  .q-num{font-size:10px;font-weight:800;color:#0066FF;margin-bottom:3px;}
+  .q-text{font-size:13px;font-weight:700;color:#191F28;line-height:1.5;margin-bottom:8px;}
+  .q-sub{font-size:10px;color:#8B95A1;margin-bottom:6px;}
+
+  /* 라디오/체크 옵션 */
+  .opt{padding:9px 12px;background:#F7F8FC;border-radius:8px;font-size:12px;color:#4A5568;cursor:pointer;margin-bottom:4px;display:flex;align-items:center;gap:8px;transition:all 0.15s;border:1.5px solid transparent;}
+  .opt.selected{background:#EDF3FF;border-color:#0066FF;color:#0066FF;font-weight:700;}
+  .opt .circle{width:16px;height:16px;border-radius:50%;border:2px solid #CBD5E0;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+  .opt.selected .circle{border-color:#0066FF;background:#0066FF;}
+  .opt.selected .circle::after{content:'';width:6px;height:6px;background:#fff;border-radius:50%;}
+  .opt .check{width:16px;height:16px;border-radius:4px;border:2px solid #CBD5E0;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+  .opt.selected .check{border-color:#0066FF;background:#0066FF;}
+  .opt.selected .check::after{content:'';width:8px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg);margin-top:-2px;}
+
+  /* 텍스트 입력 */
+  .q-memo{width:100%;padding:10px 12px;background:#F7F8FC;border:1px solid #E2E8F0;border-radius:8px;font-size:12px;color:#191F28;font-family:inherit;resize:none;min-height:60px;outline:none;}
+  .q-memo:focus{border-color:#0066FF;}
 
   /* 가격표 */
-  .price-table{width:100%;border-collapse:collapse;margin:12px 0;}
-  .price-table th{padding:10px 8px;font-size:11px;font-weight:800;color:#8B95A1;text-align:center;background:#F7F8FC;}
-  .price-table td{padding:10px 8px;font-size:12px;text-align:center;border-top:1px solid #F0F1F5;color:#191F28;}
-  .price-table .highlight{background:#EDF3FF;font-weight:800;color:#0066FF;}
+  .ptable{width:100%;border-collapse:collapse;margin:10px 0;font-size:11px;}
+  .ptable th{padding:8px 6px;font-weight:800;color:#8B95A1;background:#F7F8FC;text-align:center;}
+  .ptable td{padding:8px 6px;text-align:center;border-top:1px solid #F0F1F5;color:#191F28;}
+  .ptable .hl{background:#EDF3FF;font-weight:800;color:#0066FF;}
 
-  /* 태그 */
-  .tag{display:inline-flex;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;}
-  .tag-blue{background:#EDF3FF;color:#0066FF;}
-  .tag-dark{background:#191F28;color:#fff;}
-  .tag-red{background:#FFF5F5;color:#FF3B30;}
+  /* 완료 버튼 */
+  .done-btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:14px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;margin-top:16px;}
+  .done-btn:active{opacity:0.8;}
 
-  /* 체크리스트 */
-  .checklist{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
-  .check-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#4A5568;line-height:1.5;}
-  .check-item::before{content:'☐';font-size:16px;color:#CBD5E0;flex-shrink:0;}
-
-  /* 구분선 */
-  .divider{height:6px;background:#F0F1F5;margin:16px -16px;border-radius:0;}
-
-  /* 프린트 */
-  @media print{
-    body{background:#fff;}
-    .wrap{max-width:100%;padding:10px;}
-    .q-card .q-open{min-height:60px;border:1px solid #E2E8F0;}
-  }
+  /* 내보내기 */
+  .export-btn{width:100%;padding:12px;border:1.5px solid #0066FF;border-radius:12px;font-size:13px;font-weight:700;color:#0066FF;background:#fff;cursor:pointer;font-family:inherit;margin-top:8px;}
 </style>
 </head>
 <body>
+
+<!-- 상단 탭 -->
+<div class="top-bar">
+  <div class="top-title">
+    <span>공인중개사 피드백 조사</span>
+    <span class="badge" id="progressBadge">0/10 완료</span>
+  </div>
+  <div class="tab-row" id="tabRow"></div>
+</div>
+
 <div class="wrap">
-
-<!-- ═══ 헤더 ═══ -->
-<div class="header">
-  <div class="logo">바로이집</div>
-  <h1>공인중개사 현장 피드백<br>인터뷰 가이드</h1>
-  <div class="sub">2026년 4월 7일 · 소요시간 약 10분 · 스타벅스 증정</div>
+<div class="content" id="mainContent"></div>
 </div>
 
-<!-- ═══ STEP 0: 인사 + 아이스브레이킹 ═══ -->
-<div class="section-title">STEP 0 — 인사 (1분)</div>
+<script>
+const TOTAL=10;
+let current=0;
+// localStorage에 저장
+function getStore(){try{return JSON.parse(localStorage.getItem('bj_survey')||'null')}catch(e){return null}}
+function setStore(d){localStorage.setItem('bj_survey',JSON.stringify(d))}
+function initData(){
+  let d=getStore();
+  if(!d){d=[];for(let i=0;i<TOTAL;i++)d.push({info:{name:'',area:'',career:'',time:''},answers:{},memos:{},done:false});setStore(d);}
+  return d;
+}
+let data=initData();
 
-<div class="script-box">
-  안녕하세요, 저희는 <strong>부동산 앱 서비스</strong>를 준비하고 있는 팀입니다.<br><br>
-  현장에서 일하시는 <strong>중개사님들의 의견</strong>을 직접 듣고 서비스에 반영하려고 찾아뵙게 됐습니다.<br><br>
-  <strong>10분 정도</strong>만 시간 내주시면, 감사의 의미로 <strong>스타벅스 음료 쿠폰</strong>을 드리고 있습니다 ☕<br><br>
-  편하게 솔직한 의견 주시면 큰 도움이 됩니다!
-  <div class="note">💡 명함 먼저 건네기 / 밝은 표정 / 바쁘시면 "5분만이라도" 요청</div>
-</div>
+// 탭 렌더
+function renderTabs(){
+  const row=document.getElementById('tabRow');
+  row.innerHTML='';
+  for(let i=0;i<TOTAL;i++){
+    const b=document.createElement('div');
+    b.className='tab-btn'+(i===current?' active':'')+(data[i].done?' done':'');
+    b.textContent=i+1;
+    b.onclick=()=>{saveCurrent();current=i;renderTabs();renderContent();};
+    row.appendChild(b);
+  }
+  const done=data.filter(x=>x.done).length;
+  document.getElementById('progressBadge').textContent=done+'/'+TOTAL+' 완료';
+}
 
-<!-- ═══ STEP 1: 현재 업무 파악 ═══ -->
-<div class="section-title">STEP 1 — 현재 업무 파악 (2분)</div>
+// 선택 핸들러
+function selectOpt(qid,val,multi){
+  const d=data[current];
+  if(multi){
+    if(!d.answers[qid])d.answers[qid]=[];
+    const idx=d.answers[qid].indexOf(val);
+    if(idx>-1)d.answers[qid].splice(idx,1);else d.answers[qid].push(val);
+  }else{
+    d.answers[qid]=val;
+  }
+  setStore(data);
+  renderContent();
+}
 
-<div class="q-card">
-  <div class="q-num">Q1</div>
-  <div class="q-text">현재 매물은 주로 어떻게 확보하고 계세요?</div>
-  <div class="q-options">
-    <div class="q-opt">직접 전단지 / 현수막 / 방문</div>
-    <div class="q-opt">네이버 부동산 / 직방 등 플랫폼</div>
-    <div class="q-opt">기존 고객 소개</div>
-    <div class="q-opt">매도자가 직접 연락</div>
-    <div class="q-opt">기타:</div>
-  </div>
-</div>
+function saveCurrent(){
+  const d=data[current];
+  // info fields
+  ['name','area','career','time'].forEach(k=>{const el=document.getElementById('info_'+k);if(el)d.info[k]=el.value;});
+  // memos
+  document.querySelectorAll('.q-memo').forEach(el=>{d.memos[el.dataset.qid]=el.value;});
+  setStore(data);
+}
 
-<div class="q-card">
-  <div class="q-num">Q2</div>
-  <div class="q-text">매도자 전화번호를 얻는 데 가장 어려운 점은?</div>
-  <div class="q-sub">복수 선택 가능</div>
-  <div class="q-options">
-    <div class="q-opt">매도자를 찾기 자체가 어렵다</div>
-    <div class="q-opt">연락처를 구해도 이미 다른 중개사가 선점</div>
-    <div class="q-opt">허위 매물이 많다</div>
-    <div class="q-opt">시간과 비용이 너무 많이 든다</div>
-    <div class="q-opt">기타:</div>
-  </div>
-</div>
+function markDone(){
+  saveCurrent();
+  data[current].done=true;
+  setStore(data);
+  renderTabs();
+  renderContent();
+}
 
-<div class="q-card">
-  <div class="q-num">Q3</div>
-  <div class="q-text">한 달에 매도자 DB 확보를 위해 쓰시는 비용은?</div>
-  <div class="q-options">
-    <div class="q-opt">거의 없음 (0원)</div>
-    <div class="q-opt">10만원 이내</div>
-    <div class="q-opt">10~50만원</div>
-    <div class="q-opt">50~100만원</div>
-    <div class="q-opt">100만원 이상</div>
-  </div>
-</div>
+function exportAll(){
+  saveCurrent();
+  let txt='바로이집 공인중개사 피드백 결과\\n2026.04.07\\n========================\\n\\n';
+  data.forEach((d,i)=>{
+    txt+='['+(i+1)+'번] '+(d.info.name||'미입력')+'\\n';
+    txt+='지역: '+(d.info.area||'-')+' / 경력: '+(d.info.career||'-')+' / 시간: '+(d.info.time||'-')+'\\n';
+    txt+='완료: '+(d.done?'O':'X')+'\\n';
+    Object.keys(d.answers).forEach(q=>{txt+=q+': '+JSON.stringify(d.answers[q])+'\\n';});
+    Object.keys(d.memos).forEach(q=>{if(d.memos[q])txt+=q+'(메모): '+d.memos[q]+'\\n';});
+    txt+='\\n';
+  });
+  const blob=new Blob([txt],{type:'text/plain'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='피드백결과_'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+}
 
-<!-- ═══ STEP 2: 서비스 소개 ═══ -->
-<div class="section-title">STEP 2 — 서비스 소개 (3분)</div>
+const questions=[
+  {type:'section',label:'STEP 0 — 인사 (1분)'},
+  {type:'script',text:'안녕하세요, 저희는 <b>부동산 앱 서비스</b>를 준비하고 있는 팀입니다.<br><br>현장에서 일하시는 <b>중개사님들의 의견</b>을 직접 듣고 반영하려고 찾아뵙게 됐습니다.<br><br><b>10분 정도</b>만 시간 내주시면, 감사의 의미로 <b>스타벅스 음료 쿠폰</b>을 드리고 있습니다.<br><div class="tip">명함 먼저 건네기 / 밝은 표정 / 바쁘시면 "5분만이라도" 요청</div>'},
 
-<div class="script-box">
-  저희 서비스는 한마디로,<br>
-  <strong>"매도자 전화번호를 일정 금액을 내고 바로 얻을 수 있는 앱"</strong>입니다.<br><br>
+  {type:'section',label:'STEP 1 — 현재 업무 파악 (2분)'},
+  {type:'radio',id:'Q1',text:'현재 매물은 주로 어떻게 확보하고 계세요?',opts:['직접 전단지/현수막/방문','네이버 부동산/직방 등 플랫폼','기존 고객 소개','매도자가 직접 연락','기타']},
+  {type:'check',id:'Q2',text:'매도자 전화번호를 얻는 데 가장 어려운 점은?',sub:'복수 선택 가능',opts:['매도자를 찾기 자체가 어렵다','연락처 구해도 다른 중개사가 선점','허위 매물이 많다','시간과 비용이 너무 많이 든다','기타']},
+  {type:'radio',id:'Q3',text:'한 달에 매도자 DB 확보를 위해 쓰시는 비용은?',opts:['거의 없음 (0원)','10만원 이내','10~50만원','50~100만원','100만원 이상']},
 
-  매도자가 직접 우리 앱에 매물을 등록하면,<br>
-  중개사님이 <strong>입찰</strong>해서 해당 매도자의 <strong>연락처</strong>를 받는 구조예요.<br><br>
+  {type:'section',label:'STEP 2 — 서비스 소개 (3분)'},
+  {type:'script',text:'저희 서비스는 한마디로,<br><b>"매도자 전화번호를 일정 금액을 내고 바로 얻을 수 있는 앱"</b>입니다.<br><br>매도자가 직접 앱에 매물을 등록하면, 중개사님이 <b>입찰</b>해서 해당 매도자의 <b>연락처</b>를 받는 구조예요.<br><br>다른 사람이 내놓은 매물도 보이고, 마음에 드는 매물에 입찰하면 <b>바로 전화번호를 받을 수 있습니다.</b><div class="tip">이 시점에서 앱 화면 보여주기 (공인중개사 탭)</div>'},
+  {type:'table'},
 
-  다른 사람이 내놓은 매물도 보이고,<br>
-  마음에 드는 매물에 입찰하면 <strong>바로 전화번호를 받을 수 있습니다.</strong>
-  <div class="note">💡 이 시점에서 앱 화면 보여주기 (공인중개사 탭)</div>
-</div>
+  {type:'section',label:'STEP 3 — 핵심 피드백 (3분)'},
+  {type:'radio',id:'Q4',text:'이 서비스를 보시고 첫 느낌은 어떠세요?',opts:['바로 써보고 싶다','관심은 있지만 좀 더 알아봐야','기존 방식이 더 나을 것 같다','잘 모르겠다']},
+  {type:'radio',id:'Q5',text:'매도자 전화번호 1건에 얼마까지 지불할 의향이 있으세요?',opts:['1만원 이하','1~3만원','3~5만원','5~10만원','10만원 이상 (조건에 따라)']},
+  {type:'radio',id:'Q6',text:'전화번호 패키지 구매 (10건/30건 묶음 할인)에 관심 있으세요?',opts:['매우 관심 있다','단건이 더 좋다','둘 다 있으면 좋겠다']},
+  {type:'radio',id:'Q7',text:'월 정액 멤버십 (하루 10건 입찰 + 프리미엄 뱃지)에 얼마까지 내실 수 있으세요?',opts:['월 5만원 이하','월 5~10만원','월 10~30만원','월 30~50만원','월 50만원 이상']},
+  {type:'radio',id:'Q8',text:'"입찰" 방식에 대해 어떻게 생각하세요?',sub:'매도자 매물에 중개사가 입찰 → 선택되면 연락처',opts:['공정해서 좋다','경쟁이 심할 것 같아 걱정','선착순이 더 나을 것 같다','기타']},
+  {type:'radio',id:'Q9',text:'이 서비스를 쓴다면, 가장 중요한 것은?',sub:'1순위만 선택',opts:['전화번호 정확성 (진짜 매도 의사)','매물 정보 상세함','가격 (저렴할수록)','속도 (빠르게 연락처)','경쟁 중개사 수 (적을수록)']},
 
-<!-- 앱 시연 안내 -->
-<div class="info-card">
-  <h2><span class="num">!</span> 앱 시연 포인트</h2>
-  <div class="checklist">
-    <div class="check-item">공인중개사 홈 화면 보여주기</div>
-    <div class="check-item">매물 리스트 → 입찰 버튼 보여주기</div>
-    <div class="check-item">입찰 후 전화번호 제공 화면 보여주기</div>
-    <div class="check-item">멤버십 플랜 화면 보여주기</div>
-  </div>
-</div>
+  {type:'section',label:'STEP 4 — 추가 의견 (1분)'},
+  {type:'memo',id:'Q10',text:'이 서비스에 꼭 있었으면 하는 기능이 있다면?'},
+  {type:'memo',id:'Q11',text:'이 서비스가 불안한 점이 있다면?'},
+  {type:'radio',id:'Q12',text:'출시되면 사용해보실 의향이 있으세요?',opts:['바로 써볼 것이다','주변 평판 보고 결정','사용하지 않을 것 같다']},
+  {type:'memo',id:'Q13',text:'출시 시 사전 알림 연락처 (선택)'},
 
-<!-- 가격 구조 설명 -->
-<div class="info-card">
-  <h2><span class="num">₩</span> 가격 구조</h2>
-  <table class="price-table">
-    <tr>
-      <th></th>
-      <th>일반</th>
-      <th class="highlight">프리미엄</th>
-    </tr>
-    <tr>
-      <td style="font-weight:700;text-align:left;">월 이용료</td>
-      <td>기본 무료</td>
-      <td class="highlight">월 ___만원</td>
-    </tr>
-    <tr>
-      <td style="font-weight:700;text-align:left;">하루 입찰</td>
-      <td>3건</td>
-      <td class="highlight">10건</td>
-    </tr>
-    <tr>
-      <td style="font-weight:700;text-align:left;">매물 DB 접근</td>
-      <td>기본</td>
-      <td class="highlight">전체 (300건+)</td>
-    </tr>
-    <tr>
-      <td style="font-weight:700;text-align:left;">프리미엄 뱃지</td>
-      <td>—</td>
-      <td class="highlight">✓ (매도자에게 신뢰도↑)</td>
-    </tr>
-    <tr>
-      <td style="font-weight:700;text-align:left;">첫 달 혜택</td>
-      <td>—</td>
-      <td class="highlight">20% 할인</td>
-    </tr>
-  </table>
-  <div style="font-size:12px;color:#8B95A1;margin-top:8px;">
-    · 6개월 후 새 전화번호가 필요하면 추가 결제로 매물 획득 가능<br>
-    · 서비스는 지속적으로 업데이트 예정
-  </div>
-</div>
+  {type:'section',label:'마무리'},
+  {type:'script',text:'소중한 시간 내주셔서 정말 감사합니다!<br><br>말씀해주신 의견 <b>하나하나 반영</b>해서 더 좋은 서비스로 찾아뵙겠습니다.<br><br>여기 <b>스타벅스 쿠폰</b> 드리겠습니다. 감사합니다!<div class="tip">쿠폰 전달 / 명함 한 번 더 / "출시되면 꼭 연락드리겠습니다"</div>'},
+];
 
-<!-- ═══ STEP 3: 핵심 피드백 ═══ -->
-<div class="section-title">STEP 3 — 핵심 피드백 (3분)</div>
+function renderContent(){
+  const d=data[current];
+  let h='';
 
-<div class="q-card">
-  <div class="q-num">Q4</div>
-  <div class="q-text">이 서비스를 보시고 첫 느낌은 어떠세요?</div>
-  <div class="q-options">
-    <div class="q-opt">바로 써보고 싶다</div>
-    <div class="q-opt">관심은 있지만 좀 더 알아봐야</div>
-    <div class="q-opt">기존 방식이 더 나을 것 같다</div>
-    <div class="q-opt">잘 모르겠다</div>
-  </div>
-</div>
+  // 중개사 정보 입력
+  h+='<div style="margin-bottom:16px;">';
+  h+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><span style="font-size:16px;font-weight:900;color:#191F28;">'+(current+1)+'번 중개사</span>';
+  if(d.done)h+='<span style="padding:3px 10px;background:#0066FF;border-radius:6px;font-size:10px;font-weight:800;color:#fff;">완료</span>';
+  h+='</div>';
+  h+='<div class="info-grid">';
+  h+='<div class="info-field"><label>중개사무소명</label><input id="info_name" value="'+(d.info.name||'')+'" placeholder="예: OO공인중개사" oninput="saveCurrent()"></div>';
+  h+='<div class="info-field"><label>지역</label><input id="info_area" value="'+(d.info.area||'')+'" placeholder="예: 마포구 공덕동" oninput="saveCurrent()"></div>';
+  h+='<div class="info-field"><label>경력</label><input id="info_career" value="'+(d.info.career||'')+'" placeholder="예: 10년" oninput="saveCurrent()"></div>';
+  h+='<div class="info-field"><label>인터뷰 시간</label><input id="info_time" value="'+(d.info.time||'')+'" placeholder="예: 14:30" oninput="saveCurrent()"></div>';
+  h+='</div></div>';
 
-<div class="q-card">
-  <div class="q-num">Q5</div>
-  <div class="q-text">매도자 전화번호 1건에 얼마까지 지불할 의향이 있으세요?</div>
-  <div class="q-options">
-    <div class="q-opt">1만원 이하</div>
-    <div class="q-opt">1~3만원</div>
-    <div class="q-opt">3~5만원</div>
-    <div class="q-opt">5~10만원</div>
-    <div class="q-opt">10만원 이상 (조건에 따라)</div>
-  </div>
-</div>
+  // 질문들
+  questions.forEach(q=>{
+    if(q.type==='section'){
+      h+='<div class="section-label">'+q.label+'</div>';
+    }else if(q.type==='script'){
+      h+='<div class="script">'+q.text+'</div>';
+    }else if(q.type==='table'){
+      h+='<div class="q"><div class="q-num">가격 구조</div>';
+      h+='<table class="ptable"><tr><th></th><th>일반</th><th class="hl">프리미엄</th></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">월 이용료</td><td>기본 무료</td><td class="hl">월 ___만원</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">하루 입찰</td><td>3건</td><td class="hl">10건</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">매물 DB</td><td>기본</td><td class="hl">전체 (300건+)</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">프리미엄 뱃지</td><td>—</td><td class="hl">O (신뢰도 UP)</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">첫 달 혜택</td><td>—</td><td class="hl">20% 할인</td></tr>';
+      h+='</table>';
+      h+='<div style="font-size:11px;color:#8B95A1;margin-top:6px;">6개월 후 새 전화번호 필요 시 추가 결제로 획득 가능 · 서비스 지속 업데이트</div>';
+      h+='</div>';
+    }else if(q.type==='radio'){
+      h+='<div class="q"><div class="q-num">'+q.id+'</div>';
+      h+='<div class="q-text">'+q.text+'</div>';
+      if(q.sub)h+='<div class="q-sub">'+q.sub+'</div>';
+      q.opts.forEach((o,oi)=>{
+        const sel=d.answers[q.id]===oi?'selected':'';
+        h+='<div class="opt '+sel+'" onclick="selectOpt(\''+q.id+'\','+oi+',false)"><div class="circle"></div>'+o+'</div>';
+      });
+      h+='</div>';
+    }else if(q.type==='check'){
+      h+='<div class="q"><div class="q-num">'+q.id+'</div>';
+      h+='<div class="q-text">'+q.text+'</div>';
+      if(q.sub)h+='<div class="q-sub">'+q.sub+'</div>';
+      q.opts.forEach((o,oi)=>{
+        const arr=d.answers[q.id]||[];
+        const sel=arr.includes(oi)?'selected':'';
+        h+='<div class="opt '+sel+'" onclick="selectOpt(\''+q.id+'\','+oi+',true)"><div class="check"></div>'+o+'</div>';
+      });
+      h+='</div>';
+    }else if(q.type==='memo'){
+      h+='<div class="q"><div class="q-num">'+q.id+'</div>';
+      h+='<div class="q-text">'+q.text+'</div>';
+      h+='<textarea class="q-memo" data-qid="'+q.id+'" oninput="saveCurrent()" placeholder="자유 응답">'+(d.memos[q.id]||'')+'</textarea>';
+      h+='</div>';
+    }
+  });
 
-<div class="q-card">
-  <div class="q-num">Q6</div>
-  <div class="q-text">전화번호 "패키지 구매" (예: 10건/30건 묶음 할인)에 관심 있으세요?</div>
-  <div class="q-options">
-    <div class="q-opt">매우 관심 있다</div>
-    <div class="q-opt">단건이 더 좋다</div>
-    <div class="q-opt">둘 다 있으면 좋겠다</div>
-  </div>
-</div>
+  // 완료 버튼
+  if(!d.done){
+    h+='<button class="done-btn" onclick="markDone()">'+(current+1)+'번 중개사 조사 완료</button>';
+  }else{
+    h+='<div style="padding:16px;background:#EDF3FF;border-radius:12px;text-align:center;margin-top:16px;"><div style="font-size:14px;font-weight:800;color:#0066FF;">완료됨</div><div style="font-size:11px;color:#8B95A1;margin-top:4px;">수정하려면 답변을 다시 선택하세요</div></div>';
+  }
 
-<div class="q-card">
-  <div class="q-num">Q7</div>
-  <div class="q-text">월 정액 멤버십 (하루 10건 입찰 + 프리미엄 뱃지)에<br>얼마까지 내실 수 있으세요?</div>
-  <div class="q-options">
-    <div class="q-opt">월 5만원 이하</div>
-    <div class="q-opt">월 5~10만원</div>
-    <div class="q-opt">월 10~30만원</div>
-    <div class="q-opt">월 30~50만원</div>
-    <div class="q-opt">월 50만원 이상 (효과가 확실하다면)</div>
-  </div>
-</div>
+  // 다음 중개사 버튼
+  if(current<TOTAL-1){
+    h+='<button class="export-btn" style="margin-top:8px;" onclick="saveCurrent();current++;renderTabs();renderContent();window.scrollTo(0,0);">다음 중개사 ('+(current+2)+'번) →</button>';
+  }
 
-<div class="q-card">
-  <div class="q-num">Q8</div>
-  <div class="q-text">"입찰" 방식에 대해 어떻게 생각하세요?<br><span style="font-size:12px;color:#8B95A1;font-weight:400;">매도자가 올린 매물에 중개사가 입찰 → 선택되면 연락처 받기</span></div>
-  <div class="q-options">
-    <div class="q-opt">공정해서 좋다</div>
-    <div class="q-opt">경쟁이 심할 것 같아 걱정된다</div>
-    <div class="q-opt">선착순이 더 나을 것 같다</div>
-    <div class="q-opt">기타:</div>
-  </div>
-</div>
+  // 전체 내보내기 (마지막에만)
+  if(current===TOTAL-1){
+    h+='<button class="export-btn" style="margin-top:12px;" onclick="exportAll()">전체 결과 텍스트로 내보내기</button>';
+  }
 
-<div class="q-card">
-  <div class="q-num">Q9</div>
-  <div class="q-text">이 서비스를 쓴다면, 가장 중요한 것은?</div>
-  <div class="q-sub">1순위만 선택</div>
-  <div class="q-options">
-    <div class="q-opt">전화번호의 정확성 (진짜 매도 의사가 있는지)</div>
-    <div class="q-opt">매물 정보의 상세함 (사진, 시세, 조건 등)</div>
-    <div class="q-opt">가격 (저렴할수록)</div>
-    <div class="q-opt">속도 (빠르게 연락처를 받을 수 있는지)</div>
-    <div class="q-opt">경쟁 중개사 수 (너무 많으면 안됨)</div>
-  </div>
-</div>
+  document.getElementById('mainContent').innerHTML=h;
+}
 
-<!-- ═══ STEP 4: 추가 의견 ═══ -->
-<div class="section-title">STEP 4 — 추가 의견 (1분)</div>
-
-<div class="q-card">
-  <div class="q-num">Q10</div>
-  <div class="q-text">이 서비스에 꼭 있었으면 하는 기능이 있다면?</div>
-  <div class="q-open">자유 응답 (메모)</div>
-</div>
-
-<div class="q-card">
-  <div class="q-num">Q11</div>
-  <div class="q-text">이 서비스가 불안한 점이 있다면?</div>
-  <div class="q-open">자유 응답 (메모)</div>
-</div>
-
-<div class="q-card">
-  <div class="q-num">Q12</div>
-  <div class="q-text">출시되면 사용해보실 의향이 있으세요?</div>
-  <div class="q-options">
-    <div class="q-opt">바로 써볼 것이다</div>
-    <div class="q-opt">주변 평판 보고 결정</div>
-    <div class="q-opt">사용하지 않을 것 같다</div>
-  </div>
-</div>
-
-<div class="q-card">
-  <div class="q-num">Q13 (선택)</div>
-  <div class="q-text">출시 시 사전 알림을 받으시겠어요?</div>
-  <div class="q-open">연락처 / 카카오톡 ID (선택):</div>
-</div>
-
-<!-- ═══ 마무리 ═══ -->
-<div class="section-title">마무리</div>
-
-<div class="script-box">
-  소중한 시간 내주셔서 정말 감사합니다!<br><br>
-  말씀해주신 의견 <strong>하나하나 반영해서 더 좋은 서비스</strong>로 찾아뵙겠습니다.<br><br>
-  여기 <strong>스타벅스 쿠폰</strong> 드리겠습니다. 감사합니다! 🙏
-  <div class="note">💡 스타벅스 쿠폰 전달 / 명함 한 번 더 / "출시되면 꼭 연락드리겠습니다"</div>
-</div>
-
-<!-- ═══ 인터뷰어 메모 ═══ -->
-<div class="divider"></div>
-
-<div class="info-card" style="background:#F7F8FC;border:1px dashed #E2E8F0;">
-  <h2 style="font-size:14px;">📝 인터뷰어 기록란</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-    <div style="padding:10px;background:#fff;border-radius:8px;font-size:12px;">
-      <div style="color:#8B95A1;margin-bottom:4px;">날짜/시간</div>
-      <div style="color:#191F28;">_____________</div>
-    </div>
-    <div style="padding:10px;background:#fff;border-radius:8px;font-size:12px;">
-      <div style="color:#8B95A1;margin-bottom:4px;">지역</div>
-      <div style="color:#191F28;">_____________</div>
-    </div>
-    <div style="padding:10px;background:#fff;border-radius:8px;font-size:12px;">
-      <div style="color:#8B95A1;margin-bottom:4px;">중개사무소명</div>
-      <div style="color:#191F28;">_____________</div>
-    </div>
-    <div style="padding:10px;background:#fff;border-radius:8px;font-size:12px;">
-      <div style="color:#8B95A1;margin-bottom:4px;">응답자 경력</div>
-      <div style="color:#191F28;">_____________</div>
-    </div>
-  </div>
-  <div style="padding:10px;background:#fff;border-radius:8px;font-size:12px;">
-    <div style="color:#8B95A1;margin-bottom:4px;">특이사항 / 인상적인 답변 메모</div>
-    <div style="min-height:80px;color:#191F28;border-top:1px dashed #E2E8F0;padding-top:8px;">
-
-    </div>
-  </div>
-</div>
-
-<!-- 하단 정보 -->
-<div style="text-align:center;padding:20px 0;font-size:11px;color:#A0AEC0;">
-  바로이집 — 서울 아파트를 빠르게 사고팔다<br>
-  공인중개사 피드백 조사 v1.0 · 2026.04.07
-</div>
-
-</div>
+// 초기화
+renderTabs();
+renderContent();
+</script>
 </body>
 </html>
