@@ -217,15 +217,15 @@ function renderContent(){
     }else if(q.type==='script'){
       h+='<div class="script">'+q.text+'</div>';
     }else if(q.type==='table'){
-      h+='<div class="q"><div class="q-num">가격 구조</div>';
-      h+='<table class="ptable"><tr><th></th><th>일반</th><th class="hl">프리미엄</th></tr>';
-      h+='<tr><td style="font-weight:700;text-align:left;">월 이용료</td><td>기본 무료</td><td class="hl">월 ___만원</td></tr>';
-      h+='<tr><td style="font-weight:700;text-align:left;">하루 입찰</td><td>3건</td><td class="hl">10건</td></tr>';
-      h+='<tr><td style="font-weight:700;text-align:left;">매물 DB</td><td>기본</td><td class="hl">전체 (300건+)</td></tr>';
-      h+='<tr><td style="font-weight:700;text-align:left;">프리미엄 뱃지</td><td>—</td><td class="hl">O (신뢰도 UP)</td></tr>';
-      h+='<tr><td style="font-weight:700;text-align:left;">첫 달 혜택</td><td>—</td><td class="hl">20% 할인</td></tr>';
+      h+='<div class="q"><div class="q-num">매도자 매칭 서비스 비교</div>';
+      h+='<table class="ptable"><tr><th style="text-align:left;">항목</th><th>건당 매칭</th><th class="hl">무제한 패키지</th></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">요금</td><td>10~100만원</td><td class="hl">500만원</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">기준</td><td>매물 가격별</td><td class="hl">무제한</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">반경</td><td>—</td><td class="hl">3km 내 전체</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">유효기간</td><td>30일</td><td class="hl">30일</td></tr>';
+      h+='<tr><td style="font-weight:700;text-align:left;">추천 상황</td><td>소량 타깃</td><td class="hl">대량 영업</td></tr>';
       h+='</table>';
-      h+='<div style="font-size:11px;color:#8B95A1;margin-top:6px;">6개월 후 새 전화번호 필요 시 추가 결제로 획득 가능 · 서비스 지속 업데이트</div>';
+      h+='<div style="font-size:11px;color:#8B95A1;margin-top:6px;">· 유효기간 만료 후 새 전화번호 필요 시 추가 결제로 획득 가능<br>· 서비스 지속 업데이트 예정</div>';
       h+='</div>';
     }else if(q.type==='radio'){
       h+='<div class="q"><div class="q-num">'+q.id+'</div>';
