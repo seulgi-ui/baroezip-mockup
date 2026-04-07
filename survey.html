@@ -179,7 +179,7 @@ const questions=[
   {type:'section',label:'STEP 3 — 핵심 피드백 (3분)'},
   {type:'radio',id:'Q4',text:'이 서비스를 보시고 첫 느낌은 어떠세요?',opts:['바로 써보고 싶다','관심은 있지만 좀 더 알아봐야','기존 방식이 더 나을 것 같다','잘 모르겠다']},
   {type:'radio',id:'Q5',text:'매도자 전화번호 1건에 얼마까지 지불할 의향이 있으세요?',opts:['1만원 이하','1~3만원','3~5만원','5~10만원','10만원 이상 (조건에 따라)']},
-  {type:'radio',id:'Q6',text:'전화번호 패키지 구매 (10건/30건 묶음 할인)에 관심 있으세요?',opts:['매우 관심 있다','단건이 더 좋다','둘 다 있으면 좋겠다']},
+  {type:'radio',id:'Q6',text:'전화번호 패키지 구매 (500건 이상, 구매 기간 내 지속 업데이트)에 관심 있으세요?',opts:['매우 관심 있다','건당 구매가 더 좋다','둘 다 있으면 좋겠다']},
   {type:'radio',id:'Q7',text:'월 정액 멤버십 (하루 10건 입찰 + 프리미엄 뱃지)에 얼마까지 내실 수 있으세요?',opts:['월 5만원 이하','월 5~10만원','월 10~30만원','월 30~50만원','월 50만원 이상']},
   {type:'radio',id:'Q8',text:'"입찰" 방식에 대해 어떻게 생각하세요?',sub:'매도자 매물에 중개사가 입찰 → 선택되면 연락처',opts:['공정해서 좋다','경쟁이 심할 것 같아 걱정','선착순이 더 나을 것 같다','기타']},
   {type:'radio',id:'Q9',text:'이 서비스를 쓴다면, 가장 중요한 것은?',sub:'1순위만 선택',opts:['전화번호 정확성 (진짜 매도 의사)','매물 정보 상세함','가격 (저렴할수록)','속도 (빠르게 연락처)','경쟁 중개사 수 (적을수록)']},
@@ -225,6 +225,7 @@ function renderContent(){
       h+='<tr><td style="font-weight:700;text-align:left;">유효기간</td><td>30일</td><td class="hl">30일</td></tr>';
       h+='<tr><td style="font-weight:700;text-align:left;">추천 상황</td><td>소량 타깃</td><td class="hl">대량 영업</td></tr>';
       h+='</table>';
+      h+='<div style="padding:10px 12px;background:#EDF3FF;border-radius:8px;margin-top:10px;font-size:12px;font-weight:700;color:#0066FF;">오늘 설문에 참여해주신 중개사님은 정식 런칭 시 첫 결제 20% 할인!</div>';
       h+='<div style="font-size:11px;color:#8B95A1;margin-top:6px;">· 유효기간 만료 후 새 전화번호 필요 시 추가 결제로 획득 가능<br>· 서비스 지속 업데이트 예정</div>';
       h+='</div>';
     }else if(q.type==='radio'){
