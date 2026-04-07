@@ -130,9 +130,10 @@
     <span>바로이집 — 공인중개사</span>
     <span class="badge" id="progressBadge">0/10 완료</span>
   </div>
-  <!-- 모드 전환: 소개서 / 설문조사 -->
+  <!-- 모드 전환: 소개서 / 앱 보기 / 설문조사 -->
   <div style="display:flex;gap:0;margin-bottom:-1px;">
-    <div id="modeIntro" onclick="switchMode('intro')" style="flex:1;padding:10px 0;text-align:center;font-size:13px;font-weight:800;color:#0066FF;border-bottom:2px solid #0066FF;cursor:pointer;">서비스 소개서</div>
+    <div id="modeIntro" onclick="switchMode('intro')" style="flex:1;padding:10px 0;text-align:center;font-size:13px;font-weight:800;color:#0066FF;border-bottom:2px solid #0066FF;cursor:pointer;">소개서</div>
+    <div id="modeApp" onclick="switchMode('app')" style="flex:1;padding:10px 0;text-align:center;font-size:13px;font-weight:700;color:#8B95A1;border-bottom:2px solid transparent;cursor:pointer;">앱 보기</div>
     <div id="modeSurvey" onclick="switchMode('survey')" style="flex:1;padding:10px 0;text-align:center;font-size:13px;font-weight:700;color:#8B95A1;border-bottom:2px solid transparent;cursor:pointer;">설문조사</div>
   </div>
 </div>
@@ -379,6 +380,17 @@
 </div>
 </div>
 
+<!-- 앱 보기 콘텐츠 -->
+<div id="appWrap" style="display:none;max-width:500px;margin:0 auto;padding:0;">
+  <!-- 앱 전환 버튼 -->
+  <div style="display:flex;gap:6px;padding:12px 16px;background:#fff;border-bottom:1px solid #F0F1F5;">
+    <div id="appBtnAgent" onclick="switchApp('agent')" style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:800;background:#0066FF;color:#fff;cursor:pointer;">공인중개사 화면</div>
+    <div id="appBtnSeller" onclick="switchApp('seller')" style="flex:1;padding:8px 0;border-radius:8px;text-align:center;font-size:12px;font-weight:700;background:#F7F8FC;color:#8B95A1;cursor:pointer;">매도자 화면</div>
+  </div>
+  <!-- iframe -->
+  <iframe id="appFrame" src="https://seulgi-ui.github.io/baroezip-mockup/ceo-app/index.html" style="width:100%;height:calc(100vh - 140px);border:none;"></iframe>
+</div>
+
 <!-- 설문 콘텐츠 -->
 <div class="wrap" id="surveyWrap" style="display:none;">
 <div class="content" id="surveyContent"></div>
@@ -389,20 +401,40 @@
 function switchMode(mode){
   const intro=document.getElementById('introWrap');
   const survey=document.getElementById('surveyWrap');
+  const appW=document.getElementById('appWrap');
   const tabBar=document.getElementById('surveyTabBar');
   const mI=document.getElementById('modeIntro');
+  const mA=document.getElementById('modeApp');
   const mS=document.getElementById('modeSurvey');
+  // 전부 숨기기
+  intro.style.display='none';survey.style.display='none';appW.style.display='none';tabBar.style.display='none';
+  [mI,mA,mS].forEach(m=>{m.style.color='#8B95A1';m.style.borderBottom='2px solid transparent';m.style.fontWeight='700';});
   if(mode==='intro'){
-    intro.style.display='block';survey.style.display='none';tabBar.style.display='none';
+    intro.style.display='block';
     mI.style.color='#0066FF';mI.style.borderBottom='2px solid #0066FF';mI.style.fontWeight='800';
-    mS.style.color='#8B95A1';mS.style.borderBottom='2px solid transparent';mS.style.fontWeight='700';
+  }else if(mode==='app'){
+    appW.style.display='block';
+    mA.style.color='#0066FF';mA.style.borderBottom='2px solid #0066FF';mA.style.fontWeight='800';
   }else{
-    intro.style.display='none';survey.style.display='block';tabBar.style.display='block';
+    survey.style.display='block';tabBar.style.display='block';
     mS.style.color='#0066FF';mS.style.borderBottom='2px solid #0066FF';mS.style.fontWeight='800';
-    mI.style.color='#8B95A1';mI.style.borderBottom='2px solid transparent';mI.style.fontWeight='700';
     renderTabs();renderContent();
   }
   window.scrollTo(0,0);
+}
+function switchApp(type){
+  const frame=document.getElementById('appFrame');
+  const btnA=document.getElementById('appBtnAgent');
+  const btnS=document.getElementById('appBtnSeller');
+  if(type==='agent'){
+    frame.src='https://seulgi-ui.github.io/baroezip-mockup/ceo-app/index.html';
+    btnA.style.background='#0066FF';btnA.style.color='#fff';btnA.style.fontWeight='800';
+    btnS.style.background='#F7F8FC';btnS.style.color='#8B95A1';btnS.style.fontWeight='700';
+  }else{
+    frame.src='https://seulgi-ui.github.io/baroezip-mockup/app.html#home';
+    btnS.style.background='#0066FF';btnS.style.color='#fff';btnS.style.fontWeight='800';
+    btnA.style.background='#F7F8FC';btnA.style.color='#8B95A1';btnA.style.fontWeight='700';
+  }
 }
 const TOTAL=10;
 let current=0;
