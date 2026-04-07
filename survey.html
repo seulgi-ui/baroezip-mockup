@@ -73,20 +73,236 @@
 </head>
 <body>
 
-<!-- 상단 탭 -->
+<!-- 상단 바 -->
 <div class="top-bar">
   <div class="top-title">
-    <span>공인중개사 피드백 조사</span>
+    <span>바로이집 — 공인중개사</span>
     <span class="badge" id="progressBadge">0/10 완료</span>
   </div>
+  <!-- 모드 전환: 소개서 / 설문조사 -->
+  <div style="display:flex;gap:0;margin-bottom:-1px;">
+    <div id="modeIntro" onclick="switchMode('intro')" style="flex:1;padding:10px 0;text-align:center;font-size:13px;font-weight:800;color:#0066FF;border-bottom:2px solid #0066FF;cursor:pointer;">서비스 소개서</div>
+    <div id="modeSurvey" onclick="switchMode('survey')" style="flex:1;padding:10px 0;text-align:center;font-size:13px;font-weight:700;color:#8B95A1;border-bottom:2px solid transparent;cursor:pointer;">설문조사</div>
+  </div>
+</div>
+
+<!-- 설문 탭 바 (설문 모드에서만 표시) -->
+<div class="top-bar" id="surveyTabBar" style="display:none;padding-top:4px;">
   <div class="tab-row" id="tabRow"></div>
 </div>
 
-<div class="wrap">
-<div class="content" id="mainContent"></div>
+<!-- 소개서 콘텐츠 -->
+<div class="wrap" id="introWrap">
+<div class="content">
+
+  <!-- 히어로 -->
+  <div style="background:linear-gradient(135deg,#0F1724,#1A2744);border-radius:20px;padding:28px 22px;margin-bottom:16px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-30px;right:-20px;width:120px;height:120px;background:rgba(0,102,255,0.08);border-radius:50%;"></div>
+    <div style="font-size:12px;font-weight:700;color:#0066FF;margin-bottom:10px;">FOR 공인중개사</div>
+    <div style="font-size:24px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:8px;">매도자 전화번호,<br>더 이상 발품 팔지 마세요</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6;">매도자가 직접 올린 매물에 입찰하고<br>바로 연락처를 받으세요</div>
+  </div>
+
+  <!-- 핵심 가치 3가지 -->
+  <div style="font-size:16px;font-weight:900;color:#191F28;margin-bottom:12px;">왜 바로이집인가?</div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+    <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;gap:12px;">
+      <div style="width:40px;height:40px;border-radius:12px;background:#EDF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+      <div><div style="font-size:14px;font-weight:800;color:#191F28;">검증된 매도자 전화번호</div><div style="font-size:12px;color:#8B95A1;margin-top:3px;">매도자가 직접 등록한 매물만 취급<br>허위 매물 걱정 없음</div></div>
+    </div>
+    <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;gap:12px;">
+      <div style="width:40px;height:40px;border-radius:12px;background:#EDF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+      <div><div style="font-size:14px;font-weight:800;color:#191F28;">건당 or 무제한 패키지</div><div style="font-size:12px;color:#8B95A1;margin-top:3px;">필요한 만큼 건당 구매하거나<br>500건+ 무제한 패키지로 대량 영업</div></div>
+    </div>
+    <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;gap:12px;">
+      <div style="width:40px;height:40px;border-radius:12px;background:#EDF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0066FF" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div><div style="font-size:14px;font-weight:800;color:#191F28;">AI 매칭 + 실시간 업데이트</div><div style="font-size:12px;color:#8B95A1;margin-top:3px;">AI가 내 영업 지역의 매물을 자동 추천<br>구매 기간 내 새 매물 지속 업데이트</div></div>
+    </div>
+  </div>
+
+  <div style="height:8px;background:#F0F1F5;margin:0 -16px;border-radius:0;"></div>
+
+  <!-- 이용 플로우 -->
+  <div style="padding-top:16px;">
+    <div style="font-size:16px;font-weight:900;color:#191F28;margin-bottom:4px;">이용 방법</div>
+    <div style="font-size:12px;color:#8B95A1;margin-bottom:16px;">매도자가 매물 등록 → 중개사가 입찰 → 연락처 획득</div>
+
+    <!-- FLOW 1: 매도자 -->
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><div style="padding:3px 10px;background:#191F28;border-radius:6px;font-size:10px;font-weight:800;color:#fff;">매도자</div><span style="font-size:13px;font-weight:800;color:#191F28;">매물을 등록합니다</span></div>
+      <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">1</div>
+            <div><div style="font-size:13px;font-weight:700;color:#191F28;">앱에서 아파트 검색</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">주소 입력하면 AI가 자동으로 단지 정보 인식</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">2</div>
+            <div><div style="font-size:13px;font-weight:700;color:#191F28;">매물 정보 확인</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">AI가 시세·평형·층수 자동 채움 → 확인만 하면 끝</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">3</div>
+            <div><div style="font-size:13px;font-weight:700;color:#191F28;">매물 등록 완료</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">중개사들의 입찰을 기다리며, 진행 상황을 실시간 확인</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 화살표 -->
+    <div style="text-align:center;padding:4px 0 12px;"><div style="display:inline-flex;width:36px;height:36px;border-radius:50%;background:#F7F8FC;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div></div>
+
+    <!-- FLOW 2: 공인중개사 -->
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><div style="padding:3px 10px;background:#0066FF;border-radius:6px;font-size:10px;font-weight:800;color:#fff;">공인중개사</div><span style="font-size:13px;font-weight:800;color:#191F28;">매물을 보고 입찰합니다</span></div>
+      <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">1</div>
+            <div><div style="font-size:13px;font-weight:700;color:#191F28;">내 영업 지역 매물 확인</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">지도에서 반경 내 매물을 실시간으로 확인</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">2</div>
+            <div><div style="font-size:13px;font-weight:700;color:#191F28;">마음에 드는 매물에 입찰</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">수수료율·자기소개·강점을 제시해 매도자에게 어필</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:#0066FF;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:900;color:#fff;">3</div>
+            <div><div style="font-size:13px;font-weight:700;color:#191F28;">매도자 연락처 획득</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">입찰 후 즉시 매도자 전화번호 제공 → 바로 영업 시작</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 화살표 -->
+    <div style="text-align:center;padding:4px 0 12px;"><div style="display:inline-flex;width:36px;height:36px;border-radius:50%;background:#F7F8FC;align-items:center;justify-content:center;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8B95A1" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg></div></div>
+
+    <!-- FLOW 3: 거래 -->
+    <div style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><div style="padding:3px 10px;background:#191F28;border-radius:6px;font-size:10px;font-weight:800;color:#fff;">거래 성사</div><span style="font-size:13px;font-weight:800;color:#191F28;">빠르게 계약까지</span></div>
+      <div style="background:#fff;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#191F28;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div><div style="font-size:13px;font-weight:700;color:#191F28;">중개사 ↔ 매도자 직접 연결</div><div style="font-size:11px;color:#8B95A1;margin-top:2px;">플랫폼 거치지 않고 직접 통화·방문·계약<br>평균 거래 기간 7~14일</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:8px;background:#F0F1F5;margin:0 -16px;"></div>
+
+  <!-- 가격 구조 -->
+  <div style="padding-top:16px;">
+    <div style="font-size:16px;font-weight:900;color:#191F28;margin-bottom:4px;">가격 구조</div>
+    <div style="font-size:12px;color:#8B95A1;margin-bottom:14px;">건당 or 패키지, 상황에 맞게 선택</div>
+
+    <!-- 건당 -->
+    <div style="background:#fff;border-radius:14px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,0.04);margin-bottom:10px;border:1.5px solid #E2E8F0;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:15px;font-weight:900;color:#191F28;">건당 매칭</div>
+        <div style="font-size:16px;font-weight:900;color:#0066FF;">10~100만원</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#4A5568;">
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">기준</span><span style="font-weight:700;">매물 가격별</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">유효기간</span><span style="font-weight:700;">30일</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">추천</span><span style="font-weight:700;">특정 매물 타깃 영업</span></div>
+      </div>
+    </div>
+
+    <!-- 패키지 -->
+    <div style="background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 12px rgba(0,102,255,0.1);margin-bottom:10px;border:2px solid #0066FF;position:relative;">
+      <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);padding:3px 12px;background:#0066FF;border-radius:8px;font-size:10px;font-weight:800;color:#fff;">추천</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:15px;font-weight:900;color:#0066FF;">무제한 패키지</div>
+        <div style="font-size:16px;font-weight:900;color:#0066FF;">500만원</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-size:12px;color:#4A5568;">
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">매물 수</span><span style="font-weight:700;color:#0066FF;">무제한 (500건+)</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">반경</span><span style="font-weight:700;color:#0066FF;">3km 내 전체</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">유효기간</span><span style="font-weight:700;">30일</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">업데이트</span><span style="font-weight:700;color:#0066FF;">기간 내 새 매물 자동 추가</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#8B95A1;">추천</span><span style="font-weight:700;">대량 영업 · 지역 장악</span></div>
+      </div>
+    </div>
+
+    <div style="padding:12px 14px;background:#EDF3FF;border-radius:10px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:800;color:#0066FF;text-align:center;">오늘 설문 참여 시 → 정식 런칭 첫 결제 20% 할인!</div>
+    </div>
+  </div>
+
+  <div style="height:8px;background:#F0F1F5;margin:0 -16px;"></div>
+
+  <!-- 차별점 -->
+  <div style="padding-top:16px;">
+    <div style="font-size:16px;font-weight:900;color:#191F28;margin-bottom:12px;">기존 방식 vs 바로이집</div>
+    <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04);margin-bottom:16px;">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <tr style="background:#F7F8FC;">
+          <th style="padding:10px;text-align:left;font-weight:800;color:#8B95A1;"></th>
+          <th style="padding:10px;text-align:center;font-weight:700;color:#8B95A1;">기존 방식</th>
+          <th style="padding:10px;text-align:center;font-weight:800;color:#0066FF;">바로이집</th>
+        </tr>
+        <tr style="border-top:1px solid #F0F1F5;">
+          <td style="padding:10px;font-weight:700;">매물 확보</td>
+          <td style="padding:10px;text-align:center;color:#8B95A1;">발품·전단지·지인</td>
+          <td style="padding:10px;text-align:center;font-weight:700;color:#0066FF;">앱에서 바로 확인</td>
+        </tr>
+        <tr style="border-top:1px solid #F0F1F5;">
+          <td style="padding:10px;font-weight:700;">연락처</td>
+          <td style="padding:10px;text-align:center;color:#8B95A1;">구하기 어려움</td>
+          <td style="padding:10px;text-align:center;font-weight:700;color:#0066FF;">입찰 즉시 제공</td>
+        </tr>
+        <tr style="border-top:1px solid #F0F1F5;">
+          <td style="padding:10px;font-weight:700;">매물 신뢰도</td>
+          <td style="padding:10px;text-align:center;color:#8B95A1;">허위 매물 많음</td>
+          <td style="padding:10px;text-align:center;font-weight:700;color:#0066FF;">매도자 직접 등록</td>
+        </tr>
+        <tr style="border-top:1px solid #F0F1F5;">
+          <td style="padding:10px;font-weight:700;">비용</td>
+          <td style="padding:10px;text-align:center;color:#8B95A1;">시간+교통비+인건비</td>
+          <td style="padding:10px;text-align:center;font-weight:700;color:#0066FF;">건당 10만~</td>
+        </tr>
+        <tr style="border-top:1px solid #F0F1F5;">
+          <td style="padding:10px;font-weight:700;">속도</td>
+          <td style="padding:10px;text-align:center;color:#8B95A1;">수일~수주</td>
+          <td style="padding:10px;text-align:center;font-weight:700;color:#0066FF;">즉시</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="padding:16px 0 20px;">
+    <button onclick="switchMode('survey')" style="width:100%;padding:16px;border:none;border-radius:14px;font-size:15px;font-weight:800;color:#fff;background:#0066FF;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(0,102,255,0.3);">설문조사 시작하기 →</button>
+    <div style="text-align:center;margin-top:10px;font-size:12px;color:#8B95A1;">10분 소요 · 스타벅스 증정</div>
+  </div>
+
+</div>
+</div>
+
+<!-- 설문 콘텐츠 -->
+<div class="wrap" id="surveyWrap" style="display:none;">
+<div class="content" id="surveyContent"></div>
 </div>
 
 <script>
+// 모드 전환
+function switchMode(mode){
+  const intro=document.getElementById('introWrap');
+  const survey=document.getElementById('surveyWrap');
+  const tabBar=document.getElementById('surveyTabBar');
+  const mI=document.getElementById('modeIntro');
+  const mS=document.getElementById('modeSurvey');
+  if(mode==='intro'){
+    intro.style.display='block';survey.style.display='none';tabBar.style.display='none';
+    mI.style.color='#0066FF';mI.style.borderBottom='2px solid #0066FF';mI.style.fontWeight='800';
+    mS.style.color='#8B95A1';mS.style.borderBottom='2px solid transparent';mS.style.fontWeight='700';
+  }else{
+    intro.style.display='none';survey.style.display='block';tabBar.style.display='block';
+    mS.style.color='#0066FF';mS.style.borderBottom='2px solid #0066FF';mS.style.fontWeight='800';
+    mI.style.color='#8B95A1';mI.style.borderBottom='2px solid transparent';mI.style.fontWeight='700';
+    renderTabs();renderContent();
+  }
+  window.scrollTo(0,0);
+}
 const TOTAL=10;
 let current=0;
 // localStorage에 저장
@@ -281,7 +497,7 @@ function renderContent(){
     h+='<button class="export-btn" style="margin-top:12px;" onclick="exportAll()">전체 결과 텍스트로 내보내기</button>';
   }
 
-  document.getElementById('mainContent').innerHTML=h;
+  document.getElementById('surveyContent').innerHTML=h;
 }
 
 // 초기화
